@@ -1,0 +1,64 @@
+languageCode = "en-us"
+ignoreFiles = [ "\\.files/README.md$",  ]
+defaultContentLanguage = "en"
+title = "Amazon RoboMaker Workshop"
+theme = "learn"
+uglyurls = false
+googleAnalytics = "UA-44634850-4"
+sectionPagesMenu = "main"
+relativeURLs = true
+
+[blackfriday]
+hrefTargetBlank = true
+
+[params]
+editURL = "https://github.com/jerwallace/robomaker-workshop/edit/master/content/"
+themeVariant = "mine"
+showVisitedLinks = false
+author = ""
+description = "Amazon RoboMaker Workshop"
+disableSearch = false
+disableAssetsBusting = false
+disableLanguageSwitchingButton = true
+disableShortcutsTitle=false
+disableInlineCopyToClipBoard = true
+ghrepo = "https://github.com/jerwallace/robomaker-workshop/"
+branch = "master"
+template_bucket = "robomakerworkshop.com"
+
+
+
+#
+
+[menu]
+  [[menu.main]]
+    identifier = "Prerequisites"
+    name = "This is the Mu track"
+    title = "Workshop using Mu"
+    url = "/mu/"
+    weight = -110
+
+[[menu.shortcuts]]
+name = "<i class='fas fa-bookmark'></i> More Resources"
+url = "/more_resources"
+weight = 10
+
+[[menu.shortcuts]]
+name = "<i class='fas fa-users'></i> Authors"
+url = "/authors"
+weight = 20
+
+[[menu.shortcuts]]
+name = "<i class='fab fa-github'></i> GitHub Project"
+url = "https://github.com/jerwallace/aws-robotics-day"
+weight = 30
+
+[[menu.shortcuts]]
+name = "<i class='fas fa-envelope'></i> Have questions?"
+url = "mailto:robomakerworkshop@amazon.com"
+weight = 40
+
+
+[outputs]
+home = [ "HTML", "JSON"]
+page = [ "HTML" ]
