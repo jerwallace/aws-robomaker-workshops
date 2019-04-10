@@ -12,7 +12,7 @@ relativeURLs = true
 hrefTargetBlank = true
 
 [params]
-editURL = "https://github.com/jerwallace/robomaker-workshop/edit/master/content/"
+editURL = "https://github.com/jerwallace/aws-robomaker-workshops/edit/master/content/"
 themeVariant = "mine"
 showVisitedLinks = false
 author = ""
@@ -22,7 +22,7 @@ disableAssetsBusting = false
 disableLanguageSwitchingButton = true
 disableShortcutsTitle=false
 disableInlineCopyToClipBoard = true
-ghrepo = "https://github.com/jerwallace/robomaker-workshop/"
+ghrepo = "https://github.com/jerwallace/aws-robomaker-workshops/"
 branch = "master"
 template_bucket = "robomakerworkshop.com"
 
