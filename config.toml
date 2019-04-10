@@ -50,12 +50,12 @@ weight = 20
 
 [[menu.shortcuts]]
 name = "<i class='fab fa-github'></i> GitHub Project"
-url = "https://github.com/jerwallace/aws-robotics-day"
+url = "https://github.com/jerwallace/aws-robomaker-workshops"
 weight = 30
 
 [[menu.shortcuts]]
 name = "<i class='fas fa-envelope'></i> Have questions?"
-url = "mailto:robomakerworkshop@amazon.com"
+url = "mailto:robomaker-workshops@amazon.com"
 weight = 40
 
 
