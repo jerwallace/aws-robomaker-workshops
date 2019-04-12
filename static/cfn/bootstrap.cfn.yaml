@@ -1,15 +1,11 @@
 Description: 
 
-    This template deploys a VPC, with a pair of public subnets spread 
-    across two Availability Zones. It deploys an Internet Gateway, with a default 
-    route on the public subnets.
+    This template deploys the required resources for the AWS RoboMaker Workshops. This includes the following - 
+    a VPC, with a pair of public subnets spread across two Availability Zones, 
+    an Internet Gateway, with a default route on the public subnets,
+    a s3 bucket for bundles and other assets.
 
 Parameters:
-
-    EnvironmentName:
-        Description: An environment name that will be prefixed to resource names
-        Type: String
-        Default: robomaker-workshops
 
     VpcCIDR: 
         Description: Please enter the IP range (CIDR notation) for this VPC
@@ -35,20 +31,25 @@ Resources:
             CidrBlock: !Ref VpcCIDR
             Tags: 
                 - Key: Name 
-                  Value: !Ref EnvironmentName
+                  Value: !Ref AWS::StackName
 
     InternetGateway:
         Type: AWS::EC2::InternetGateway
         Properties:
             Tags:
                 - Key: Name
-                  Value: !Ref EnvironmentName
+                  Value: !Ref AWS::StackName
 
     InternetGatewayAttachment:
         Type: AWS::EC2::VPCGatewayAttachment
         Properties:
             InternetGatewayId: !Ref InternetGateway
             VpcId: !Ref VPC
+
+    S3Bucket:
+        Type: AWS::S3::Bucket
+        Properties:
+          BucketName: !Sub ${AWS::StackName}-assets
 
     PublicSubnet1: 
         Type: AWS::EC2::Subnet
@@ -59,7 +60,7 @@ Resources:
             MapPublicIpOnLaunch: true
             Tags: 
                 - Key: Name 
-                  Value: !Sub ${EnvironmentName} Public Subnet (AZ1)
+                  Value: !Sub ${AWS::StackName} Public Subnet (AZ1)
 
     PublicSubnet2: 
         Type: AWS::EC2::Subnet
@@ -70,7 +71,7 @@ Resources:
             MapPublicIpOnLaunch: true
             Tags: 
                 - Key: Name 
-                  Value: !Sub ${EnvironmentName} Public Subnet (AZ2)
+                  Value: !Sub ${AWS::StackName} Public Subnet (AZ2)
 
     PublicRouteTable:
         Type: AWS::EC2::RouteTable
@@ -78,7 +79,7 @@ Resources:
             VpcId: !Ref VPC
             Tags: 
                 - Key: Name 
-                  Value: !Sub ${EnvironmentName} Public Routes
+                  Value: !Sub ${AWS::StackName} Public Routes
 
     DefaultPublicRoute: 
         Type: AWS::EC2::Route
@@ -117,3 +118,7 @@ Outputs:
     PublicSubnet2: 
         Description: A reference to the public subnet in the 2nd Availability Zone
         Value: !Ref PublicSubnet2
+    
+    RoboMakerS3Bucket:
+        Description: The S3 bucket used to store your AWS RoboMaker assets.
+        Value: !Ref S3Bucket
