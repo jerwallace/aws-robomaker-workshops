@@ -6,15 +6,19 @@ weight: 3
 
 # Workshop Setup 
 
+To start 
+
 ### Log Into the AWS Console
 
 To complete this workshop you need an **AWS account with administrative permissions** as this is needed to create or modify resources and allow AWS RoboMaker to interact with services on your behalf. 
 
-If you are in a **classroom setting**, we will provide an AWS account for you to use. You will be assigned a sign-in URL that should look similar to this:
+#### Classroom Setting
+If you are in a **classroom setting**, we will provide an AWS account for you to use. You will be assigned a sign-in URL with an IAM username and password that should look similar to this:
 
    > https://robomaker-wrk-1.signin.aws.amazon.com/console/
 
-If you are **using your own account** for this exercise and have a credit code, apply it now. To apply the credit code, select your username from the twop right corner of the AWS console and click **My Account**. Next, click on **Credits**. 
+#### Using Your Own Account
+If you are **using your own account** for this exercise and have a credit code, apply it now. To apply the credit code, select your username from the top right corner of the AWS console and click **My Account**. Next, click on **Credits**. 
       
    **Important:** *The credit codes provided will cover the cost of this workshop. However, you must clean-up the resources after the workshop has completed.*
 
@@ -41,4 +45,4 @@ Finally, open the console for [Kinesis Video Streams](https://console.aws.amazon
 ![kinesis-streams](../../images/kinesis-streams.png)    
 *Note the Stream name (`roboMaker_video`) for later use.*
 
-**Congratulations!** You have compelted the setup process of the workshop. 
+**Congratulations!** You have completed the setup process of the workshop. 
