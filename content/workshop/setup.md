@@ -10,46 +10,31 @@ To complete this workshop you need an **AWS account with administrative permissi
 
 Please follow these steps to setup your account:
 
-1. [Log in via the AWS console](https://console.aws.amazon.com/) and set your region to **Oregon** from the top menu to right of your username. All activities will reference **Oregon (us-west-2)**. 
+1. [Log in via the AWS console](https://console.aws.amazon.com/) and take note of the region you are using. 
 
-   :exclamation: All code is currently set only for us-west-2, using any other regions will not work in this iteration.
-
-2. Apply the credit to your account (*Your username->Account->Credits)*. This amount will cover AWS usage for the workshop, as long as you clean up resources at the end.
-
-3. Create a "cheat sheet" text file to hold values needed for the activities. When you see "store for later use", this is where the details should go and be referenced.
-
-4. Create an S3 bucket and make note of the bucket name. This bucket will hold all of the AWS RoboMaker related objects. **We will reference `<YOUR_S3_BUCKET_NAME>` throughout the workshop.** For example:  `s3://<YOUR_S3_BUCKET_NAME>/logfiles`. s3 bucket names need to be unique, but short.
-
-5. Open Kinesis Video Streams and create a new stream:
-
-   * **Stream name**: *roboMaker_TurtleBot3*
-   * Uncheck *Use default settings*
-   * **Change Data retention period**: to 1 hour
-   * Create stream
-
-   Note the Stream name (`roboMaker_TurtleBot3`) for later use.
-
-   ![kinesis-streams](../../images/kinesis-streams.png)
-
-6. Ensure the default VPC is available for use and has Internet access (either public IP address or NAT gateway). **Make sure you are looking at Default VPC in us-west-2!**
-
-7. Finally, we will reference **subnet IDs** and **security group IDs** later on in the workshop. We can capture these from the automatic dropdowns when creating a new simulation. In the next few steps, we will start to create a simulation for the sole purpose of capturing these IDs. **Therefore, do not actually create the simulation, you won't start one yet.**  We'll do that later.  To get the information about your VPC network, do the following:
-
-   1. *RoboMaker->Simulation jobs->Create simulation job*
-
-   2. Ignore the first two blocks, and in the Networking block, select the *VPC* you would like to use
-
-   3. This will populate the available *Subnets* and *Security Groups*
-
-   4. Under Subnets select two or more from the drop-down, then you can drag-select with your mouse the identifiers for them and place them in your cheat sheet for further use.
-
-   5. Do the same for the *Security Groups* section (only select a single Security Group).
-
-   6. Copy the subnet IDs and security group IDs referenced here for use later in the workshop:
-
-      ![1_select_subnets](../../images/1_select_subnets.png)
-      
+2. If you are using your own account for this exercise and have a credit code, apply it now. To apply the credit code, select your username from the twop right corner of the AWS console and click **My Account**. Next, click on **Credits**.
    
-   8. Click **Cancel**.  **Do not create this simulation job at this time.**
+      > **Important:** *The credit codes provided will cover the cost of this workshop. However, you must clean-up the resources after the workshop has completed.*
+
+3. Create a **cheat sheet** text file to hold values needed for the activities. When you see "*store for later use*", this is where the details should go and be referenced.
+
+4. Create an S3 bucket and make note of the bucket name. This bucket will hold all of the AWS RoboMaker related objects. 
+
+    We will reference `<YOUR_S3_BUCKET_NAME>` throughout the workshop. For example:  `s3://<YOUR_S3_BUCKET_NAME>/logfiles`. s3 bucket names need to be unique, but short.
+
+5. Open Kinesis Video Streams and create a new stream with the following configuration. When creating the stream, **uncheck "Use default settings"**):
+
+    * **Stream Name**: *roboMaker_TurtleBot3*
+    * **Data Retention Period**: *1 hour*
+
+    *Note the Stream name (`roboMaker_TurtleBot3`) for later use.*
+
+    ![kinesis-streams](../../images/kinesis-streams.png)
+
+6. Finally, we will create the default resources for the lab. Click on the launch stack button below.
+
+    [![Launch Stack](https://cdn.rawgit.com/buildkite/cloudformation-launch-stack-button-svg/master/launch-stack.svg)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=buildkite&templateURL=s3://assets.robomakerworkshops.com/cfn/bootstrap.cfn.yaml)
+
+    This will create a **VPC** and pair of **subnets** to run AWS RoboMaker instances in. Once the stack has launched, take note of the **outputs**. We will use these values throughout the workshop. 
 
 **Congratulations!** You have compelted the setup process of the workshop. 
