@@ -3,7 +3,8 @@ Description:
     This template deploys the required resources for the AWS RoboMaker Workshops. This includes the following - 
     a VPC, with a pair of public subnets spread across two Availability Zones, 
     an Internet Gateway, with a default route on the public subnets,
-    a s3 bucket for bundles and other assets.
+    a s3 bucket for bundles and other assets,
+    IAM roles for simulation and deployment.
 
 Parameters:
 
@@ -101,6 +102,65 @@ Resources:
             RouteTableId: !Ref PublicRouteTable
             SubnetId: !Ref PublicSubnet2
 
+    RoboMakerSimulationRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+          RoleName: robomaker-simulation-role
+          AssumeRolePolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              -
+                Effect: Allow
+                Principal:
+                  Service:
+                    - robomaker.amazonaws.com
+                Action:
+                  - sts:AssumeRole
+          ManagedPolicyArns:
+            - 'arn:aws:iam::aws:policy/CloudWatchFullAccess'
+            - 'arn:aws:iam::aws:policy/AWSRoboMakerFullAccess'
+            - 'arn:aws:iam::aws:policy/AmazonS3FullAccess'
+            - 'arn:aws:iam::aws:policy/AmazonKinesisVideoStreamsFullAccess'
+            - 'arn:aws:iam::aws:policy/AmazonRekognitionFullAccess'
+
+    RoboMakerDeploymentRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+          RoleName: robomaker-deployment-role
+          AssumeRolePolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              -
+                Effect: Allow
+                Principal:
+                  Service:
+                    - lambda.amazonaws.com
+                    - iot.amazonaws.com
+                    - greengrass.amazonaws.com
+                Action:
+                  - 'sts:AssumeRole'
+          ManagedPolicyArns:
+            - 'arn:aws:iam::aws:policy/service-role/AWSGreengrassResourceAccessRolePolicy'
+          Policies:
+            -
+              PolicyName: ROSbot-deployment-policy
+              PolicyDocument:
+                Statement:
+                  -
+                    Effect: Allow
+                    Action:
+                      - 'robomaker:UpdateRobotDeployment'
+                    Resource:
+                      - '*'
+                  -
+                    Effect: Allow
+                    Action:
+                      - 's3:List*'
+                      - 's3:Get*'
+                    Resource: !Join
+                      - '/'
+                      - - !GetAtt S3Bucket.Arn
+                        - '*'
 Outputs: 
 
     VPC: 
@@ -122,3 +182,11 @@ Outputs:
     RoboMakerS3Bucket:
         Description: The S3 bucket used to store your AWS RoboMaker assets.
         Value: !Ref S3Bucket
+
+    SimulationRole:
+        Description: The IAM role that the simulation application will use to access AWS resources.
+        Value: !GetAtt RoboMakerSimulationRole.Arn
+        
+    DeploymentRole:
+        Description: The IAM role that the robot will use to access AWS resources.
+        Value: !GetAtt RoboMakerDeploymentRole.Arn

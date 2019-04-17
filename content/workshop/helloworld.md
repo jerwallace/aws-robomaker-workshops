@@ -1,5 +1,5 @@
 ---
-title: "Activity #1: Hello Robot"
+title: "Activity #1: Hello Robot Simulation"
 chapter: true
 weight: 4
 ---
@@ -46,44 +46,15 @@ This activity covers setting up the AWS RoboMaker development environment and qu
 
    For this and the next activity, you will create an IAM role that has the permissions needed for both. From the CLI (terminal) pane, copy and paste the following commands to create a role named *Cloud9-RoboMakerWorkshop*:
 
-   ```bash
-   # ### Begin of copy (include this line) ###
-   # Create the policy to allow RoboMaker access
-   # RUN THIS COMMAND ONLY TO GET ARN OUTPUT
-   aws iam create-role --role-name Cloud9-RoboMakerWorkshop --assume-role-policy-document '{
-     "Version": "2012-10-17",
-     "Statement": [
-       {
-         "Effect": "Allow",
-         "Principal": {
-           "Service": "robomaker.amazonaws.com"
-         },
-         "Action": "sts:AssumeRole"
-       }
-     ]
-   }'
-   # Attach policies that grant access
-   # COPY AND PASTE ALL THESE (you cna include these comment lines too)
-   # Read S3 bucket to download robot and simulation bundles and create log files
-   aws iam attach-role-policy --role-name Cloud9-RoboMakerWorkshop --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess
-   # Ability for simulation job and robot to create CloudWatch Logs/Metrics
-   aws iam attach-role-policy --role-name Cloud9-RoboMakerWorkshop --policy-arn arn:aws:iam::aws:policy/CloudWatchFullAccess
-   # Ability to interact with Kinesis Video Streams
-   aws iam attach-role-policy --role-name Cloud9-RoboMakerWorkshop --policy-arn arn:aws:iam::aws:policy/AmazonKinesisVideoStreamsFullAccess
-   # Ability to invoke Rekognition for object detection
-   aws iam attach-role-policy --role-name Cloud9-RoboMakerWorkshop --policy-arn arn:aws:iam::aws:policy/AmazonRekognitionFullAccess
-   # ### End of copy (include this line) ###
-   ```
-
    :bulb: This is a role that allows full access to a few AWS services. At the end of the workshop, please delete the role if not needed.
 
-7. To get the role's ARN, look at the output from the first command and copy the value of the Arn, it should look similar to this:
+7. Next, click on **AWS CloudFormation** and select the stack that you launched in the setup steps. In the **outputs** you will find two role ARNs to use with RoboMaker. For this exercise, we will be using the simulation role which can be found in the key value pair titled 'SimulationRole'. It should look similar to this:
 
    ```text
-   arn:aws:iam::123456789012:role/Cloud9-RoboMakerWorkshop
+   arn:aws:iam::123456789012:role/robomaker-simulation-role
    ```
 
-8. With the role created and policies attached, go back to your Cloud9 IDE window. For this project, we are going to use the menu option to build, bundle and simulate. Close the `README.md` file in the editor pane, then twirl open the *HelloWorld* folder (double-click), and double-click the `roboMakerSettings.json` file to edit.
+8. For this project, we are going to use the menu option to build, bundle and simulate. Close the `README.md` file in the editor pane, then twirl open the *HelloWorld* folder (double-click), and double-click the `roboMakerSettings.json` file to edit.
 
    This file contains all the settings to build the menu above. You will use these default settings, but need to complete the S3 bucket and IAM Role ARN  sections for your account.
 
@@ -163,7 +134,7 @@ This activity covers setting up the AWS RoboMaker development environment and qu
 
 13. Open the AWS RoboMaker console and click on simulation jobs. You should see your job in a *Running* status. Click on the job id to see the values that were passed as part of the job. This view provides all the details of the job and access to tools which you will use in a moment.
 
-    :exclamation:If the status shows Failed, it is most likely a typo or configuration issue to resolve. In the *Details* section, look for the *Failure reason* to determine what took place so you can correct.
+    If the status shows Failed, it is most likely a typo or configuration issue to resolve. In the *Details* section, look for the *Failure reason* to determine what took place so you can correct.
 
 14. From the simulation job details, we will launch a couple tools to interact with the robot. First, click on Gazebo, which will launch a pop-up window for the application. This is a client that provides a view into the virtual world.
 
@@ -209,7 +180,7 @@ When ready to test, the creation of Simulation job automates the process of comb
 
 Some of the key benefits of using AWS RoboMaker include:
 
-*  Not limited to local resources - By using the cloud, AWS RoboMaker provides resources as needed and only for when you need them.
+* Not limited to local resources - By using the cloud, AWS RoboMaker provides resources as needed and only for when you need them.
 * Develop anywhere on any web-based device - By streaming the output of graphically intensive applications such as Gazebo instead of processing it locally, you can use a desktop, laptop, or even tablet to develop and interact with simulations.
 * Scale - This activity showed a single simulation of an application. If the need to test a robot against different environments (simulations) is needed, or testing different iterations of robot applications against a single simulated environment, both of these can be done by scaling to multiple simulation jobs.
 
