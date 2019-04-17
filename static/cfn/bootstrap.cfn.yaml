@@ -120,6 +120,8 @@ Resources:
             - 'arn:aws:iam::aws:policy/CloudWatchFullAccess'
             - 'arn:aws:iam::aws:policy/AWSRoboMakerFullAccess'
             - 'arn:aws:iam::aws:policy/AmazonS3FullAccess'
+            - 'arn:aws:iam::aws:policy/AmazonKinesisVideoStreamsFullAccess'
+            - 'arn:aws:iam::aws:policy/AmazonRekognitionFullAccess'
 
     RoboMakerDeploymentRole:
         Type: 'AWS::IAM::Role'
