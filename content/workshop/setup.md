@@ -6,11 +6,9 @@ weight: 3
 
 # Workshop Setup 
 
-To start 
-
 ### Log Into the AWS Console
 
-To complete this workshop you need an **AWS account with administrative permissions** as this is needed to create or modify resources and allow AWS RoboMaker to interact with services on your behalf. 
+To complete this workshop you need an **AWS account with administrative permissions**. This is needed to create or modify resources and allow AWS RoboMaker to interact with services on your behalf. 
 
 #### Classroom Setting
 If you are in a **classroom setting**, we will provide an AWS account for you to use. You will be assigned a sign-in URL with an IAM username and password that should look similar to this:
@@ -26,7 +24,7 @@ If you are **using your own account** for this exercise and have a credit code, 
 
 Once you have successfully signed into the AWS console, launch the following cloudformation stack to create the required resources:
 
-[![Launch Stack](https://cdn.rawgit.com/buildkite/cloudformation-launch-stack-button-svg/master/launch-stack.svg)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=buildkite&templateURL=s3://assets.robomakerworkshops.com/cfn/bootstrap.cfn.yaml)
+[![Launch Stack](../../images/launch-stack.svg)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=robomaker-wrk&templateURL=https://s3.amazonaws.com/assets.robomakerworkshops.com/cfn/bootstrap.cfn.yaml)
 
 This will create: 
 
@@ -37,7 +35,7 @@ Once the stack has launched, take note of the **outputs**. We will use these val
 
 ### Create Kinesis Video
 
-Finally, open the console for [Kinesis Video Streams](https://console.aws.amazon.com/kinesisvideo/home) and create a new stream with the following configuration. When creating the stream, **uncheck "Use default settings"**):
+Finally, open the console for [Kinesis Video Streams](https://console.aws.amazon.com/kinesisvideo/home) and create a new stream with the following configuration. When creating the stream, **uncheck "Use default settings"**:
 
    - **Stream Name**: *roboMaker_video*
    - **Data Retention Period**: *1 hour*
