@@ -141,9 +141,13 @@ Resources:
                   - 'sts:AssumeRole'
           ManagedPolicyArns:
             - 'arn:aws:iam::aws:policy/service-role/AWSGreengrassResourceAccessRolePolicy'
+            - 'arn:aws:iam::aws:policy/AmazonS3FullAccess'
+            - 'arn:aws:iam::aws:policy/AmazonKinesisVideoStreamsFullAccess'
+            - 'arn:aws:iam::aws:policy/AmazonRekognitionFullAccess'
+            - 'arn:aws:iam::aws:policy/CloudWatchFullAccess'
           Policies:
             -
-              PolicyName: ROSbot-deployment-policy
+              PolicyName: RoboMakerWorkshop-UpdateRobot-Policy
               PolicyDocument:
                 Statement:
                   -
@@ -152,15 +156,6 @@ Resources:
                       - 'robomaker:UpdateRobotDeployment'
                     Resource:
                       - '*'
-                  -
-                    Effect: Allow
-                    Action:
-                      - 's3:List*'
-                      - 's3:Get*'
-                    Resource: !Join
-                      - '/'
-                      - - !GetAtt S3Bucket.Arn
-                        - '*'
 Outputs: 
 
     VPC: 

@@ -23,7 +23,7 @@ When complete, you will have learned:
 ## Activity tasks
 
 
-1. For this activity, you will be using three terminal tabs to work side-by-side on the simulation and robot application directories, while using the third tab for working with the operating system.
+1. For this activity, you will be using **three terminal tabs** to work side-by-side on the simulation and robot application directories, while using the third tab for working with the operating system.
 
    Close all terminal windows (bash, Immediate, etc.)  and then use the green plus sign to open three tabs like this:
 
@@ -32,6 +32,7 @@ When complete, you will have learned:
    When a task says to "From the **SIM TAB** run XXX", use the second/middle tab named "sim".
 
 2. The project we'll be working with is located in GitHub.  You need to clone it into the Cloud9 environment so you can work with it.  From the **OS TAB**, run the following commands to clone the repository:
+
    ```bash
    cd ~/environment
       
@@ -40,6 +41,7 @@ When complete, you will have learned:
    ```
 
 3. To build the robot application, issue the following commands from the **ROBOT TAB**:
+
    ```bash
    cd aws-robotics-day/DogFinder/robot_ws/
    
@@ -66,11 +68,11 @@ When complete, you will have learned:
    colcon build
    ```
 
-   :bulb: The initial ROS dependency and build process takes a longer time due to all the external packages that need to be downloaded, compiled, and/or installed. As you make small changes to code and iterate, the build process becomes much faster. The initial build time is a good reason to size your Cloud9 IDE accordingly.
+   The initial ROS dependency and build process takes a longer time due to all the external packages that need to be downloaded, compiled, and/or installed. As you make small changes to code and iterate, the build process becomes much faster. The initial build time is a good reason to size your Cloud9 IDE accordingly.
 
    At this point both robot and simulation application are ready. The simulation application will have the hexagon world ready with the TurtleBot3 centered, and the robot application has been built with native integration to CloudWatch Logs, Metric and Kinesis Video Streams; and boto3 support to send images to Amazon Rekognition for object detection.
 
-   However, since we cannot simulate from the Cloud9 IDE, continue to bundle both applications.
+   However, since we cannot simulate from the Cloud9 IDE,continue to bundle both applications.
 
 5. To bundle the robot application, from the **ROBOT TAB** execute the following:
 
@@ -113,7 +115,7 @@ When complete, you will have learned:
 
 7. With the bundle files ready, create a simulation job from the OS TAB. In the root of the DogFinder directory is a file named `submit_job.sh`. Double-click it and replace the entries at the top of the file with your specific ones (S3 bucket, VPC details, etc.), **and then save**. It should look similar to this:
 
-  ```bash
+   ```bash
      #!/bin/bash
      # Example - replace with your own
      export BUCKET_NAME="<YOUR_BUCKET_NAME>"
