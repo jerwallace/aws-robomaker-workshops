@@ -162,9 +162,9 @@ Outputs:
         Description: A reference to the created VPC
         Value: !Ref VPC
 
-    PublicSubnets:
-        Description: A list of the public subnets
-        Value: !Join [ ",", [ !Ref PublicSubnet1, !Ref PublicSubnet2 ]]
+    DefaultSecurityGroupID: 
+        Description: The default security group created with the VPC
+        Value: !GetAtt VPC.DefaultSecurityGroup
 
     PublicSubnet1:
         Description: A reference to the public subnet in the 1st Availability Zone
@@ -173,7 +173,7 @@ Outputs:
     PublicSubnet2: 
         Description: A reference to the public subnet in the 2nd Availability Zone
         Value: !Ref PublicSubnet2
-    
+  
     RoboMakerS3Bucket:
         Description: The S3 bucket used to store your AWS RoboMaker assets.
         Value: !Ref S3Bucket
@@ -185,3 +185,12 @@ Outputs:
     DeploymentRole:
         Description: The IAM role that the robot will use to access AWS resources.
         Value: !GetAtt RoboMakerDeploymentRole.Arn
+
+    SubmitJobSH: 
+        Description: Shell script to run to export variables.
+        Value: !Sub | 
+             #!/bin/bash
+             export BUCKET_NAME="${S3Bucket}"
+             export SUBNETS="${PublicSubnet1},${PublicSubnet2}"
+             export SECURITY_GROUP="${VPC.DefaultSecurityGroup}"
+             export ROLE_ARN="${RoboMakerDeploymentRole.Arn}"
