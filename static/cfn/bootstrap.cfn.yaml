@@ -188,7 +188,7 @@ Outputs:
 
     SubmitJobSH: 
         Description: Shell script to run to export variables.
-        Value: !Sub | 
+        Value: !Sub |
              #!/bin/bash
              export BUCKET_NAME="${S3Bucket}"
              export SUBNETS="${PublicSubnet1},${PublicSubnet2}"
