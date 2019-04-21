@@ -45,7 +45,7 @@ This activity covers the steps required to prepare a physical robot to receive a
 8. In the ARMHF souce file text box, paste the S3 location for the ARMHF bundle:
 
     ```text
-    s3://bundles.robomakerworkshops.com/turtlebot3-burger/hello-world/robot-armhf.tar
+    s3://robomakerbundles/turtlebot3-burger/hello-world/robot-armhf.tar
     ```
 
     Click **Create**.
@@ -100,7 +100,7 @@ This activity covers the steps required to prepare a physical robot to receive a
     $ cd /greengrass/certs/
     $ wget -O root.ca.pem http://www.symantec.com/content/en/us/enterprise/verisign/roots/VeriSign-Class%203-Public-Primary-Certification-Authority-G5.pem
 
-   #start the Greengrass service
+    #start the Greengrass service
     $ /greengrass/ggc/core/greengrassd start
     ```
 
