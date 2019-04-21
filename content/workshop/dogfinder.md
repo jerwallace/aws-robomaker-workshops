@@ -37,7 +37,7 @@ When complete, you will have learned:
    cd ~/environment
       
    # clone the DogFinder repository
-   git clone https://github.com/jerwallace/aws-robotics-day.git
+   git clone https://github.com/jerwallace/aws-robomaker-sample-application-dogfinder.git
    ```
 
 3. To build the robot application, issue the following commands from the **ROBOT TAB**:
