@@ -25,54 +25,54 @@ When complete, you will have learned:
 
 1. For this activity, you will be using **three terminal tabs** to work side-by-side on the simulation and robot application directories, while using the third tab for working with the operating system.
 
-   Close all terminal windows (bash, Immediate, etc.)  and then use the green plus sign to open three tabs like this:
+    Close all terminal windows (bash, Immediate, etc.)  and then use the green plus sign to open three tabs like this:
 
-   ![2_tabs](../../images/2_tabs.png)
+    ![2_tabs](../../images/2_tabs.png)
 
-   When a task says to "From the **SIM TAB** run XXX", use the second/middle tab named "sim".
+    When a task says to "From the **SIM TAB** run XXX", use the second/middle tab named "sim".
 
 2. The project we'll be working with is located in GitHub.  You need to clone it into the Cloud9 environment so you can work with it.  From the **OS TAB**, run the following commands to clone the repository:
 
-   ```bash
-   cd ~/environment
+    ```bash
+    cd ~/environment
       
-   # clone the DogFinder repository
-   git clone https://github.com/jerwallace/aws-robomaker-sample-application-dogfinder.git
-   ```
+    # clone the DogFinder repository
+    git clone https://github.com/jerwallace/ aws-robomaker-sample-application-dogfinder.git
+    ```
 
 3. To build the robot application, issue the following commands from the **ROBOT TAB**:
 
-   ```bash
-   cd aws-robomaker-sample-application-dogfinder/DogFinder/robot_ws/
+    ```bash
+    cd aws-robomaker-sample-application-dogfinder/DogFinder/robot_ws/
    
-   # Ensure latest packages
-   sudo apt-get update
+    # Ensure latest packages
+    sudo apt-get update
    
-   # Pull in ROS packages (errors seen early on can be ignored)
-   # This 5-10 minutes to complete
-   rosdep install --from-paths src --ignore-src -r -y
+    # Pull in ROS packages (errors seen early on can be ignored)
+    # This 5-10 minutes to complete
+    rosdep install --from-paths src --ignore-src -r -y
 
-   # Build the robot application
-   colcon build
-   ```
+    # Build the robot application
+    colcon build
+    ```
 
 4. Once that is complete, build the simulation application from the **SIM TAB**:
 
-   ```bash
-   cd aws-robomaker-sample-application-dogfinder/DogFinder/simulation_ws/
+    ```bash
+    cd aws-robomaker-sample-application-dogfinder/DogFinder/simulation_ws/
  
-   # rosdep again - will complete quickly
-   rosdep install --from-paths src --ignore-src -r -y
+    # rosdep again - will complete quickly
+    rosdep install --from-paths src --ignore-src -r -y
    
-   # Build the simulation application - will complete quickly
-   colcon build
-   ```
+    # Build the simulation application - will complete quickly
+    colcon build
+    ```
 
-   The initial ROS dependency and build process takes a longer time due to all the external packages that need to be downloaded, compiled, and/or installed. As you make small changes to code and iterate, the build process becomes much faster. The initial build time is a good reason to size your Cloud9 IDE accordingly.
+    The initial ROS dependency and build process takes a longer time due to all the external packages that need to be downloaded, compiled, and/or installed. As you make small changes to code and iterate, the build process becomes much faster. The initial build time is a good reason to size your Cloud9 IDE accordingly.
 
-   At this point both robot and simulation application are ready. The simulation application will have the hexagon world ready with the TurtleBot3 centered, and the robot application has been built with native integration to CloudWatch Logs, Metric and Kinesis Video Streams; and boto3 support to send images to Amazon Rekognition for object detection.
+    At this point both robot and simulation application are ready. The simulation application will have the hexagon world ready with the TurtleBot3 centered, and the robot application has been built with native integration to CloudWatch Logs, Metric and Kinesis Video Streams; and boto3 support to send images to Amazon Rekognition for object detection.
 
-   However, since we cannot simulate from the Cloud9 IDE,continue to bundle both applications.
+    However, since we cannot simulate from the Cloud9 IDE,continue to bundle both applications.
 
 5. To bundle the robot application, from the **ROBOT TAB** execute the following:
 
