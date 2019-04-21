@@ -43,7 +43,7 @@ When complete, you will have learned:
 3. To build the robot application, issue the following commands from the **ROBOT TAB**:
 
    ```bash
-   cd aws-robotics-day/DogFinder/robot_ws/
+   cd aws-robomaker-sample-application-dogfinder/DogFinder/robot_ws/
    
    # Ensure latest packages
    sudo apt-get update
@@ -59,7 +59,7 @@ When complete, you will have learned:
 4. Once that is complete, build the simulation application from the **SIM TAB**:
 
    ```bash
-   cd aws-robotics-day/DogFinder/simulation_ws/
+   cd aws-robomaker-sample-application-dogfinder/DogFinder/simulation_ws/
  
    # rosdep again - will complete quickly
    rosdep install --from-paths src --ignore-src -r -y
@@ -128,7 +128,7 @@ When complete, you will have learned:
 
    ```bash
    # script in top-level of DogFinder/ directory, adjust as needed
-   aws-robotics-day/DogFinder/submit_job.sh
+   aws-robomaker-sample-application-dogfinder/DogFinder/submit_job.sh
    ```
 
    A successful launch will return a JSON document with all the details including an *arn* with the simulation job value:

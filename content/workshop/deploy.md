@@ -23,70 +23,20 @@ This activity covers the steps required to prepare a physical robot to receive a
 
 1. Open the Cloud9 development environment you used in exercise 2 of this workshop.
 
-2. Before you can deploy to a robot, you need to create an IAM role that gives the robot permissions to AWS resources. This role will be used by the robot to download our bundled robot application, and it will be used by the application at runtime to access AWS services.
-
-   For this activity, you will create an IAM role that has these permissions. From the **OS tab**, copy and paste the following commands to create a role named *Cloud9-RoboMakerWorkshopDeploymentRole*:
-
-   ```bash
-   # ### Begin of copy (include this line) ###
-   # Create the policy to allow RoboMaker access
-   # RUN THIS COMMAND ONLY TO GET ARN OUTPUT
-   aws iam create-role --role-name Cloud9-RoboMakerWorkshopDeploymentRole --assume-role-policy-document '{
-     "Version": "2012-10-17",
-     "Statement": [
-       {
-         "Effect": "Allow",
-         "Principal": {
-           "Service": [
-              "lambda.amazonaws.com",
-              "iot.amazonaws.com",
-              "greengrass.amazonaws.com"
-            ]
-         },
-         "Action": "sts:AssumeRole"
-       }
-     ]
-   }'
-   # Attach policies that grant access
-   # COPY AND PASTE ALL THESE (you can include these comment lines too)
-   # Read S3 bucket to download robot and simulation bundles and create log files
-   aws iam attach-role-policy --role-name Cloud9-RoboMakerWorkshopDeploymentRole --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess
-   # Ability for simulation job and robot to create CloudWatch Logs/Metrics
-   aws iam attach-role-policy --role-name Cloud9-RoboMakerWorkshopDeploymentRole --policy-arn arn:aws:iam::aws:policy/CloudWatchFullAccess
-   # Ability to interact with Kinesis Video Streams
-   aws iam attach-role-policy --role-name Cloud9-RoboMakerWorkshopDeploymentRole --policy-arn arn:aws:iam::aws:policy/AmazonKinesisVideoStreamsFullAccess
-   # Ability to invoke Rekognition for object detection
-   aws iam attach-role-policy --role-name Cloud9-RoboMakerWorkshopDeploymentRole --policy-arn arn:aws:iam::aws:policy/AmazonRekognitionFullAccess
-   # Ability to invoke RoboMaker for deployment
-   aws iam attach-role-policy --role-name Cloud9-RoboMakerWorkshopDeploymentRole --policy-arn arn:aws:iam::aws:policy/AWSRoboMakerFullAccess
-   # ### End of copy (include this line) ###
-   ```
-
-   :bulb: This is a role that allows full access to a few AWS services. At the end of the workshop, please delete the role if not needed.
-
-3.  For the next activity, you need the ARN for the role that was created in the previous step.  Look at the output from the first command and copy the value of the Arn, it should look similar to this:
+2.  For this activity, you need the ARN for the **deployment role** that was created in the cloudformation template.  Look in the **Outputs** tab and copy the value of the Arn, it should look similar to this:
 
    ```text
-   arn:aws:iam::123456789012:role/Cloud9-RoboMakerWorkshopDeploymentRole
+   arn:aws:iam::123456789012:role/robomaker-deployment-role
    ```
    
-4. Using the ARN you found in the previous step, run the command below to allow Greengrass to use it for deployment:
+3. Using the ARN you found in the previous step, run the command below to allow Greengrass to use it for deployment:
    
    ```bash
    # replace DEPLOYMENT_ROLE_ARN with your ARN
    aws greengrass associate-service-role-to-account --role-arn $DEPLOYMENT_ROLE_ARN
    ```
 
-5. The bundle that you'll deploy to your robot has been pre-created.  Robots retrieve bundles from S3 during deployment, so your first step is to copy the robot bundle to S3:
-
-   From the **ROBOT TAB**:
-   
-   ```bash
-   # Replace <YOUR_BUCKET_NAME> with your bucket
-   aws s3 cp s3://bundles.robomakerworkshops.com/turtlebot3-burger/hello-world/robot-armhf.tar s3://<YOUR_BUCKET_NAME>/HelloRobot/output-robot.armhf.tar
-   ```
-
-6. Now that you've uploaded an ARMHF version of the application to S3, you need to tell RoboMaker where to find it.  Open the RoboMaker console, and review the Robot Applications (Development->Robot Applications).  Click on the name of the robot application, RoboMakerHelloWorldRobot, to review its details.
+6. The bundle that we will use for this step has been pre-created, you simply need to tell RoboMaker where to find it.  Open the RoboMaker console, and review the Robot Applications (Development->Robot Applications).  Click on the name of the robot application, RoboMakerHelloWorldRobot, to review its details.
 
 7. To view the location of the bundle files for the application, click on the $LATEST link, under Latest version.
 
@@ -94,11 +44,10 @@ This activity covers the steps required to prepare a physical robot to receive a
 
 8. In the ARMHF souce file text box, paste the S3 location for the ARMHF bundle:
 
-   ```bash
-   # Replace <YOUR_BUCKET_NAME> with your bucket
-   s3://<YOUR_BUCKET_NAME>/HelloRobot/output-robot.armhf.tar
+   ```text
+   s3://bundles.robomakerworkshops.com/turtlebot3-burger/hello-world/robot-armhf.tar
    ```
-   
+
    Click **Create**.
    
 9. Before RoboMaker can deploy to a physical robot, you need to configure your robot.  You need to create authentication certificates that will enable the device to securely communicate with AWS.  You also need to register your robot in RoboMaker.  To get started with this task, click on the Robots link under Fleet Management.
@@ -109,7 +58,7 @@ This activity covers the steps required to prepare a physical robot to receive a
 
 12. RoboMaker uses AWS GreenGrass to deploy your robot bundles to your device.  You must now configure RoboMaker's GreenGrass settings.  You can leave the *AWS Grengrass group* and *AWS Greengrass prefix* settings as their default values.  
 
-13.  For *IAM role*, choose "HelloRobot-deployment-role".  This role was created in exercise 1 of this worksop.  This role is assumed by your robot application when it runs on your device and gives your device permission to access AWS services on your behalf.
+13.  For *IAM role*, choose "robomaker-deployment-role".  This role was created in exercise 1 of this worksop.  This role is assumed by your robot application when it runs on your device and gives your device permission to access AWS services on your behalf.
 
 14.  Click **Create**.
 

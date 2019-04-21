@@ -145,17 +145,8 @@ Resources:
             - 'arn:aws:iam::aws:policy/AmazonKinesisVideoStreamsFullAccess'
             - 'arn:aws:iam::aws:policy/AmazonRekognitionFullAccess'
             - 'arn:aws:iam::aws:policy/CloudWatchFullAccess'
-          Policies:
-            -
-              PolicyName: RoboMakerWorkshop-UpdateRobot-Policy
-              PolicyDocument:
-                Statement:
-                  -
-                    Effect: Allow
-                    Action:
-                      - 'robomaker:UpdateRobotDeployment'
-                    Resource:
-                      - '*'
+            - 'arn:aws:iam::aws:policy/AWSRoboMakerFullAccess'
+            
 Outputs: 
 
     VPC: 
