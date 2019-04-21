@@ -25,16 +25,16 @@ This activity covers the steps required to prepare a physical robot to receive a
 
 2.  For this activity, you need the ARN for the **deployment role** that was created in the cloudformation template.  Look in the **Outputs** tab and copy the value of the Arn, it should look similar to this:
 
-   ```text
-   arn:aws:iam::123456789012:role/robomaker-deployment-role
-   ```
+    ```text
+    arn:aws:iam::123456789012:role/robomaker-deployment-role
+    ```
    
 3. Using the ARN you found in the previous step, run the command below to allow Greengrass to use it for deployment:
    
-   ```bash
-   # replace DEPLOYMENT_ROLE_ARN with your ARN
-   aws greengrass associate-service-role-to-account --role-arn $DEPLOYMENT_ROLE_ARN
-   ```
+    ```bash
+    # replace DEPLOYMENT_ROLE_ARN with your ARN
+    aws greengrass associate-service-role-to-account --role-arn $DEPLOYMENT_ROLE_ARN
+    ```
 
 6. The bundle that we will use for this step has been pre-created, you simply need to tell RoboMaker where to find it.  Open the RoboMaker console, and review the Robot Applications (Development->Robot Applications).  Click on the name of the robot application, RoboMakerHelloWorldRobot, to review its details.
 
@@ -44,11 +44,11 @@ This activity covers the steps required to prepare a physical robot to receive a
 
 8. In the ARMHF souce file text box, paste the S3 location for the ARMHF bundle:
 
-   ```text
-   s3://bundles.robomakerworkshops.com/turtlebot3-burger/hello-world/robot-armhf.tar
-   ```
+    ```text
+    s3://bundles.robomakerworkshops.com/turtlebot3-burger/hello-world/robot-armhf.tar
+    ```
 
-   Click **Create**.
+    Click **Create**.
    
 9. Before RoboMaker can deploy to a physical robot, you need to configure your robot.  You need to create authentication certificates that will enable the device to securely communicate with AWS.  You also need to register your robot in RoboMaker.  To get started with this task, click on the Robots link under Fleet Management.
 
@@ -64,7 +64,7 @@ This activity covers the steps required to prepare a physical robot to receive a
 
 15.  You must now download the certificates that need to be installed on your robot.  When installed on your robot, they will give your robot access to call AWS services.  Click the orange **Download** button.  There is no need to download the Greengrass Core software.  Your device has been pre-configured with the Greengrass binaries.  This will download a zip file named HelloRobot-setup.zip (or similar, depending on the name you provided for your robot in Step 9 above).
 
-   ![3_download_certs](../../images/download-certs.jpg)
+    ![3_download_certs](../../images/download-certs.jpg)
 
 16.  The certificates you just downloaded need to be copied to the physical robot and extracted to a directory on the device.  These instructions use scp to copy files to the device, and ssh to connect to the device.  Both commands are available in Terminal on macOS, and in the Windows PowerShell.  However, availability of these tools may vary, depending on your configuration (particularly on Windows).
 
@@ -76,33 +76,33 @@ This activity covers the steps required to prepare a physical robot to receive a
 
 20. Copy the zip file to your robot.  Replace the file name with the file name of the file you downloaded.  The IP address for your robot was provided with the robot.  You will be prompted for a password.  The password for the pi user is: roboMaker2019
    
-      ```bash
-      # replace FILE_NAME with the value for your zip file
-      $ scp FILE_NAME.zip pi@<ROBOT_IP_ADDRESS>:/home/pi 
-      ```
+    ```bash
+    # replace FILE_NAME with the value for your zip file
+    $ scp FILE_NAME.zip pi@<ROBOT_IP_ADDRESS>:/home/pi 
+    ```
 
 21. Connect to the robot, flash the OpenCR board, configure the certificates and start the Greengrass service.  In this step, you use ssh to connect to the robot, and then you unzip the certificates file to the location used by Greengrass.  Finally, you start the Greengrass service.  This enalbes the device to retrieve your robot bundle and deploy it to the robot.  As a reminder, you are connecting as the pi user, and the password is:  roboMaker2019
    
-   ```bash
-   # use SSH and connect to the robot.  Replace ROBOT_IP_ADDRESS with the IP address for your device.
-   $ ssh pi@<ROBOT_IP_ADDRESS>
-   $ sudo su
+    ```bash
+    # use SSH and connect to the robot.  Replace ROBOT_IP_ADDRESS with the IP address for your device.
+    $ ssh pi@<ROBOT_IP_ADDRESS>
+    $ sudo su
 
-   $ export OPENCR_PORT=/dev/ttyACM0
-   $ export OPENCR_MODEL=burger
-   $ rm -rf ./opencr_update.tar.bz2
-   $ wget https://github.com/ROBOTIS-GIT/OpenCR-Binaries/raw/master/turtlebot3/ROS1/latest/opencr_update.tar.bz2 && tar -xvf opencr_update.tar.bz2 && cd ./opencr_update && ./update.sh $OPENCR_PORT $OPENCR_MODEL.opencr && cd ..
+    $ export OPENCR_PORT=/dev/ttyACM0
+    $ export OPENCR_MODEL=burger
+    $ rm -rf ./opencr_update.tar.bz2
+    $ wget https://github.com/ROBOTIS-GIT/OpenCR-Binaries/raw/master/turtlebot3/ROS1/latest/opencr_update.tar.bz2 && tar -xvf opencr_update.tar.bz2 && cd ./opencr_update && ./update.sh $OPENCR_PORT $OPENCR_MODEL.opencr && cd ..
 
-   # unzip the certificates into the /greengrass directory.  Replace FILE_NAME with file you copied earlier.
-   $ unzip FILE_NAME.zip -d /greengrass
+    # unzip the certificates into the /greengrass directory.  Replace FILE_NAME with file you copied earlier.
+    $ unzip FILE_NAME.zip -d /greengrass
    
-   # update the CA certificate used by RoboMaker
-   $ cd /greengrass/certs/
-   $ wget -O root.ca.pem http://www.symantec.com/content/en/us/enterprise/verisign/roots/VeriSign-Class%203-Public-Primary-Certification-Authority-G5.pem
+    # update the CA certificate used by RoboMaker
+    $ cd /greengrass/certs/
+    $ wget -O root.ca.pem http://www.symantec.com/content/en/us/enterprise/verisign/roots/VeriSign-Class%203-Public-Primary-Certification-Authority-G5.pem
 
    #start the Greengrass service
-   $ /greengrass/ggc/core/greengrassd start
-   ```
+    $ /greengrass/ggc/core/greengrassd start
+    ```
 
 22. Create a Fleet and add your robot to the Fleet.  Fleets enable you to manage a group of robots.  For example, you can deploy the same robot application to all robots in a fleet.  Then ensures that all your robots are running the same software.  If you need different robots to run differnt software, you can create multiple fleets.  In this workshop, you'll create a single fleet, that contains a single robot.  In the AWS RoboMaker console, choose *Fleets* under *Fleet managment*.  Click the **Create fleet** button. 
 
@@ -110,7 +110,7 @@ This activity covers the steps required to prepare a physical robot to receive a
 
 24. You now must add your robot to the newly-created fleeet.  On the fleet page for your new fleet, click the **Register new** button under the *Registered robots* section.
 
-   ![3_register_new](../../images/register_new.jpg)
+    ![3_register_new](../../images/register_new.jpg)
 
 25. Select your robot, and choose **Register robot**.  Congratulations, your robot is now a member of your fleet!
 
