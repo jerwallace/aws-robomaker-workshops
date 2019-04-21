@@ -38,7 +38,7 @@ This activity covers the steps required to prepare a physical robot to receive a
 
 6. The bundle that we will use for this step has been pre-created, you simply need to tell RoboMaker where to find it.  Open the RoboMaker console, and review the Robot Applications (Development->Robot Applications).  Click on the name of the robot application, RoboMakerHelloWorldRobot, to review its details.
 
-7. To view the location of the bundle files for the application, click on the $LATEST link, under Latest version.
+7. To view the location of the bundle files for the application, click on the **$LATEST** link, under Latest version.
 
 6. You will now see the details for the RoboMakerHelloWorldRobot application, including the Sources.  Notice that it currently has only one source:  the X86_64 version (this is the version you just used for simulation).  To tell RoboMaker about the ARMHF version, click the **Update** button.
 
