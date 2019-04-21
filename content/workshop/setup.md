@@ -10,7 +10,7 @@ weight: 3
 
 To complete this workshop you need an **AWS account with administrative permissions**. This is needed to create or modify resources and allow AWS RoboMaker to interact with services on your behalf. 
 
-If you are in a classroom setting, for this exercise we will provide a credit code, which you should apply it now. To apply the credit code, select your username from the top right corner of the AWS console and click **My Account**. Next, click on **Credits**. 
+If you are in a classroom setting, we will provide a credit code which you should apply it now. To apply the credit code, select your username from the top right corner of the AWS console and click **My Account**. Next, click on **Credits**. 
       
    **Important:** *The credit codes provided will cover the cost of this workshop. However, you must clean-up the resources after the workshop has completed.*
 
