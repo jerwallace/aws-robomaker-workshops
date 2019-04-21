@@ -18,25 +18,25 @@ This activity covers setting up the AWS RoboMaker development environment and qu
 
 2. Create a development environment (*Development->Development environments->Create environment*) and complete the following:
 
-   * Name: `workshop` or something descriptive
-   * Instance type: `m4.large`
-   * Choose the VPC (default), and a subnet for your development environment
-   * Click Create
+    * Name: `workshop` or something descriptive
+    * Instance type: `m4.large`
+    * Choose the VPC (default), and a subnet for your development environment
+    * Click Create
 
 3. This opens the environment's detail page, click *Open environment*, which will open a new browser tab with the Cloud9 IDE.
 
-   *This may take a few minutes to complete, but when the creation process has completed, you will see something similar to this:*
+    *This may take a few minutes to complete, but when the creation process has completed, you will see something similar to this:*
 
-   ![1_cloud9](../../images/1_cloud9.png)
+    ![1_cloud9](../../images/1_cloud9.png)
 
-   The Welcome page provides helpful information to get started, but for now we are not going to use it, so click the *X* on the tab to close.The IDE is broken down into four sections:
+    The Welcome page provides helpful information to get started, but for now we are not going to use it, so click the *X* on the tab to close.The IDE is broken down into four sections:
 
-   ![1_c9_layout](../../images/1_c9_layout.png)
+    ![1_c9_layout](../../images/1_c9_layout.png)
 
-   (1) The AWS RoboMaker menu provide quick access to common actions. It is updated when the `roboMakerSettings.json` is modified later in this task.
-   (2) Any files and folders will reside here, and can be selected and double-clicked to open in the editor pane (#4).
-   (3) The lower section is an adjustable pane for creating or monitoring command line operations. ROS developers work in this area to build, test, and interact with local code.
-   (4) This is the main editor pane.
+    - (1) The AWS RoboMaker menu provide quick access to common actions. It is updated when the `roboMakerSettings.json` is modified later in this task.
+    - (2) Any files and folders will reside here, and can be selected and double-clicked to open in the editor pane (#4).
+    - (3) The lower section is an adjustable pane for creating or monitoring command line operations. ROS developers work in this area to build, test, and interact with local code.
+    - (4) This is the main editor pane.
 
 4. Delete the `roboMakerSettings.json` file by right-clicking on it and selecting *Delete*->Yes. We will use the example applications file to complete.
 

@@ -18,7 +18,7 @@ If you are in a classroom setting, we will provide a credit code which you shoul
 
 Once you have successfully signed into the AWS console, launch the following cloudformation stack to create the required resources:
 
-[![Launch Stack](../../images/launch-stack.svg)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?stackName=robomaker-wrk&templateURL=https://s3.amazonaws.com/assets.robomakerworkshops.com/cfn/bootstrap.cfn.yaml)
+[![Launch Stack](../../images/launch-stack.svg)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?templateURL=https://s3.amazonaws.com/assets.robomakerworkshops.com/cfn/bootstrap.cfn.yaml)
 
 This will create: 
 
