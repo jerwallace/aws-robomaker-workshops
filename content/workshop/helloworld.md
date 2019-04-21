@@ -120,7 +120,7 @@ This activity covers setting up the AWS RoboMaker development environment and qu
 
 10. You next use the menu to build and bundle both the robot and simulation application. Click *Run->Build->HelloWorld Robot* to start the compile for the robot application. This will take approximately 1-2 minutes as it needs to download and compile the code. When you see a `Process exited with code: 0` which indicated success, use the same command to build the *HelloWorld Simulation*.
 
-   At this point both applications have been compiled locally. To run as a AWS RoboMaker simulation job, you will first need to bundle them. This process "bundles" the application along with all operating system dependencies, sort of like a container. This creates compressed output files locally.
+    At this point both applications have been compiled locally. To run as a AWS RoboMaker simulation job, you will first need to bundle them. This process "bundles" the application along with all operating system dependencies, sort of like a container. This creates compressed output files locally.
 
 11. As with the build steps above, do the same for both the robot and simulation application, but select *Run->Bundle->...* instead of build. This will take 10-15 minutes or so to complete for both, and you may see Cloud9 warnings about low memory, which you can disregard.
 

@@ -76,92 +76,92 @@ When complete, you will have learned:
 
 5. To bundle the robot application, from the **ROBOT TAB** execute the following:
 
-   ```bash
-   #make sure colcon bundle is the latest version.  This only needs to be run once in the Cloud9 environment
-   sudo pip3 install -U colcon-bundle colcon-ros-bundle
+    ```bash
+    #make sure colcon bundle is the latest version.  This only needs to be run once in the Cloud9 environment
+    sudo pip3 install -U colcon-bundle colcon-ros-bundle
 
-   #create the bundle for the robot application
-   colcon bundle
-   ```
+    #create the bundle for the robot application
+    colcon bundle
+    ```
 
-   Once successfully completed, do the same on the **SIM TAB**:
+    Once successfully completed, do the same on the **SIM TAB**:
+ 
+    ```bash
+    #create the bundle for the simulation application
+    colcon bundle
+    ```
 
-   ```bash
-   #create the bundle for the simulation application
-   colcon bundle
-   ```
+    These two operations will create complete tar files for use and will write them to eaach workspaces' respective bundle directory.
 
-   These two operations will create complete tar files for use and will write them to eaach workspaces' respective bundle directory.
+    *Why do I have to go through all these steps when in the previous activity I just clicked a menu command and magic happened?!?!*
 
-   :exclamation: Why do I have to go through all these steps when in the previous activity I just clicked a menu command and magic happened?!?!
-
-   That's one of the benefits of AWS RoboMaker, the ability to wrap the complexity of ROS into a few commands. In the background all of the same steps were being taken as you just completed. By doing this step-by-step,  you can see process is to build and deploy a robot application. In a lot of situations you will have to go through similar setups for your applications, so having familiarity with it is helpful.
+    That's one of the benefits of AWS RoboMaker, the ability to wrap the complexity of ROS into a few commands. In the background all of the same steps were being taken as you just completed. By doing this step-by-step,  you can see process is to build and deploy a robot application. In a lot of situations you will have to go through similar setups for your applications, so having familiarity with it is helpful.
 
 6. With both applications built, you will now copy them to S3 so they can be used by the simulation service. For both applications, copy to S3:
 
-   From the **ROBOT TAB**:
+    From the **ROBOT TAB**:
 
-   ```bash
-   # Replace <YOUR_BUCKET_NAME> with your bucket
-   aws s3 cp bundle/output.tar s3://<YOUR_BUCKET_NAME>/dogfinder/output-robot.tar
-   ```
+    ```bash
+    # Replace <YOUR_BUCKET_NAME> with your bucket
+    aws s3 cp bundle/output.tar s3://<YOUR_BUCKET_NAME>/dogfinder/output-robot.tar
+    ```
 
-   and from the **SIM TAB**:
+    and from the **SIM TAB**:
 
-   ```bash
-   # Replace <YOUR_BUCKET_NAME> with
-   aws s3 cp bundle/output.tar s3://<YOUR_BUCKET_NAME>/dogfinder/output-sim.tar
-   ```
+    ```bash
+    # Replace <YOUR_BUCKET_NAME> with
+    aws s3 cp bundle/output.tar s3://<YOUR_BUCKET_NAME>/dogfinder/output-sim.tar
+    ```
 
 7. With the bundle files ready, create a simulation job from the OS TAB. In the root of the DogFinder directory is a file named `submit_job.sh`. Double-click it and replace the entries at the top of the file with your specific ones (S3 bucket, VPC details, etc.), **and then save**. It should look similar to this:
 
-   ```bash
+    ```bash
      #!/bin/bash
      # Example - replace with your own
      export BUCKET_NAME="<YOUR_BUCKET_NAME>"
      export SUBNETS="subnet-e2xxx795,subnet-e2xxx123"
      export SECURITY_GROUP="sg-fe2xxx9a"
      export ROLE_ARN="arn:aws:iam::1234565789012:role/robomaker_role"
-   ```
+    ```
 
 8. In the **OS TAB**, run the script which will create the robot and simulation applications, then create and start the simulation job:
 
-   ```bash
-   # script in top-level of DogFinder/ directory, adjust as needed
-   aws-robomaker-sample-application-dogfinder/DogFinder/submit_job.sh
-   ```
+    ```bash
+    # script in top-level of DogFinder/ directory, adjust as needed
+    aws-robomaker-sample-application-dogfinder/DogFinder/submit_job.sh
+    ```
 
-   A successful launch will return a JSON document with all the details including an *arn* with the simulation job value:
+    A successful launch will return a JSON document with all the details including an *arn* with the simulation job value:
 
-   ```json
-   "arn": "arn:aws:robomaker:us-west-2:123456789012:simulation-job/sim-8rcvbm7p023f",
-   ```
+    ```json
+    "arn": "arn:aws:robomaker:us-west-2:123456789012:simulation-job/sim-8rcvbm7p023f",
+    ```
 
 9. At this point you can open a AWS RoboMaker console and check the status of the simulation job. It will take a few minutes to go from *Pending* to *Running*, but that point you can open Gazebo and Terminal applications.
 
-    Notice in Gazebo as you pan around that the robot if facing north at the picture of the bridge. Right now the robot is waiting for a message to start goal seeking and finding the picture of the dog. Before you issue the command from the simulation terminal, let's bring up the following windows and resize so we can see them all (the may take a bit of adjusting):
+     Notice in Gazebo as you pan around that the robot if facing north at the picture of the bridge. Right now the robot is waiting for a message to start goal seeking and finding the picture of the dog. Before you issue the command from the simulation terminal, let's bring up the following windows and resize so we can see them all (the may take a bit of adjusting):
 
-    * *Kinesis Video Streams* console, then click on your stream
-    * *Gazebo*, zoom in to the hexagon and the robot
-    * *Simulation job Terminal*, where you will issue the start command
+     * *Kinesis Video Streams* console, then click on your stream
+     * *Gazebo*, zoom in to the hexagon and the robot
+     * *Simulation job Terminal*, where you will issue the start command
 
-    ![2_all_windows](../../images/2_all_windows.png)
+     ![2_all_windows](../../images/2_all_windows.png)
 
-    You don't need to see too much of the video stream window in the background, just enough to see it steaming video.
+     You don't need to see too much of the video stream window in the background, just enough to see it steaming video.
 
 10. At this point, in Gazebo the robot should facing upwards (due North); the video stream should show the  bridge photo; and CloudWatch logs should show a message "Waiting to start finding Fido". Now from the terminal, you will send a message to a topic the robot is listening on to start the goal seeking action:
 
-    ```bash
-    rostopic pub --once /df_action std_msgs/String 'start' 
-    ```
+     ```bash
+     rostopic pub --once /df_action std_msgs/String 'start' 
+     ```
 
-    What this will do is publish (`pub`) a single message (`--once`) to the topic your robot is listening on (`/df_action`), and will send a string type  (`std_msgs/String`) with the command to process (`start`). The robot will receive this command and start the task (turn and process images), looking for our target, a picture of a dog.
+     What this will do is publish (`pub`) a single message (`--once`) to the topic your robot is listening on (`/df_action`), and will send a string type  (`std_msgs/String`) with the command to process (`start`). The robot will receive this command and start the task (turn and process images), looking for our target, a picture of a dog.
 
-    :exclamation: When you see the robot start turn in Gazebo, if the video stream doesn't update, click the "fast-forward" button to forward to realtime.
+     *When you see the robot start turn in Gazebo, if the video stream doesn't update, click the "fast-forward" button to forward to realtime.*
 
-    Once a dog has been found, the robot will stop and log in CloudWatch Logs->Log Groups->dogfinder_workshop->TurtleBot3 informational messages on finding the dog!
+     Once a dog has been found, the robot will stop and log in CloudWatch Logs->Log Groups->dogfinder_workshop->TurtleBot3 informational messages on finding the dog!
 
-    ![2_dog_logs](../../images/2_dog_logs.png)
+     ![2_dog_logs](../../images/2_dog_logs.png)
 
 11. Once the dog image is found, the robot waits for the next command to start the process again. You can issue the `rostopic pub` command again in the terminal to start the process again.
 
