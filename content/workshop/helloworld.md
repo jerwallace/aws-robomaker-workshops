@@ -6,7 +6,7 @@ weight: 4
 
 # Development environment and HelloWorld
 
-This activity covers setting up the AWS RoboMaker development environment and quickly compiling at running a "Hello World" ROS application. When complete, you will have learned:
+In this activity, you will setup a AWS RoboMaker development environment to quickly compile and run a "Hello World" ROS application. Once complete, you will have learned:
 
 * How to navigate the AWS RoboMaker console and access development environment and simulation jobs
 * Basic ROS workspace layout and build/bundle tasks
@@ -20,8 +20,8 @@ This activity covers setting up the AWS RoboMaker development environment and qu
 
     * Name: `workshop` or something descriptive
     * Instance type: `m4.large`
-    * Choose the VPC (default), and a subnet for your development environment
-    * Click Create
+    * Choose the VPC (default), and a subnet for your development environment 
+    * Click **Create**
 
 3. This opens the environment's detail page, click *Open environment*, which will open a new browser tab with the Cloud9 IDE.
 
@@ -29,7 +29,7 @@ This activity covers setting up the AWS RoboMaker development environment and qu
 
     ![1_cloud9](../../images/1_cloud9.png)
 
-    The Welcome page provides helpful information to get started, but for now we are not going to use it, so click the *X* on the tab to close.The IDE is broken down into four sections:
+    The *Welcome page* provides helpful information to get started, but for now we are not going to use it, so click the *X* on the tab to close.The IDE is broken down into four sections:
 
     ![1_c9_layout](../../images/1_c9_layout.png)
 
@@ -42,25 +42,22 @@ This activity covers setting up the AWS RoboMaker development environment and qu
 
 5. Next, use the menu to download and create the HelloWorld application by clicking *Resources->Download Samples->1. Hello World*. This will download, unzip, and load the readme file for the Hello World application.
 
-6. Before updating the file that builds the menus, you will first need to create an IAM role that gives the simulation service the proper permissions to other AWS resources. For instance you could allow the simulation to have access to CloudWatch Logs, but not have access to S3.
-
-    For this and the next activity, you will create an IAM role that has the permissions needed for both. From the CLI (terminal) pane, copy and paste the following commands to create a role named *Cloud9-RoboMakerWorkshop*:
-
-    This is a role that allows full access to a few AWS services. At the end of the workshop, please delete the role if not needed.
-
-7. Next, click on **AWS CloudFormation** and select the stack that you launched in the setup steps. In the **outputs** you will find two role ARNs to use with RoboMaker. For this exercise, we will be using the simulation role which can be found in the key value pair titled 'SimulationRole'. It should look similar to this:
+6. While the application files are downloading, in another window, click on **AWS CloudFormation** and select the stack that you launched in the setup steps. In the **Outputs** you will find two role ARNs to use with RoboMaker. For this exercise, we will be using the *simulation role* which can be found in the key value pair titled 'SimulationRole' and the S3 bucket that was created. They should look similar to this:
 
     ```text
     arn:aws:iam::123456789012:role/robomaker-simulation-role
+    <your-stack-name>-assets
     ```
+  
+    Copy the role ARN and the S3 bucket name and head back to your *RoboMaker Cloud9* editor.
 
-8. For this project, we are going to use the menu option to build, bundle and simulate. Close the `README.md` file in the editor pane, then twirl open the *HelloWorld* folder (double-click), and double-click the `roboMakerSettings.json` file to edit.
+7. For this project, we are going to use the menu option to build, bundle and simulate. Close the `README.md` file in the editor pane, then open the *HelloWorld* folder (double-click), and double-click the `roboMakerSettings.json` file to edit.
 
     This file contains all the settings to build the menu above. You will use these default settings, but need to complete the S3 bucket and IAM Role ARN  sections for your account.
 
 9. Scroll down to the `simulation` section and replace the `output location` with your S3 bucket name. Below that, replace the `<your ... role ARN>` with the full ARN saved from the previous step. Save the file. This will refresh the menu options to use the new values.
 
-    Just above the simulation attribute, also replace the s3Bucket entries for `robotApp` and `simulationApp`.
+    Just above the simulation attribute, also replace the s3Bucket entries for `robotApp` and `simulationApp` to match what was created in CloudFormation.
 
     *There are three locations to enter the S3 bucket details. If you receive an error when running, check to make sure all three are complete and the role ARN has been entered.*
 
@@ -74,7 +71,7 @@ This activity covers setting up the AWS RoboMaker development environment and qu
          "cfg": {
            "robotApp": {
              "name": "RoboMakerHelloWorldRobot",
-             "s3Bucket": "df-workshop",
+             "s3Bucket": "<your-stack-name>-assets",
              "sourceBundleFile": "./HelloWorld/robot_ws/bundle/output.tar.gz",
              "architecture": "X86_64",
              "robotSoftwareSuite": {
@@ -88,7 +85,7 @@ This activity covers setting up the AWS RoboMaker development environment and qu
            },
            "simulationApp": {
              "name": "RoboMakerHelloWorldSimulation",
-             "s3Bucket": "df-workshop",
+             "s3Bucket": "<your-stack-name>-assets",
              "sourceBundleFile": "./HelloWorld/simulation_ws/bundle/output.tar.gz",
              "architecture": "X86_64",
              "launchConfig": {
@@ -118,25 +115,58 @@ This activity covers setting up the AWS RoboMaker development environment and qu
        },
     ```
 
-10. You next use the menu to build and bundle both the robot and simulation application. Click *Run->Build->HelloWorld Robot* to start the compile for the robot application. This will take approximately 1-2 minutes as it needs to download and compile the code. When you see a `Process exited with code: 0` which indicated success, use the same command to build the *HelloWorld Simulation*.
+10. Next, update the hello world simulation application to use TurtleBot3 'waffle_pi' instead of 'burger'. The TurtleBot3 Waffle Pi has a camera module, which we will use as part of this activity. To do this, open the following file: 
 
-    At this point both applications have been compiled locally. To run as a AWS RoboMaker simulation job, you will first need to bundle them. This process "bundles" the application along with all operating system dependencies, sort of like a container. This creates compressed output files locally.
+    ```text
+     HelloWorld/simulation_ws/src/hello_world_simulation/launch/empty_world.launch
+    ```
+    
+    Then, add this line in the TurtleBot3 include block: `<arg name="model" value="waffle_pi" />`. After complete, the file should look like this:
 
-11. As with the build steps above, do the same for both the robot and simulation application, but select *Run->Bundle->...* instead of build. This will take 10-15 minutes or so to complete for both, and you may see Cloud9 warnings about low memory, which you can disregard.
+    ```xml
+      <launch>
+        <!-- Always set GUI to false for AWS RoboMaker Simulation
+            Use gui:=true on roslaunch command-line to run with a gui.
+        -->
+        <arg name="gui" default="false"/>
 
-    While these are building, review the JSON file for the simulation area. Here you can see that the launch configs reference the package name (hello_world_robot or hello_world_simulation) and the launch file to use (rotate.launch and empty_world.launch respectively). 
+        <include file="$(find gazebo_ros)/launch/empty_world.launch">
+          <arg name="world_name" value="$(find hello_world_simulation)/worlds/empty.world"/>
+          <arg name="paused" value="false"/>
+          <arg name="use_sim_time" value="true"/>
+          <arg name="gui" value="$(arg gui)"/>
+          <arg name="headless" value="false"/>
+          <arg name="debug" value="false"/>
+          <arg name="verbose" value="true"/>
+        </include>
 
-12. When both bundle operations are completed, launch a simulation job (*Run->Launch Simulation->HelloWorld*). This will do the following:
+        <!-- Spawn Robot -->
+        <include file="$(find turtlebot3_description_reduced_mesh)/launch/spawn_turtlebot.launch">
+          <arg name="model" value="waffle_pi" />
+        </include>
+      </launch>
+    ```
+    
+
+11. Now, use the menu to build and bundle both the robot and simulation application. Click *Run->Build->HelloWorld Robot* to start the compile for the robot application. This will take approximately 1-2 minutes as it needs to download and compile the code. When you see the successful process complete message `Process exited with code: 0`, use the same command to build the *HelloWorld Simulation*.
+
+12. At this point both applications have been compiled locally. To run as a AWS RoboMaker simulation job, you also need to bundle them. In this step, the application along with all operating system dependencies are packaged in a bundle which is sort of like a container. After the process completes, a compressed output file will be generated locally. Similar to the build steps above, you need to bundle both the robot and simulation application. To do this, select *Run->Bundle->HelloWorld Robot*. **This will take 10-15 minutes or so to complete for both, and you may see Cloud9 warnings about low memory, which you can disregard.**
+
+    While these are building, take a moment to review the JSON file for the simulation area. Here, you can see how the launch configs reference the package name (hello_world_robot or hello_world_simulation) and the specifc launch file to use (rotate.launch and empty_world.launch respectively). 
+
+13. When both bundle operations are completed, launch a simulation job (*Run->Launch Simulation->HelloWorld*). This will do the following:
 
     * Upload the robot and simulation application bundles (approximately 1.2GiB) to the S3 bucket
     * Create a robot application and simulation application which reference the uploaded bundles
     * Start the simulation job in your defined VPC
 
-13. Open the AWS RoboMaker console and click on simulation jobs. You should see your job in a *Running* status. Click on the job id to see the values that were passed as part of the job. This view provides all the details of the job and access to tools which you will use in a moment.
+    *Note: If you run into an error at this step, double check your `roboMakerSettings.json` file and ensure that all S3 references and the IAM role has been changed to the values from your CloudFormation outputs.
+
+14. Open the AWS RoboMaker console and click on simulation jobs. You should see your job in a *Running* status. Click on the job id to see the values that were passed as part of the job. This view provides all the details of the job and access to tools which you will use in a moment.
 
      If the status shows Failed, it is most likely a typo or configuration issue to resolve. In the *Details* section, look for the *Failure reason* to determine what took place so you can correct.
 
-14. From the simulation job details, we will launch a couple tools to interact with the robot. First, click on Gazebo, which will launch a pop-up window for the application. This is a client that provides a view into the virtual world.
+15. From the simulation job details, we will launch a couple tools to interact with the robot. First, click on Gazebo, which will launch a pop-up window for the application. This is a client that provides a view into the virtual world.
 
      ![1_gazebo](../../images/1_gazebo.png)
 
@@ -160,7 +190,7 @@ This activity covers setting up the AWS RoboMaker development environment and qu
 
      ![1_gazebo_objects](../../images/1_gazebo_objects.png) 
 
-     And now go back to Rviz and look at the camera window. You will see the objects pass in front as the robot turns! :bulb: If you can, position both windows so you can see the robot in Gazebo and the camera view from Rviz:
+     And now go back to Rviz and look at the camera window. You will see the objects pass in front as the robot turns! If you can, position both windows so you can see the robot in Gazebo and the camera view from Rviz:
 
      ![1_both_apps](../../images/1_both_apps.png)
 
