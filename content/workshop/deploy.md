@@ -81,14 +81,14 @@ This activity covers the steps required to prepare a physical robot to receive a
     $ scp FILE_NAME.zip pi@<ROBOT_IP_ADDRESS>:/home/pi 
     ```
 
-21. Connect to the robot, flash the OpenCR board, configure the certificates and start the Greengrass service.  In this step, you use ssh to connect to the robot, and then you unzip the certificates file to the location used by Greengrass.  Finally, you start the Greengrass service.  This enalbes the device to retrieve your robot bundle and deploy it to the robot. As a reminder, the user is **pi** and the password is **robomaker2019**.
+21. Connect to the robot, flash the OpenCR board, configure the certificates and start the Greengrass service.  In this step, you use ssh to connect to the robot, and then you unzip the certificates file to the location used by Greengrass.  Finally, you start the Greengrass service.  This enalbes the device to retrieve your robot bundle and deploy it to the robot. As a reminder, the user is **pi** and the password is **robomaker**.
    
     ```bash
     # use SSH and connect to the robot.  Replace ROBOT_IP_ADDRESS with the IP address for your device.
     $ ssh pi@<ROBOT_IP_ADDRESS>
-    # enter password: robomaker2019.
+    # enter password: robomaker.
     $ sudo su
-    # enter password: robomaker2019.
+    # enter password: robomaker.
 
     # unzip the certificates into the /greengrass directory.  Replace FILE_NAME with file you copied earlier.
     $ unzip FILE_NAME.zip -d /greengrass
