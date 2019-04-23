@@ -101,7 +101,7 @@ This activity covers the steps required to prepare a physical robot to receive a
    
     # update the CA certificate used by RoboMaker
     $ cd /greengrass/certs/
-    $ wget -O root.ca.pem http://www.symantec.com/content/en/us/enterprise/verisign/roots/VeriSign-Class%203-Public-Primary-Certification-Authority-G5.pem
+    $ wget -O root.ca.pem https://www.amazontrust.com/repository/AmazonRootCA1.pem
 
     #start the Greengrass service
     $ /greengrass/ggc/core/greengrassd start
