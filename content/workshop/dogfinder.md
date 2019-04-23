@@ -37,7 +37,7 @@ When complete, you will have learned:
     cd ~/environment
       
     # clone the DogFinder repository
-    git clone https://github.com/jerwallace/ aws-robomaker-sample-application-dogfinder.git
+    git clone https://github.com/jerwallace/aws-robomaker-sample-application-dogfinder.git
     ```
 
 3. To build the robot application, issue the following commands from the **ROBOT TAB**:
@@ -103,14 +103,14 @@ When complete, you will have learned:
 
     ```bash
     # Replace <YOUR_BUCKET_NAME> with your bucket
-    aws s3 cp bundle/output.tar s3://<YOUR_BUCKET_NAME>/output-robot.tar
+    aws s3 cp bundle/output.tar s3://<YOUR_BUCKET_NAME>/dogfinder/output-robot.tar
     ```
 
     and from the **SIM TAB**:
 
     ```bash
     # Replace <YOUR_BUCKET_NAME> with
-    aws s3 cp bundle/output.tar s3://<YOUR_BUCKET_NAME>/output-sim.tar
+    aws s3 cp bundle/output.tar s3://<YOUR_BUCKET_NAME>/dogfinder/output-sim.tar
     ```
 
 7. With the bundle files ready, create a simulation job from the OS TAB. In the root of the DogFinder directory is a file named `submit_job.sh`. Double-click it and replace the entries at the top of the file with your specific ones (S3 bucket, VPC details, etc.), **and then save**. There is a complete one in your **CloudFormation > Outputs**. It should look similar to this:
