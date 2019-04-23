@@ -42,10 +42,16 @@ This activity covers the steps required to prepare a physical robot to receive a
 
 6. You will now see the details for the RoboMakerHelloWorldRobot application, including the Sources.  Notice that it currently has only one source:  the X86_64 version (this is the version you just used for simulation).  To tell RoboMaker about the ARMHF version, click the **Update** button.
 
-8. In the ARMHF souce file text box, paste the S3 location for the ARMHF bundle:
+7. Copy the following robot tar file into your S3 bucket.
 
     ```text
-    s3://robomakerbundles/turtlebot3-burger/hello-world/robot-armhf.tar
+    aws s3 cp s3://robomakerbundles/turtlebot3-burger/hello-world/robot-armhf.tar s3://<YOUR_BUCKET_NAME>/robot-armhf.tar 
+    ```
+
+8. In the ARMHF souce file text box, paste the new S3 location for the ARMHF bundle:
+
+    ```text
+    s3://<YOUR_BUCKET_NAME>/robot-armhf.tar 
     ```
 
     Click **Create**.
@@ -84,7 +90,7 @@ This activity covers the steps required to prepare a physical robot to receive a
 21. Connect to the robot, flash the OpenCR board, configure the certificates and start the Greengrass service.  In this step, you use ssh to connect to the robot, and then you unzip the certificates file to the location used by Greengrass.  Finally, you start the Greengrass service.  This enalbes the device to retrieve your robot bundle and deploy it to the robot. As a reminder, the user is **pi** and the password is **robomaker**.
    
     ```bash
-    # use SSH and connect to the robot.  Replace ROBOT_IP_ADDRESS with the IP address for your device.
+    # use SSH and connect to the robot.  Replace ROBOT_IP_ADDRESS with the IP address for your device
     $ ssh pi@<ROBOT_IP_ADDRESS>
     # enter password: robomaker.
     $ sudo su
