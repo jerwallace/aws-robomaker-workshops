@@ -8,7 +8,7 @@ weight: 8
 
 ![2_dog](../../images/2_dog.jpg)
 
-Our objective: Fido.
+Our objective: Find Fido!
 
 This activity covers working with a robot application that integrates with other AWS services. The robot will work in virtual world and turn and detect images, looking for one includes a dog.
 
@@ -43,7 +43,7 @@ When complete, you will have learned:
 3. To build the robot application, issue the following commands from the **ROBOT TAB**:
 
     ```bash
-    cd aws-robomaker-sample-application-dogfinder/DogFinder/robot_ws/
+    cd aws-robomaker-sample-application-dogfinder/robot_ws/
    
     # Ensure latest packages
     sudo apt-get update
@@ -59,7 +59,7 @@ When complete, you will have learned:
 4. Once that is complete, build the simulation application from the **SIM TAB**:
 
     ```bash
-    cd aws-robomaker-sample-application-dogfinder/DogFinder/simulation_ws/
+    cd aws-robomaker-sample-application-dogfinder/simulation_ws/
  
     # rosdep again - will complete quickly
     rosdep install --from-paths src --ignore-src -r -y
@@ -103,17 +103,17 @@ When complete, you will have learned:
 
     ```bash
     # Replace <YOUR_BUCKET_NAME> with your bucket
-    aws s3 cp bundle/output.tar s3://<YOUR_BUCKET_NAME>/dogfinder/output-robot.tar
+    aws s3 cp bundle/output.tar s3://<YOUR_BUCKET_NAME>/output-robot.tar
     ```
 
     and from the **SIM TAB**:
 
     ```bash
     # Replace <YOUR_BUCKET_NAME> with
-    aws s3 cp bundle/output.tar s3://<YOUR_BUCKET_NAME>/dogfinder/output-sim.tar
+    aws s3 cp bundle/output.tar s3://<YOUR_BUCKET_NAME>/output-sim.tar
     ```
 
-7. With the bundle files ready, create a simulation job from the OS TAB. In the root of the DogFinder directory is a file named `submit_job.sh`. Double-click it and replace the entries at the top of the file with your specific ones (S3 bucket, VPC details, etc.), **and then save**. It should look similar to this:
+7. With the bundle files ready, create a simulation job from the OS TAB. In the root of the DogFinder directory is a file named `submit_job.sh`. Double-click it and replace the entries at the top of the file with your specific ones (S3 bucket, VPC details, etc.), **and then save**. There is a complete one in your **CloudFormation > Outputs**. It should look similar to this:
 
     ```bash
      #!/bin/bash
@@ -128,7 +128,7 @@ When complete, you will have learned:
 
     ```bash
     # script in top-level of DogFinder/ directory, adjust as needed
-    aws-robomaker-sample-application-dogfinder/DogFinder/submit_job.sh
+    aws-robomaker-sample-application-dogfinder/submit_job.sh
     ```
 
     A successful launch will return a JSON document with all the details including an *arn* with the simulation job value:
