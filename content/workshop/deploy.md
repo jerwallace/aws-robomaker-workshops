@@ -45,13 +45,13 @@ This activity covers the steps required to prepare a physical robot to receive a
 7. Copy the following robot tar file into your S3 bucket.
 
     ```text
-    aws s3 cp s3://robomakerbundles/turtlebot3-burger/hello-world/robot-armhf.tar s3://<YOUR_BUCKET_NAME>/robot-armhf.tar 
+    aws s3 cp s3://robomakerbundles/turtlebot3-burger/hello-world/robot-armhf.tar s3://<YOUR_BUCKET_NAME>/hello-world/robot-armhf.tar 
     ```
 
 8. In the ARMHF souce file text box, paste the new S3 location for the ARMHF bundle:
 
     ```text
-    s3://<YOUR_BUCKET_NAME>/robot-armhf.tar 
+    s3://<YOUR_BUCKET_NAME>/hello-world/robot-armhf.tar 
     ```
 
     Click **Create**.
