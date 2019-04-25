@@ -182,6 +182,7 @@ Outputs:
         Value: !Sub |
              #!/bin/bash
              export BUCKET_NAME="${S3Bucket}"
-             export SUBNETS="${PublicSubnet1},${PublicSubnet2}"
+             export SUBNET1="${PublicSubnet1}"
+             export SUBNET2="${PublicSubnet2}"
              export SECURITY_GROUP="${VPC.DefaultSecurityGroup}"
              export ROLE_ARN="${RoboMakerDeploymentRole.Arn}"
