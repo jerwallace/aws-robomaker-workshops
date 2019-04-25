@@ -107,7 +107,7 @@ This activity covers the steps required to prepare a physical robot to receive a
     $ /greengrass/ggc/core/greengrassd start
     ```
 
-22. Create a Fleet and add your robot to the Fleet.  Fleets enable you to manage a group of robots.  For example, you can deploy the same robot application to all robots in a fleet.  Then ensures that all your robots are running the same software.  If you need different robots to run differnt software, you can create multiple fleets.  In this workshop, you'll create a single fleet, that contains a single robot.  In the AWS RoboMaker console, choose *Fleets* under *Fleet managment*.  Click the **Create fleet** button.
+22. Create a Fleet and add your robot to the Fleet.  Fleets enable you to manage a group of robots.  For example, you can deploy the same robot application to all robots in a fleet.  Then ensures that all your robots are running the same software.  If you need different robots to run different software, you can create multiple fleets.  In this workshop, you'll create a single fleet that contains a single robot.  In the AWS RoboMaker console, choose *Fleets* under *Fleet managment*.  Click the **Create fleet** button.
 
 23. Give your fleet an appropriate name and click **Create**.
 

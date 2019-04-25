@@ -35,7 +35,7 @@ When complete, you will have learned:
 
     ```bash
     cd ~/environment
-      
+
     # clone the DogFinder repository
     git clone https://github.com/jerwallace/aws-robomaker-sample-application-dogfinder.git
     ```
@@ -44,10 +44,10 @@ When complete, you will have learned:
 
     ```bash
     cd aws-robomaker-sample-application-dogfinder/robot_ws/
-   
+
     # Ensure latest packages
     sudo apt-get update
-   
+
     # Pull in ROS packages (errors seen early on can be ignored)
     # This 5-10 minutes to complete
     rosdep install --from-paths src --ignore-src -r -y
@@ -60,10 +60,10 @@ When complete, you will have learned:
 
     ```bash
     cd aws-robomaker-sample-application-dogfinder/simulation_ws/
- 
+
     # rosdep again - will complete quickly
     rosdep install --from-paths src --ignore-src -r -y
-   
+
     # Build the simulation application - will complete quickly
     colcon build
     ```
@@ -85,7 +85,7 @@ When complete, you will have learned:
     ```
 
     Once successfully completed, do the same on the **SIM TAB**:
- 
+
     ```bash
     #create the bundle for the simulation application
     colcon bundle
@@ -149,10 +149,10 @@ When complete, you will have learned:
 
      You don't need to see too much of the video stream window in the background, just enough to see it steaming video.
 
-10. At this point, in Gazebo the robot should facing upwards (due North); the video stream should show the  bridge photo; and CloudWatch logs should show a message "Waiting to start finding Fido". Now from the terminal, you will send a message to a topic the robot is listening on to start the goal seeking action:
+10. At this point, in Gazebo the robot should be facing upwards (due North); the video stream should show the bridge photo; and CloudWatch logs should show a message "Waiting to start finding Fido". Now from the terminal, you will send a message to a topic the robot is listening on to start the goal seeking action:
 
      ```bash
-     rostopic pub --once /df_action std_msgs/String 'start' 
+     rostopic pub --once /df_action std_msgs/String 'start'
      ```
 
      What this will do is publish (`pub`) a single message (`--once`) to the topic your robot is listening on (`/df_action`), and will send a string type  (`std_msgs/String`) with the command to process (`start`). The robot will receive this command and start the task (turn and process images), looking for our target, a picture of a dog.
