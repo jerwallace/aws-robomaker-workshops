@@ -6,7 +6,7 @@ weight: 10
 
 # Deploy a ROS application to your robot
 
-In the previous exercises, you used RoboMaker with Cloud9 to build, bundle and simulate two different robot applications. In the final activity of this workshop, we will deploy the simple Hello World application we built in the first activity. 
+In the previous exercises, you used RoboMaker with Cloud9 to build, bundle and simulate two different robot applications. In the final activity of this workshop, we will deploy the simple Hello World application we built in the first activity.
 
 In RoboMaker, simulations use Gazebo, which runs in AWS on a fleet of servers with x86 CPU architecture.  However, many physical robots use different CPU architectures, such as ARM.  Before a robot application can be deployed and invoked on a physical robot, it may need to be rebuilt and rebundled for the target CPU architecture of the robot.
 
@@ -28,9 +28,9 @@ This activity covers the steps required to prepare a physical robot to receive a
     ```text
     arn:aws:iam::123456789012:role/robomaker-deployment-role
     ```
-   
+
 3. Using the ARN you found in the previous step, run the command below to allow Greengrass to use it for deployment:
-   
+
     ```bash
     # replace DEPLOYMENT_ROLE_ARN with your ARN
     aws greengrass associate-service-role-to-account --role-arn $DEPLOYMENT_ROLE_ARN
@@ -45,24 +45,24 @@ This activity covers the steps required to prepare a physical robot to receive a
 7. Copy the following robot tar file into your S3 bucket.
 
     ```text
-    aws s3 cp s3://robomakerbundles/turtlebot3-burger/hello-world/robot-armhf.tar s3://<YOUR_BUCKET_NAME>/hello-world/robot-armhf.tar 
+    aws s3 cp s3://robomakerbundles/turtlebot3-burger/hello-world/robot-armhf.tar s3://<YOUR_BUCKET_NAME>/hello-world/robot-armhf.tar
     ```
 
 8. In the ARMHF souce file text box, paste the new S3 location for the ARMHF bundle:
 
     ```text
-    s3://<YOUR_BUCKET_NAME>/hello-world/robot-armhf.tar 
+    s3://<YOUR_BUCKET_NAME>/hello-world/robot-armhf.tar
     ```
 
     Click **Create**.
-   
+
 9. Before RoboMaker can deploy to a physical robot, you need to configure your robot.  You need to create authentication certificates that will enable the device to securely communicate with AWS.  You also need to register your robot in RoboMaker.  To get started with this task, click on the Robots link under Fleet Management.
 
 10. Click on the **Create robot** button.
 
 11. Give your robot a friendly name (i.e. HelloRobot), and set the Architecture to ARMHF.  By setting this value, you're telling RoboMaker to use the ARMHF bundle when deploying to this robot.
 
-12. RoboMaker uses AWS GreenGrass to deploy your robot bundles to your device.  You must now configure RoboMaker's GreenGrass settings.  You can leave the *AWS Grengrass group* and *AWS Greengrass prefix* settings as their default values.  
+12. RoboMaker uses AWS GreenGrass to deploy your robot bundles to your device.  You must now configure RoboMaker's GreenGrass settings.  You can leave the *AWS Grengrass group* and *AWS Greengrass prefix* settings as their default values.
 
 13.  For *IAM role*, choose "robomaker-deployment-role".  This role was created in exercise 1 of this worksop.  This role is assumed by your robot application when it runs on your device and gives your device permission to access AWS services on your behalf.
 
@@ -81,14 +81,14 @@ This activity covers the steps required to prepare a physical robot to receive a
 19. On your laptop, navigate to the directory where you downloaded the certificates in Step 13 above. ($ cd Downloads)
 
 20. Copy the zip file to your robot.  Replace the file name with the file name of the file you downloaded.  The IP address for your robot was provided with the robot.  You will be prompted for a password.  The password for the pi user is: roboMaker2019
-   
+
     ```bash
     # replace FILE_NAME with the value for your zip file
-    $ scp FILE_NAME.zip pi@<ROBOT_IP_ADDRESS>:/home/pi 
+    $ scp FILE_NAME.zip pi@<ROBOT_IP_ADDRESS>:/home/pi
     ```
 
 21. Connect to the robot, flash the OpenCR board, configure the certificates and start the Greengrass service.  In this step, you use ssh to connect to the robot, and then you unzip the certificates file to the location used by Greengrass.  Finally, you start the Greengrass service.  This enalbes the device to retrieve your robot bundle and deploy it to the robot. As a reminder, the user is **pi** and the password is **robomaker**.
-   
+
     ```bash
     # use SSH and connect to the robot.  Replace ROBOT_IP_ADDRESS with the IP address for your device
     $ ssh pi@<ROBOT_IP_ADDRESS>
@@ -98,7 +98,7 @@ This activity covers the steps required to prepare a physical robot to receive a
 
     # unzip the certificates into the /greengrass directory.  Replace FILE_NAME with file you copied earlier.
     $ unzip FILE_NAME.zip -d /greengrass
-   
+
     # update the CA certificate used by RoboMaker
     $ cd /greengrass/certs/
     $ wget -O root.ca.pem https://www.amazontrust.com/repository/AmazonRootCA1.pem
@@ -107,7 +107,7 @@ This activity covers the steps required to prepare a physical robot to receive a
     $ /greengrass/ggc/core/greengrassd start
     ```
 
-22. Create a Fleet and add your robot to the Fleet.  Fleets enable you to manage a group of robots.  For example, you can deploy the same robot application to all robots in a fleet.  Then ensures that all your robots are running the same software.  If you need different robots to run differnt software, you can create multiple fleets.  In this workshop, you'll create a single fleet, that contains a single robot.  In the AWS RoboMaker console, choose *Fleets* under *Fleet managment*.  Click the **Create fleet** button. 
+22. Create a Fleet and add your robot to the Fleet.  Fleets enable you to manage a group of robots.  For example, you can deploy the same robot application to all robots in a fleet.  Then ensures that all your robots are running the same software.  If you need different robots to run differnt software, you can create multiple fleets.  In this workshop, you'll create a single fleet, that contains a single robot.  In the AWS RoboMaker console, choose *Fleets* under *Fleet managment*.  Click the **Create fleet** button.
 
 23. Give your fleet an appropriate name and click **Create**.
 
@@ -117,9 +117,9 @@ This activity covers the steps required to prepare a physical robot to receive a
 
 25. Select your robot, and choose **Register robot**.  Congratulations, your robot is now a member of your fleet!
 
-26. The final step is to deploy our application to our fleet.  To get started, click *Deployments* under *Fleet management*, and choose **Create deployment**.  
+26. The final step is to deploy our application to our fleet.  To get started, click *Deployments* under *Fleet management*, and choose **Create deployment**.
 
-27. Choose the Fleet and Robot application (RoboMakerHelloWorldRobot) you created earlier.  
+27. Choose the Fleet and Robot application (RoboMakerHelloWorldRobot) you created earlier.
 
 28. For *Robot application version*, choose *Create new*, and click **Create** on the confirmation.  This will create a new version for the HelloRobot_application robot application.
 
@@ -128,7 +128,7 @@ This activity covers the steps required to prepare a physical robot to receive a
 30. For *Launch file*, enter `deploy_rotate.launch`.  This is the launch file within the above package.  It contains information about the ROS nodes that will be started on the device.
 
 31. All other fields can use their default values.  Scroll to the bottom and choose **Create**.
-   
+
 Within a few seconds, your robot will begin to download the robot bundle.  Because this is the first time this application is being deployed to your robot, the bundle size is large (~600MB).  It will take about 15 minutes for the robot to download and extract the contents on the robot.  You can follow the deployment progress in the *Robots status* section:
 
 ![3_robots_status](../../images/robots-status.png)
