@@ -214,6 +214,6 @@ Some of the key benefits of using AWS RoboMaker include:
 * Develop anywhere on any web-based device - By streaming the output of graphically intensive applications such as Gazebo instead of processing it locally, you can use a desktop, laptop, or even tablet to develop and interact with simulations.
 * Scale - This activity showed a single simulation of an application. If the need to test a robot against different environments (simulations) is needed, or testing different iterations of robot applications against a single simulated environment, both of these can be done by scaling to multiple simulation jobs.
 
-### Clean-up
+### Clean-up Reminder
 
-In this activity, you created a Development environment, CloudWatch logs, and S3 objects that incure cost. Please follow the clean-up steps in the main. README document on how to remove these and stop any potential costs for occurring.
+In this activity, you created a Development environment, CloudWatch logs, and S3 objects that incure cost. If you **are not continuing** on with the next sections of the workshop, remember to go to the [clean-up steps](https://www.robomakerworkshops.com/workshop/cleanup/) and remove these resources to stop any potential costs for occurring.

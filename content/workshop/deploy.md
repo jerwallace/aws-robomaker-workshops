@@ -80,7 +80,7 @@ This activity covers the steps required to prepare a physical robot to receive a
 
 19. On your laptop, navigate to the directory where you downloaded the certificates in Step 13 above. ($ cd Downloads)
 
-20. Copy the zip file to your robot.  Replace the file name with the file name of the file you downloaded.  The IP address for your robot was provided with the robot.  You will be prompted for a password.  The password for the pi user is: roboMaker2019
+20. Copy the zip file to your robot.  Replace the file name with the file name of the file you downloaded.  The IP address for your robot was provided with the robot.  You will be prompted for a password.  The password for the pi user is: **robomaker**.
 
     ```bash
     # replace FILE_NAME with the value for your zip file

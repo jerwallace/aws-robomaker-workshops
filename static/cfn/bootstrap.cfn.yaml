@@ -8,6 +8,11 @@ Description:
 
 Parameters:
 
+    s3BucketName:
+        Description: Please enter the bucket name for your RoboMaker assets. This must be unique and use only lowercase characters, '.' or '-'.
+        Type: String
+        AllowedPattern: '[a-z0-9+-.]*'
+
     VpcCIDR: 
         Description: Please enter the IP range (CIDR notation) for this VPC
         Type: String
@@ -50,7 +55,7 @@ Resources:
     S3Bucket:
         Type: AWS::S3::Bucket
         Properties:
-          BucketName: !Sub ${AWS::StackName}-assets
+          BucketName: !Sub ${s3BucketName}-${AWS::Region}-rmw-assets
 
     PublicSubnet1: 
         Type: AWS::EC2::Subnet
@@ -61,7 +66,7 @@ Resources:
             MapPublicIpOnLaunch: true
             Tags: 
                 - Key: Name 
-                  Value: !Sub ${AWS::StackName} Public Subnet (AZ1)
+                  Value: !Sub ${AWS::StackName} ${AWS::Region} Public Subnet (AZ1)
 
     PublicSubnet2: 
         Type: AWS::EC2::Subnet
@@ -72,7 +77,7 @@ Resources:
             MapPublicIpOnLaunch: true
             Tags: 
                 - Key: Name 
-                  Value: !Sub ${AWS::StackName} Public Subnet (AZ2)
+                  Value: !Sub ${AWS::StackName} ${AWS::Region} Public Subnet (AZ2)
 
     PublicRouteTable:
         Type: AWS::EC2::RouteTable
@@ -80,7 +85,7 @@ Resources:
             VpcId: !Ref VPC
             Tags: 
                 - Key: Name 
-                  Value: !Sub ${AWS::StackName} Public Routes
+                  Value: !Sub ${AWS::StackName} ${AWS::Region} Public Routes
 
     DefaultPublicRoute: 
         Type: AWS::EC2::Route
@@ -105,7 +110,7 @@ Resources:
     RoboMakerSimulationRole:
         Type: 'AWS::IAM::Role'
         Properties:
-          RoleName: robomaker-simulation-role
+          RoleName: !Sub robomaker-simulation-role-${AWS::Region}
           AssumeRolePolicyDocument:
             Version: 2012-10-17
             Statement:
@@ -126,7 +131,7 @@ Resources:
     RoboMakerDeploymentRole:
         Type: 'AWS::IAM::Role'
         Properties:
-          RoleName: robomaker-deployment-role
+          RoleName: robomaker-deployment-role-${AWS::Region}
           AssumeRolePolicyDocument:
             Version: 2012-10-17
             Statement:
@@ -185,4 +190,4 @@ Outputs:
              export SUBNET1="${PublicSubnet1}"
              export SUBNET2="${PublicSubnet2}"
              export SECURITY_GROUP="${VPC.DefaultSecurityGroup}"
-             export ROLE_ARN="${RoboMakerDeploymentRole.Arn}"
+             export ROLE_ARN="${RoboMakerSimulationRole.Arn}"
