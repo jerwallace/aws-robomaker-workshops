@@ -131,7 +131,7 @@ Resources:
     RoboMakerDeploymentRole:
         Type: 'AWS::IAM::Role'
         Properties:
-          RoleName: robomaker-deployment-role-${AWS::Region}
+          RoleName: !Sub robomaker-deployment-role-${AWS::Region}
           AssumeRolePolicyDocument:
             Version: 2012-10-17
             Statement:
