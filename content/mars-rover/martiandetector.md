@@ -1,7 +1,7 @@
 ---
 title: "Activity #2: Martian Detector"
 chapter: true
-weight: 8
+weight: 10
 ---
 
 # Find Martians with AWS Robomaker and Amazon Rekognition
@@ -14,8 +14,8 @@ In this exercise, we'll use our rover robot to hunt for Martians (and other obje
 
 When complete, you will have learned:
 
-* How to use AWS AI services like Amazon Rekognition from your ROS application.
-* How to collect data and write it to additional services, like Amazon S3.
+* How to use AWS AI services like [Amazon Rekognition](https://aws.amazon.com/rekognition) from your ROS application.
+* How to collect data and write it to additional services, like [Amazon S3](https://aws.amazon.com/s3).
 * How to invoke ROS service commands on a robot.
 
 ## ROS Application Architecture
@@ -33,17 +33,28 @@ Review the system architecture.  This is what we'll be building in this activity
  
    ![app-architecture](../../images/mars-rover/app-architecture.jpg) 
 
+When complete, you'll navigate your rover in the simulated world, similar to the previous exercise.  The data generated from the rover will populate a dashboard similar to this:
+
+   ![dashboard](../../images/mars-rover/dashboard.jpg) 
+
 
    
 ## Activity tasks
 
-1. Let's review the code in the *object_detector* node.  Recall that this node is responsible for the following:
+1. Before we start reviewing the ROS application and simulation, there is one housekeeping task that needs to be completed.  As mentioned above, we'll be reviewing some of the data captured by the rover in a dashboard.  The dashboard is comprised of some static HTML and JavaScript.  This code was downloaded to the Cloud9 IDE environment when you cloned the project from GitHub in the previous activity.  Before you can view your dashboard, you need to copy the HTML and JavaScript to your S3 bucket.  Find the S3 bucket name for the bucket you created as part of the CloudFormation stack created in the workshop setup.  If you didn't take note of the bucket name, you can find it in the **Outputs** section of your CloudFormation stack.  Once you have the bucket name, replace <s3_bucket_name> in the command below with your bucket name (be sure to replace the < and > characters as well), and run the command in the Bash shell of your IDE:
+
+    ```text
+    aws s3 cp ~/environment/mars-rover/content/web/ s3://<s3_bucket_name>/web/ --recursive --acl public-read
+    ```
+ 
+
+2. Now let's look at the robot code.  Review the code in the *object_detector* node.  Recall that this node is responsible for the following:
 
  * retrieving images from the camera.
  * sending them to Amazon Rekognition to get a list of labels that represent the objects found in the image.
  * publish the list of labels to the *detected_objects* topic.
     
-    ROS nodes are commonly written in Python or C++.  While there is support for other programming languages, these two languages are the most common.  The nodes in our application are written in Python.  Open the *object-detector* node.  It will be located in your IDE at *project_root->mars-rover->robot_ws->src->martian_detector->nodes->object_detector*.
+    ROS nodes are commonly written in Python or C++.  While there is support for other programming languages, these two languages are the most common.  The nodes in our application are written in Python.  Open the *object-detector* node.  It will be located in your IDE at *project_root->mars-rover->mars-rover->robot_ws->src->martian_detector->nodes->object_detector*.
 
     ![object-detector-ide](../../images/mars-rover/object-detector-ide.jpg) 
 
@@ -91,7 +102,7 @@ Review the system architecture.  This is what we'll be building in this activity
         try:
             response = self.rekog.detect_labels(
                 Image={'Bytes': img},
-                MinConfidence=80,
+                MinConfidence=50,
                 MaxLabels=10
             )
             labels = self.sort_labels(response)
@@ -108,10 +119,10 @@ Review the system architecture.  This is what we'll be building in this activity
     This function does three main tasks:
     
     * It uses the `get_image` function to get an image.  
-    * It passes that image to Amazon Rekognition using the `detect_lables` method of the Rekognition client.  Notice that this method also takes a `MinConfidence` parameter.  The value provided here ensures that Rekognition does return any labels for objects where it was not "80%" confident that it was accurate in identifying the object.
+    * It passes that image to Amazon Rekognition using the `detect_lables` method of the Rekognition client.  Notice that this method also takes a `MinConfidence` parameter.  The value provided here ensures that Rekognition does return any labels for objects where it was not "50%" confident that it was accurate in identifying the object.
     * After sorting the labels, it publishes them as a comma-delimted list on the *detected_objects* topic.
 
-2.  Now let's take a look at the *notifier* node. Recall that this node has the following responsibilities:
+3.  Now let's take a look at the *notifier* node. Recall that this node has the following responsibilities:
 
     * Subscribe to the *detected_objects* topic to get a continuous stream of objects that have been detected by the rover.
     * Persist the list of detected ojects to Amazon S3.
@@ -167,129 +178,107 @@ Review the system architecture.  This is what we'll be building in this activity
 
     This function takes the data received in the message as input and attempts to write it to a file in S3.  It then iterates the list of objects and looks for a specific label.  When that label is found, it publishes a SMS message to a phone number using Amazon SNS.  The name of the S3 bucket, the label to search for, and the phone number to message, are all input parameters to our node.  We'll review how to set those parameters in the next step.    
          
-3. Ok, let's prepare to create a new simulation where we can search for aliens with the Mars rover.  Before you launch the simulation, you'll need to configure the nodes for your environment.  In ROS, a launch file is an XML document that contains information about the nodes that will be run on your robot.  Open the launch file that we'll use in our simulation.  Open the file called `martian_detector.launch`, which can be found in your project at *project-root->mars-rover->robot_ws->src->martian_detector->launch*:
+4. Ok, let's prepare to create a new simulation where we can search for aliens with the Mars rover.  Before you launch the simulation, you'll need to configure the nodes for your environment.  In ROS, a launch file is an XML document that contains information about the nodes that will run on your robot.  Let's open the launch file that we'll use in our simulation.  Open the file called `martian_detector.launch`, which can be found in your project at *project-root->mars-rover->mars-rover->robot_ws->src->martian_detector->launch->martian_detector.launch*:
   
     ![launch-ide](../../images/mars-rover/launch-ide.jpg)
 
+    We need to update the parameters for the *notifier* node.  In the XML, look for the following section and update the parameters as directed below:
+    
+    ```xml
+    	<node name="notifier" pkg="martian_detector" type="notifier" >
+    	    <param name="aws_region" value="$(arg aws_region)" />
+    	    <param name="s3_bucket_name" value="<your-bucket-name>" />
+    	    <param name="phone_number" value="<your-phone-number>" type="str" />
+    	    <param name="search_object" value="Alien" />
+       	</node>
+     ```
+    
+    - **s3_bucket_name**: Set the value to the S3 bucket name created during the workshop setup.  If you didn't note the bucket name earlier, you can find it in the **Outputs** section of the CloudFormation stack you created.
+    - **phone_number**:  Set this to  your mobile phone number.  You will receive SMS messages at this number.  Be sure to format it with the + sign, country code, and number.  For example:  +12065551212.
 
+    Be sure to save (Ctrl-s) the file after you change it.
 
-2. Create a development environment where we can develop our ROS application.  Click the hamburger menu on the upper-left of the page to expand the RoboMaker menu.  Then create a new development environment by navigating to *Development->Development environments* and choose **Create environment**.
- 
-    ![create-env](../../images/mars-rover/create-environment.jpg)
- 
+5. We also need to update the confiuration to tell the simulation to use a different launch file for the simulation world.  This new world will have objects and aliens scattered throughout the landscape.  To update the launch file for the simulation world, use the IDE menu to configure it.  In the menu, choose *Run->Add or Edit Configurations...* and expand the SIMULATION item on the left menu.  Click on the *Mars Rover Simulation* to view its details.  Find the *Simulation application* section, and change the value for **Launch file** to `main_with_objects.launch`.  Click **Save**.
+
+5. Before we can run the simulation again, we need to build and bundle the robot application.  This will ensure our changes to the launch file get packaged in our robot application for the simulation.  To build and bundle the robot application, use the menu in the IDE and choose:  *Run->Workflow->Mars Rover - Build and Bundle Robot*.  This will create a new bundle containing the changes we made to the launch file.  It will take only a few seconds to complete.
+
+6. Now we need to run the simulation with our changes.  To run the simulation, use the menu in the IDE and choose: *Run->Launch Simulation->Mars Rover Simulation*.  Wait for the menu to change to *Simulation (Running)*.
+
+7. Similar to the previous activity, connect to your simulation using Gazebo and Terminal (*Simulation (Running)->Applications->Gazebo* and *Simulation (Running)->Applications->Terminal*) respectively.
+
+8.  We're going to use an additional tool for this exercise.  We'll use *rqt*, a tool that enables us to inspect the data on the topics in our robot application while it's running.  We'll use *rqt* to get a near real-time view from the camera on our rover.  To open rqt, use the IDE and choose *Simulation (Running)->Applications->rqt*.
+
+9.  To see the view from the rover's camera, we need to use the Visualization feature of *rqt* and choose the topic on which images are being published on our robot.  In rqt, enable the visualization plugin by choose from the menu:  *Plugins->Visualization->Image View*. 
   
-3. On the *Create AWS RoboMaker development environment* page, enter the following:
+    ![rqt-image-view](../../images/mars-rover/rqt-image-view.jpg)  
+  
+10.  To view the images, we need to choose the topic name where the images are published.  In the Image View window, choose the topic from drop-down list:  */raspicam_node/image/compressed*.  You'll see a gray square, and not the Martian landscape.  Why is this?  It's because the default position of our camera is pointing directly up, into the sky.  We'll fix that shortly.  
+  
+      ![rqt-gray](../../images/mars-rover/rqt-gray.jpg)
+      
+11. Before we adjust the camera angle, it's best if you arrange your application windows so you can see all three applications concurrently.  Also adjust the view in Gazebo so you have a relatively close-up view of the rover.  Arrange them similar to this:
 
-    * Name: `rover-workshop` or something descriptive
-    * Instance type: `m4.large`
-    * Choose the VPC (default), and a subnet for your development environment 
-    * Click **Create**
+      ![rover-3-window-view](../../images/mars-rover/rover-3-window-view.jpg)
+      
+12. We need to use two Terminal connections to our robot, so let's open a new tab on the terminal window.  This will open a second connection to the robot.  Our first terminal window will be used to move the rover, similar to the earlier exercise.  The second terminal will be used to send commands to the rover to take a picture for analysis.  To open the second terminal, use the terminal's File menu:  *File->Open Tab*.
 
-4. This opens a new tab in your browser with the Cloud9 IDE.
+      ![terminal-new-tab](../../images/mars-rover/terminal-new-tab.jpg)
 
-    *This may take a few minutes to complete, but when the creation process has completed, you will see something similar to this:*
+12. On the rover, the camera sits atop a mast.  In its default position, the mast is folded down and the camera points into the sky.  Let's raise the mast so the camera will point forward.  In simulation, the rover ROS application exposes a ROS service that can be called to activate the mast.  To call this service, invoke the following command in the Terminal window.  After the command is invoked, notice the mast raising on the rover in Gazebo, and notice the view changing in rqt.
 
-    ![1_cloud9](../../images/1_cloud9.png)
-
-    The *Welcome page* provides helpful information to get started, but for now we are not going to use it, so click the *X* on the tab to close.  The IDE is broken down into four sections:
-
-    ![1_c9_layout](../../images/1_c9_layout.png)
-
-    - (1) The AWS RoboMaker menu provide quick access to common actions. It is updated dynamically when a file in your project is modified.  The `roboMakerSettings.json` file is used to configure your RoboMaker project, and drives the content of this menu.
-    - (2) Any files and folders will reside here, and can be selected and double-clicked to open in the editor pane (#4).
-    - (3) The lower section is an adjustable pane for creating or monitoring command line operations. ROS developers work in this area to build, test, and interact with local code.
-    - (4) This is the main editor pane.
-
-5. Delete the `roboMakerSettings.json` file by right-clicking on it and selecting *Delete*->Yes. We are going to clone a new project from GitHub, and it will contain this file.  So we can safely delete the default file.
-
-
-6. For this activity, you will be using a command line terminal to perform several tasks associated with the development of our robot.  Throughout this guide, we'll reference *the terminal*.  When you see that, we want you to run commands in the bash shell in your Cloud9 environment (Section 3 of the IDE, as defined in the previous step).
-
-7. The project we'll be working with is located in GitHub.  You need to clone it into the Cloud9 environment so you can work with it.  Copy and paste the following commands into the  terminal.  This will clone the repository:
-
-    ```bash
-    cd ~/environment
-
-    # clone the DogFinder repository
-    git clone https://github.com/MacInnis/mars-rover.git
-    ```
-
-8.  You will now have a new directory in your project called *mars-rover*.  Let's take a look at the contents of that folder.  There are two folders of interest in our project.  The first folder, *content* is not related to our robot code.  This contains some HTML and JavaScript files that will be used later to build a dashboard to view our robot metrics.  We'll come back to that later.  Expand the mars-rover folder (you should now be looking at *mars-rover->mars-rover*).  In this folder, we see two new folders called *robot_ws* and *simulation_ws*.  These are the workspaces for our robot application.  In ROS development, a workspace is a folder where you modify, build, and install packages.  It is common practice for robotics developers to create multiple workspaces for their system to better encapsulate the components.  In our workshop, we have a workspace for our robot code (robot_ws).  This contains all the ROS nodes, services, and any dependencies needed by the robot application.  We also have a second workspace for our simulation material (simulation_ws).  A simulation workspace typically contains the artifacts needed to run our robot in simulation.  This contains items such as the 3D model for the robot and the 3D objects and textures needed to create the world in which the robot will be simulated.  In this workshop, we're going to be working in these folders to view and modify our robot code.  
-
-    ![roboMakerSettings](../../images/mars-rover/nav-tree.jpg)
-
-
-9.  Before we can run any simulations, we need to configure the environment to use the networking and roles we created in the earlier setup activity.  To do this, edit the project settings by using the menu at the top of the IDE and navigating to *Run->Add or Edit Configurations...*.  This will open the configuration window.
-
-    ![config](../../images/mars-rover/configuration.jpg)
-     
-10.  We need to tell RoboMaker what file to use to save our project configuration.  Click the **Switch config** button on the lower-left side of the window and navigate to the file *mars-rover/mars-rover/roboMakerSettings.json*.  Click **Ok**.
-
-    ![select-config](../../images/mars-rover/select-config.jpg)
-
-11. Expand the *Simulation* item in the left-navigation area and click on *Mars Rover Simulation*.
-
-12. Let's configure the simulation job to use IAM role you created earlier.  When the simulation runs, it will assume this role.  This gives the robot application the permissions it needs to access other AWS resources during simulation.  To set it, scroll until you find the property **Simulation job->IAM role**.  In the drop-down, choose the role named *robomaker-simulation-role-us-west-2*.
-
-13.  Now configure the networking configuration for the simulation.  This will provide the RoboMaker simulation environment with the information it needs to access the network.  This is required so that the robot application can gain network access to other AWS services during simulation.  Scroll until you find the property for **Simulation job->Security Groups**.  In this field, paste the value for the name/value pair for the *DefaultSecurityGroupID* property that was created in the workshop setup step earlier.  Similarly, update the value for **Simulation job->Subnets** by pasting the comma-separated values for the *PublicSubnet1* and *PublicSubnet2* values.  The networking configuration will look similar to this when complete:
-
-    ![select-config](../../images/mars-rover/network-config.jpg)    
-
-14.  Finally, let's configure the project to use the S3 bucket we created earlier during setup.  Note that there are **two** locations in the configuration where we need to set the S3 bucket.  The first location is located at **Robot application->S3 bucket**.  In this field, click the drop-down and select the bucket you created earlier.  The second location is located a bit further down under **Simulation application->S3 bucket**.  Choose the same bucket from the drop-down list.
-
-15.  Before we exit the configuration, let's take a look at some of the other properties you can set.  We're not going to change these today, but let's review for future use.  In the menu on the left, notice the menu items for COLCON BUILD and COLCON BUNDLE.  Colcon is a tool that is used to compile (build) and package (bundle) ROS workspaces.  Our configuration has been pre-configured to build and bundle the workspaces used in the workshop.  Also notice the WORKFLOW menu item.  This enables you to customize any build and bundle operations you may need in your project.  For today's workshop, we have created a single workflow that will build and bundle all the workspaces.  
-
-16.  Those are all the changes we need for now.  Click **Save** to exit the configuration window.  
-
-17.  Ok, enough configuring already.  Let's build and bundle our robot application and see it running in simulation!  To build and bundle our robot application and simulation material, use the IDE menu and choose *Run->Workflow->Mars Rover - Build and Bundle All*.  This will kick-off the compilation and packaging of our robot and simulation workspaces.  This will take about one or two minutes to complete.  You'll see two new tabs open in the terminal area of the IDE.  You can look at these tabs to see the log outputs of the build and bundle operations.  When both tabs have logged an entry for `Process exited with code: 0`, then the build and bundle operations are complete.  The reslting output of these operations is two .tar files containing our robot application, and our simulation artifacts.  For reference, the files for the robot workspace and the simulation workspace are saved to `mars-rover/robot_ws/bundle/output.tar` and `mars-rover/simulation_ws/bundle/output.tar` respectively.   
-
-18.  Kick off the simulation job by using the IDE menu and choosing *Run->Launch Simulation->Mars Rover Simulation*.  You'll notice another tab open in the terminal section of the IDE.  You can witness the IDE copying the .tar files mentioned above to S3, and then the simulation job will be created.  In the IDE menu, you'll see the menu indicate that the simulation is being prepared.
-
-    ![sim-preparing](../../images/mars-rover/sim-preparing.jpg)
- 
-    When the simulation is ready and running, the menu will change to *Running*. 
-
-19. Once it is running, we can now interact with the simulation.  AWS RoboMaker includes several common robot simulation tools to interact with your robot.  In this step, we'll use the open source tool [Gazebo](http://gazebosim.org/) to interact with the robot.  In the IDE menu, choose *Simulation (Running)->Applications->Gazebo*.  This will open a new window where you will see the Mars rover in a Martian environment.
- 
-    ![rover-world](../../images/mars-rover/rover-world.jpg)
-
-    You can change the zoom level and view angle to obtain a better view of the rover and the environment.  Note, that this is *much* easier to do with a mouse rather than a laptop touchpad.  You can zoom with a mouse wheel (our touchpad equivalent).  To adjust the positioning of the view, click and drag in the world.  To adjust the angle of view, shift-click and drag.  If you have issues and you lose sight of the rover, you can reset the view using the Gazebo menu.  To reset, click *Edit->Reset World*, and then *Camera->Reset View Angle*.
-
-20.  When a robot is running in the simulation environment, we can connect to it to inspect it, control it, and debug it.  To do this, we're going to use a terminal that will be connected to the robot application in the simulation.  From this terminal, we'll be able to view the ROS topics and messages, as well as send specific commands to the robot.  To open the terminal, go back to the Cloud9 IDE menu, and choose *Simulation (Running)->Applications->Terminal*.  This will open a new window containing a terminal connected to the robot.  Adjust your Gazebo window and your Terminal window so you can see each comfortably.  Also adjust the view in Gazebo so you can see the rover in a wider landscape.  This will make it easier to see the robot while it moves.
-
-    ![gazebo-with-terminal](../../images/mars-rover/gazebo-with-terminal.jpg)
-
-    Let's take a look at some of the ROS information for our robot.  To see all the ROS topics that are being published, issue the following command in the terminal:
-    
     ```text
-    rostopic list
-    ```
-
-    *Note*: To paste commands in the Terminal window, use `Shift+Ctrl+V`, or use the *Edit->Paste* menu item.
-
-    You will see a long list of topics.  One of the topics, `/rosout`, contains logging information from other nodes in the system.  To see the log data currently being generated by the robot, issue the following command in the Terminal:
+    rosservice call /curiosity_mars_rover/mast_service "model_name: 'open'"
+    ```       
     
+    To close the mast, you can use the same command, but issue a 'close' command:  
+      
     ```text
-    rostopic echo /rosout
-    ```
+    rosservice call /curiosity_mars_rover/mast_service "model_name: 'close'"
+    ```       
+      
+    Ensure the mast is in an open state before moving to the next step.
 
-    You'll see lots of data quickly scrolling through the terminal.  When you've had enough, stop echoing the topic by pressing `Ctrl-C` in the terminal.
-
-21.  Let's make this thing move!  We're going to use our keyboard to control the robot in the simulation environment.  To do so, we'll run a script that has been deployed with our robot that takes keyboard input and converts it to motion-control messages that are sent to the robot.  To run this script, use the same terminal window from the previous step and issue the following command:
-
+    ```text
+    rosservice call /curiosity_mars_rover/mast_service "model_name: 'open'"
+    ```       
+      
+13. To move the rover in the simulation, use the teleop_twist_keyboard control, similar to the previous exercise.  To start the keyboard control, run the following command in one of the Terminal tabs:
+    
     ```text
     rosrun teleop_twist_keyboard teleop_twist_keyboard.py
     ```
-    
-    Use the keys displayed in the terminal to move the robot. For example to move forward, press `i`, to move clockwise, press `o`.  You don't need to press and hold - you only need to press the key once to send that instruction to the robot.  By default, the rover will move rather slowly.  Pres the `q` key on your keyboard several times to increase the speed.  Increase the speed to approximately 6, and then issue another forward (`i`) command to see it move faster.  Continue experimenting with the controls to move the rover.  
-    
-    Did you know that the gravity on mars is only about 1/3 of that on earth?  In the Gazebo simulation, the gravity has been reduced to simulate Mars.  If you try to corner your rover too quickly, you can see the results of low gravity and angular momentum.  Try increasing the speed to about 18 to 20, and then attempt to turn (`o`) your rover.  What happens?
 
+    **Note:** The Terminal window and the tab where you ran the above command must be the active window to use the keyboard controller to move the rover.  Also recall that you should increase the speed of the rover to about 6 (press the `q` key on your keyboard several times).
+
+14.  Now have some fun!  Move the robot around the world and look for objects in the environment.  When you have moved the robot to a location where you have a good view of an object, take a picture of it and send it for analysis.  To do this, use the second tab in your terminal window and copy/paste the following command:  
+
+    ```text
+    rostopic pub -1 /joy sensor_msgs/Joy '{header: auto, buttons: [1]}'
+    ```
+
+    This command is simulating a button-press on a remote controller.  More specifically, it's publishing a single messages of type `sensor_msgs/Joy` to the `/joy` topic.  The contents of the message contain a header, and an array representing the button that was pressed.
+
+    To detect a Martian, you will likely have to pretty close to the object.  Move the rover so that the alien takes up a significant portion of the frame, similar to:
+    
+    ![alien-rqt](../../images/mars-rover/alien-rqt.jpg)
+
+    Did you discover a Martian?  If so, you will receive a text message for each time you discover an alien (note, if you discover the same alien multiple times, you will receive multiple text messages).
+    
+    To continue exploring the world, change to the keyboard controller tab in the terminal window, and move around as you did previously.  When you're ready to analyze another object, switch tabs again and issue the message to take a photo and analyze it (*Tip:* Press the Up-Arrow on your keyboard to use the last command from your history.  Hit enter.)
+
+15.  While you find objects, the rover is writing to a file in S3 with the results of what it discovered.  You can view this data on a dashboard.  To view the dashboard, replace `<s3_bucket_name>` with the name of your bucket (same bucket name as step 1 in this activity), and open the URL in a browser:     
+
+    ```text
+    https://s3-us-west-2.amazonaws.com/<s3_bucket_name>/web/index.html
+    ```
+16.  You should now be able to move the rover around the Martian world, searching for objects.  As you find them, your dashboard will be updated in real-time.  
+
+      ![sim-with-dash](../../images/mars-rover/sim-with-dash.jpg)
 
 ## Activity wrap-up
 
-In this activity, you used AWS RoboMaker to build and simulate a robot that you can control with a keyboard controller.  You viewed some of the ROS information for your robot, and you learned how to interact with the robot in the simulation environment.  
+In this activity, you used AWS RoboMaker to build and simulate a robot that sends images from its camera to the cloud for analysis.  You learned how ROS nodes can use AWS services for data storage and ML.  
 
-In the next activity, you'll extend the robot application to use AWS AI services to detect Martians in a new world! 
+If you're running this workshop in your account, and you want to ensure there are no continuing charges in your account, you should clean up the resources we created.
 
-[Proceed to the next activity](../martiandetector)
+**[Proceed to account clean up](../cleanup)**
