@@ -34,6 +34,6 @@ Please read through and complete each activity before starting the next. If some
 
 Excited to build a Martian-finding Mars rover robot using AWS? Let's get started!
 
-**[Proceed to the setup activity](setup)**
+**[Proceed to the setup activity](setup/)**
 
 
