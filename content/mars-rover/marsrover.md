@@ -161,4 +161,4 @@ In this activity, you used AWS RoboMaker to build and simulate a robot that you 
 
 In the next activity, you'll extend the robot application to use AWS AI services to detect Martians in a new world! 
 
-**[Proceed to the next activity](../martiandetector)**
+**[Proceed to the next activity](../martiandetector/)**
