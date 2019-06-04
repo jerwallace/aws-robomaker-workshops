@@ -281,4 +281,4 @@ In this activity, you used AWS RoboMaker to build and simulate a robot that send
 
 If you're running this workshop in your account, and you want to ensure there are no continuing charges in your account, you should clean up the resources we created.
 
-**[Proceed to account clean up](../cleanup)**
+**[Proceed to account clean up](../cleanup/)**
