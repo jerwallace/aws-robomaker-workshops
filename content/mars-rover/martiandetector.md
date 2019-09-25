@@ -44,7 +44,7 @@ When complete, you'll navigate your rover in the simulated world, similar to the
 1. Before we start reviewing the ROS application and simulation, there is one housekeeping task that needs to be completed.  As mentioned above, we'll be reviewing some of the data captured by the rover in a dashboard.  The dashboard is comprised of some static HTML and JavaScript.  This code was downloaded to the Cloud9 IDE environment when you cloned the project from GitHub in the previous activity.  Before you can view your dashboard, you need to copy the HTML and JavaScript to your S3 bucket.  Find the S3 bucket name for the bucket you created as part of the CloudFormation stack created in the workshop setup.  If you didn't take note of the bucket name, you can find it in the **Outputs** section of your CloudFormation stack.  Once you have the bucket name, replace <s3_bucket_name> in the command below with your bucket name (be sure to replace the < and > characters as well), and run the command in the Bash shell of your IDE:
 
     ```text
-    aws s3 cp ~/environment/mars-rover/content/web/ s3://<s3_bucket_name>/web/ --recursive --acl public-read
+    aws s3 cp ~/environment/aws-robomaker-sample-application-open-source-rover/web/ s3://<s3_bucket_name>/web/ --recursive --acl public-read
     ```
  
 
@@ -54,7 +54,7 @@ When complete, you'll navigate your rover in the simulated world, similar to the
  * sending them to Amazon Rekognition to get a list of labels that represent the objects found in the image.
  * publish the list of labels to the *detected_objects* topic.
     
-    ROS nodes are commonly written in Python or C++.  While there is support for other programming languages, these two languages are the most common.  The nodes in our application are written in Python.  Open the *object-detector* node.  It will be located in your IDE at *project_root->mars-rover->mars-rover->robot_ws->src->martian_detector->nodes->object_detector*.
+    ROS nodes are commonly written in Python or C++.  While there is support for other programming languages, these two languages are the most common.  The nodes in our application are written in Python.  Open the *object-detector* node.  It will be located in your IDE at *project_root->aws-robomaker-sample-application-open-source-rover->robot_ws->src->martian_detector->nodes->object_detector*.
 
     ![object-detector-ide](../../images/mars-rover/object-detector-ide.jpg) 
 
@@ -178,7 +178,7 @@ When complete, you'll navigate your rover in the simulated world, similar to the
 
     This function takes the data received in the message as input and attempts to write it to a file in S3.  It then iterates the list of objects and looks for a specific label.  When that label is found, it publishes a SMS message to a phone number using Amazon SNS.  The name of the S3 bucket, the label to search for, and the phone number to message, are all input parameters to our node.  We'll review how to set those parameters in the next step.    
          
-4. Ok, let's prepare to create a new simulation where we can search for aliens with the Mars rover.  Before you launch the simulation, you'll need to configure the nodes for your environment.  In ROS, a launch file is an XML document that contains information about the nodes that will run on your robot.  Let's open the launch file that we'll use in our simulation.  Open the file called `martian_detector.launch`, which can be found in your project at *project-root->mars-rover->mars-rover->robot_ws->src->martian_detector->launch->martian_detector.launch*:
+4. Ok, let's prepare to create a new simulation where we can search for aliens with the Mars rover.  Before you launch the simulation, you'll need to configure the nodes for your environment.  In ROS, a launch file is an XML document that contains information about the nodes that will run on your robot.  Let's open the launch file that we'll use in our simulation.  Open the file called `martian_detector.launch`, which can be found in your project at *project-root->aws-robomaker-sample-application-open-source-rover->robot_ws->src->martian_detector->launch->martian_detector.launch*:
   
     ![launch-ide](../../images/mars-rover/launch-ide.jpg)
 
@@ -218,28 +218,11 @@ When complete, you'll navigate your rover in the simulated world, similar to the
       
 11. Before we adjust the camera angle, it's best if you arrange your application windows so you can see all three applications concurrently.  Also adjust the view in Gazebo so you have a relatively close-up view of the rover.  Arrange them similar to this:
 
-      ![rover-3-window-view](../../images/mars-rover/rover-3-window-view.jpg)
+      ![rover-3-window-view](../../images/mars-rover/rover-3-window.png)
       
 12. We need to use two Terminal connections to our robot, so let's open a new tab on the terminal window.  This will open a second connection to the robot.  Our first terminal window will be used to move the rover, similar to the earlier exercise.  The second terminal will be used to send commands to the rover to take a picture for analysis.  To open the second terminal, use the terminal's File menu:  *File->Open Tab*.
 
       ![terminal-new-tab](../../images/mars-rover/terminal-new-tab.jpg)
-
-12. On the rover, the camera sits atop a mast.  In its default position, the mast is folded down and the camera points into the sky.  Let's raise the mast so the camera will point forward.  In simulation, the rover ROS application exposes a ROS service that can be called to activate the mast.  To call this service, invoke the following command in the Terminal window.  After the command is invoked, notice the mast raising on the rover in Gazebo, and notice the view changing in rqt.
-
-    ```text
-    rosservice call /curiosity_mars_rover/mast_service "model_name: 'open'"
-    ```       
-    
-    To close the mast, you can use the same command, but issue a 'close' command:  
-      
-    ```text
-    rosservice call /curiosity_mars_rover/mast_service "model_name: 'close'"
-    ```       
-      
-    Ensure the mast is in an open state before moving to the next step.
-
-    ```text
-    rosservice call /curiosity_mars_rover/mast_service "model_name: 'open'"
     ```       
       
 13. To move the rover in the simulation, use the teleop_twist_keyboard control, similar to the previous exercise.  To start the keyboard control, run the following command in one of the Terminal tabs:
@@ -251,12 +234,6 @@ When complete, you'll navigate your rover in the simulated world, similar to the
     **Note:** The Terminal window and the tab where you ran the above command must be the active window to use the keyboard controller to move the rover.  Also recall that you should increase the speed of the rover to about 6 (press the `q` key on your keyboard several times).
 
 14.  Now have some fun!  Move the robot around the world and look for objects in the environment.  When you have moved the robot to a location where you have a good view of an object, take a picture of it and send it for analysis.  To do this, use the second tab in your terminal window and copy/paste the following command:  
-
-    ```text
-    rostopic pub -1 /joy sensor_msgs/Joy '{header: auto, buttons: [1]}'
-    ```
-
-    This command is simulating a button-press on a remote controller.  More specifically, it's publishing a single messages of type `sensor_msgs/Joy` to the `/joy` topic.  The contents of the message contain a header, and an array representing the button that was pressed.
 
     To detect a Martian, you will likely have to pretty close to the object.  Move the rover so that the alien takes up a significant portion of the frame, similar to:
     
@@ -273,7 +250,7 @@ When complete, you'll navigate your rover in the simulated world, similar to the
     ```
 16.  You should now be able to move the rover around the Martian world, searching for objects.  As you find them, your dashboard will be updated in real-time.  
 
-      ![sim-with-dash](../../images/mars-rover/sim-with-dash.jpg)
+      ![sim-with-dash](../../images/mars-rover/sim-w-dash.jpg)
 
 ## Activity wrap-up
 

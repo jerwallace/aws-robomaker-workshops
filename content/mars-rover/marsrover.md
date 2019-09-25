@@ -60,12 +60,12 @@ When complete, you will have learned:
     cd ~/environment
 
     # clone the Mars rover repository
-    git clone https://github.com/MacInnis/mars-rover.git
+    git clone https://github.com/aws-robotics/aws-robomaker-sample-application-open-source-rover.git
     ```
 
-8.  You will now have a new directory in your project called *mars-rover*.  Let's take a look at the contents of that folder.  There are two folders of interest in our project.  The first folder, *content* is not related to our robot code.  This contains some HTML and JavaScript files that will be used later to build a dashboard to view our robot metrics.  We'll come back to that later.  Expand the mars-rover folder (you should now be looking at *your-top-directory->mars-rover->mars-rover*).  In this folder, we see two new folders called *robot_ws* and *simulation_ws*.  These are the workspaces for our robot application.  In ROS development, a workspace is a folder where you modify, build, and install packages.  It is common practice for robotics developers to create multiple workspaces for their system to better encapsulate the components.  In our workshop, we have a workspace for our robot code (robot_ws).  This contains all the ROS nodes, services, and any dependencies needed by the robot application.  We also have a second workspace for our simulation material (simulation_ws).  A simulation workspace typically contains the artifacts needed to run our robot in simulation.  This contains items such as the 3D model for the robot and the 3D objects and textures needed to create the world in which the robot will be simulated.  In this workshop, we're going to be working in these folders to view and modify our robot code.  
+8.  You will now have a new directory in your project called *mars-rover*.  Let's take a look at the contents of that folder.  There are two folders of interest in our project.  The first folder, *content* is not related to our robot code.  This contains some HTML and JavaScript files that will be used later to build a dashboard to view our robot metrics.  We'll come back to that later.  Expand the aws-robomaker-sample-application-open-source-rover folder (you should now be looking at *your-top-directory->aws-robomaker-sample-application-open-source-rover*).  In this folder, we see two new folders called *robot_ws* and *simulation_ws*.  These are the workspaces for our robot application.  In ROS development, a workspace is a folder where you modify, build, and install packages.  It is common practice for robotics developers to create multiple workspaces for their system to better encapsulate the components.  In our workshop, we have a workspace for our robot code (robot_ws).  This contains all the ROS nodes, services, and any dependencies needed by the robot application.  We also have a second workspace for our simulation material (simulation_ws).  A simulation workspace typically contains the artifacts needed to run our robot in simulation.  This contains items such as the 3D model for the robot and the 3D objects and textures needed to create the world in which the robot will be simulated.  In this workshop, we're going to be working in these folders to view and modify our robot code.  
 
-    ![roboMakerSettings](../../images/mars-rover/nav-tree.jpg)
+    ![roboMakerSettings](../../images/mars-rover/nav-tree.png)
 
     We'll review much of the code in more detail in the next activity.  Before we do that, let's configure and run a simulation.
 
@@ -73,9 +73,9 @@ When complete, you will have learned:
 
     ![config](../../images/mars-rover/configuration.jpg)
      
-10.  We need to tell RoboMaker what file to use to save our project configuration.  Click the **Switch config** button on the lower-left side of the window and navigate to the file *mars-rover/mars-rover/roboMakerSettings.json*.  Click **Ok**.
+10.  We need to tell RoboMaker what file to use to save our project configuration.  Click the **Switch config** button on the lower-left side of the window and navigate to the file *aws-robomaker-sample-application-open-source-rover/roboMakerSettings.json*.  Click **Ok**.
 
-    ![select-config](../../images/mars-rover/select-config.jpg)
+    ![select-config](../../images/mars-rover/select.png)
 
     Click **Save** to close the window.  We need to save this change before we make any more edits to the configuration.
 
@@ -105,7 +105,7 @@ When complete, you will have learned:
     Process exited with code: 0
     ```
 
-    The final bundling step for the simulation workspace may take upwards of 5 minutes.  Please be patient.  If you see it stuck an output like, `Creating bundle archive V2...` then it's in the final step of creating the output bundle.  The resulting output of these operations is two .tar files containing our robot application, and our simulation artifacts.  For reference, the files for the robot workspace and the simulation workspace are saved to `mars-rover/mars-rover/robot_ws/bundle/output.tar` and `mars-rover/mars-rover/simulation_ws/bundle/output.tar` respectively.  If you do not see both of these files, then your workspaces haven't yet finished building and bundling.  Please wait until both files exist before moving to the next step.   
+    The final bundling step for the simulation workspace may take upwards of 5 minutes.  Please be patient.  If you see it stuck an output like, `Creating bundle archive V2...` then it's in the final step of creating the output bundle.  The resulting output of these operations is two .tar files containing our robot application, and our simulation artifacts.  For reference, the files for the robot workspace and the simulation workspace are saved to `aws-robomaker-sample-application-open-source-rover/robot_ws/bundle/output.tar` and `aws-robomaker-sample-application-open-source-rover/simulation_ws/bundle/output.tar` respectively.  If you do not see both of these files, then your workspaces haven't yet finished building and bundling.  Please wait until both files exist before moving to the next step.   
 
 18.  Kick off the simulation job by using the IDE menu and choosing *Run->Launch Simulation->Mars Rover Simulation*.  You'll notice another tab open in the Bash shell section of the IDE.  You can witness the IDE copying the .tar files mentioned above to S3, and then the simulation job will be created.  In the IDE menu, you'll see the menu indicate that the simulation is being prepared.
 
@@ -115,7 +115,7 @@ When complete, you will have learned:
 
 19. Once it is running, we can now interact with the simulation.  AWS RoboMaker includes several common robot simulation tools to interact with your robot.  In this step, we'll use the open source tool [Gazebo](http://gazebosim.org/) to interact with the robot.  In the IDE menu, choose *Simulation (Running)->Applications->Gazebo*.  This will open a new window where you will see the Mars rover in a Martian environment.
  
-    ![rover-world](../../images/mars-rover/rover-world.jpg)
+    ![rover-world](../../images/mars-rover/gazebo.png)
 
     If your browser asks you to allow or block access to the clipboard, click **Allow**.  This will allow you copy and paste commands.
     
@@ -125,7 +125,7 @@ When complete, you will have learned:
 
 20.  When a robot is running in the simulation environment, we can connect to it to inspect it, control it, and debug it.  To do this, we're going to use a terminal that will be connected to the robot application in the simulation.  From this terminal, we'll be able to view the ROS topics and messages, as well as send specific commands to the robot.  To open the terminal, go back to the Cloud9 IDE menu, and choose *Simulation (Running)->Applications->Terminal*.  This will open a new window containing a terminal connected to the robot.  Adjust your Gazebo window and your Terminal window so you can see each comfortably.  Also adjust the view in Gazebo so you can see the rover in a wider landscape.  This will make it easier to see the robot while it moves.
 
-    ![gazebo-with-terminal](../../images/mars-rover/gazebo-with-terminal.jpg)
+    ![gazebo-with-terminal](../../images/mars-rover/gazebo-with-terminal.png)
 
     Let's take a look at some of the ROS information for our robot.  To see all the ROS topics that are being published, issue the following command in the terminal:
     
