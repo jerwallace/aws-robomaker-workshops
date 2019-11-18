@@ -30,6 +30,7 @@ When complete, you will have learned:
 3. On the *Create AWS RoboMaker development environment* page, enter the following:
 
     * Name: `rover-workshop` or something descriptive
+    * Pre-Installed ROS Distribution: `ROS Kinetic`
     * Instance type: `m4.large`
     * Choose the VPC that was just created by the CloudFormation stack.  You will see two VPCs.  Choose the one with the name of your CloudFormation stack.  This will NOT be the *Default* VPC - choose the other VPC. 
     * Subnets: Choose either of the two subnets.
@@ -87,7 +88,10 @@ When complete, you will have learned:
 
     ![select-config](../../images/mars-rover/network-config.jpg)    
 
-14.  Finally, let's configure the simulation project to use the S3 bucket we created earlier during setup.  Note that there are **two** locations in the configuration where we need to set the S3 bucket.  The first location is located at **Robot application->S3 bucket**.  In this field, click the drop-down and select the bucket created earlier.  The bucket was created by the CloudFormation stack you created.  The bucket name will be similar to:  `<CloudFormationStackName>-us-west-2-rmw-assets`.  If you didn't note the bucket name, you can find it as the RoboMakerS3Bucket key in the **Outputs** section of the CloudFormation stack.  The second location is located a bit further down under **Simulation application->S3 bucket**.  Choose the same bucket from the drop-down list.
+14.  Finally, let's configure the simulation project to use the S3 bucket we created earlier during setup.  Note that there are **three** locations in the configuration where we need to set the S3 bucket. The bucket was already created by the CloudFormation stack you launched. The bucket name we will use is similar to: `<CloudFormationStackName>-us-west-2-rmw-assets`.  If you didn't note the bucket name, you can find it as the RoboMakerS3Bucket key in the **Outputs** section of the CloudFormation stack.
+  - The first location is located at **Robot application->S3 bucket**.  In this field, click the drop-down and select the bucket created earlier.
+  - The second location is located a bit further down under **Simulation application->S3 bucket**. Choose the same bucket from the drop-down list. 
+  - The final location is near the bottom of the file in **Simulation Job->output location**. Choose the same bucket from the drop-down list.
 
 15.  Before we exit the configuration, let's take a look at some of the other properties you can set.  We're not going to change these today, but let's review for future use.  In the menu on the left, notice the menu items for COLCON BUILD and COLCON BUNDLE.  Colcon is a tool that is used to compile (build) and package (bundle) ROS workspaces.  Our configuration has been pre-configured to build and bundle the workspaces used in the workshop.  Also notice the WORKFLOW menu item.  This enables you to customize any build and bundle operations you may need in your project.  For today's workshop, we have created three workflows: one that will build and bundle all the workspaces, another that builds and bundles only the robot application, and a third workflow that builds and bundles only the simulation workspace.
 
