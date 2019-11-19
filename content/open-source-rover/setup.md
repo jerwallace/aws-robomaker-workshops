@@ -43,7 +43,7 @@ Once you have successfully signed into the AWS console, click the button below t
 1. On the *Create stack* page, accept the defaults and click **Next**.
 2. On the *Specify stack details* page, set *Stack name* to a value that will help you identify this stack, such as "reMARS-workshop".
 3. In the *Parameters* section, the networking configuration has been pre-populated.  Leave the default values.
-4. For the *s3BucketName* field, the value must be globally-unique, and it must be lower case.  This is because it will be used in the domain name for the S3 bucket that gets created.  For today's workshop, namespace your bucket with your initials or a user name to improve its uniqueness.  For example, if your name is Jane Penelope Smith, you might name the bucket, "jps-remars-workshop".  Click **Next**.
+4. For the *s3BucketName* field, the value must be globally-unique, and it must be lower case and not include any special characters (only '.' or '-').  This is because it will be used in the domain name for the S3 bucket that gets created.  For today's workshop, namespace your bucket with your initials or a user name to improve its uniqueness.  For example, if your name is Jane Penelope Smith, you might name the bucket, "jps-remars-workshop".  Click **Next**.
 5. On the *Configure stack options* page, use the default values and click **Next**.
 6. On the *Review* page, review the choices, and click **Create stack**.
 

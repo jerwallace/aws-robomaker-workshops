@@ -232,11 +232,7 @@ When complete, you'll navigate your rover in the simulated world, similar to the
 
     **Note:** The Terminal window and the tab where you ran the above command must be the active window to use the keyboard controller to move the rover.  Also recall that you should increase the speed of the rover to about 6 (press the `q` key on your keyboard several times).
 
-14.  Now have some fun!  Move the robot around the world and look for objects in the environment.  When you have moved the robot to a location where you have a good view of an object, take a picture of it and send it for analysis.  To do this, use the second tab in your terminal window and copy/paste the following command:  
-
-    rosrun teleop_twist_keyboard teleop_twist_keyboard.py
-
-    To detect a Martian, you will likely have to pretty close to the object.  Move the rover so that the alien takes up a significant portion of the frame, similar to:
+14.  Now have some fun!  Move the robot around the world and look for objects in the environment. To detect a Martian, you will likely have to pretty close to the object.  Move the rover so that the alien takes up a significant portion of the frame, similar to:
     
     ![alien-rqt](../../images/mars-rover/closeup.png)
 
