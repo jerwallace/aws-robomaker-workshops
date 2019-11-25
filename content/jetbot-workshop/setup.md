@@ -1,8 +1,8 @@
 ---
 title: "Prep: Workshop Setup"
 chapter: true
-weight: 3
-description: We will start by setting up your AWS account to develop robot applications with AWS RoboMaker. 
+weight: 1
+description: "We will start by setting up your AWS account to develop robot applications with AWS RoboMaker."
 ---
 
 # Workshop Setup 
@@ -31,14 +31,12 @@ This will create:
 
 Once the stack has launched, take note of the **outputs**. We will use these values throughout the workshop. 
 
-### Create Kinesis Video
+### Create Teleop User Using Cloudformation
 
-Finally, open the console for [Kinesis Video Streams](https://console.aws.amazon.com/kinesisvideo/home) and create a new stream with the following configuration. When creating the stream, **uncheck "Use default settings"**:
+[![Launch Stack](../../images/launch-stack.svg)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?templateURL=https://s3.amazonaws.com/assets.robomakerworkshops.com/cfn/teleop_creds_creation.cfn.yaml&region=us-west-2)
 
-   - **Stream Name**: *roboMaker_TurtleBot3*
-   - **Data Retention Period**: *1 hour*
+This will create:
 
-![kinesis-streams](../../images/kinesis-streams.png)    
-*Note the Stream name (`roboMaker_TurtleBot3`) for later use.*
+   - **One IAM role** that will allow you to teleop your robot.  Make sure to save the credentials created (Access Key & Secret) at this part of the workshop!
 
 **Congratulations!** You have completed the setup process of the workshop. 

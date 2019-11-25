@@ -2,6 +2,7 @@
 title: "Prep: Workshop Setup"
 chapter: true
 weight: 1
+description: "We will start by setting up your AWS account to develop robot applications with AWS RoboMaker."
 ---
 
 # Workshop Setup
@@ -14,6 +15,7 @@ Are you completing this workshop at a public event or training session, **and** 
    <button class="ui-button" onclick="document.getElementById('with_code').style.display = 'block';document.getElementById('no_code').style.display = 'none';">**Yes, I have a code**</button>&nbsp;&nbsp;<button class="ui-button" onclick="document.getElementById('with_code').style.display = 'none';document.getElementById('no_code').style.display = 'block';">**No.  I will use my own AWS account.**</button>
 
 <div id="with_code" style="display:none">
+
 {{% md %}}
 ### Log  in to the AWS Console and set the AWS Region
 
@@ -106,4 +108,5 @@ The stack creation should only take a minute or two.  Once the status has change
 
 **[Continue to the next module.](../marsrover/)**
 {{% /md %}}
+
 </div>

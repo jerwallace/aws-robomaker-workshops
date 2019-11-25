@@ -2,6 +2,7 @@
 title: "Activity #3: Deploy Hello World Robot"
 chapter: true
 weight: 10
+description: In this activity you will explore how to configure a robot and a fleet, and deploy a software bundle to your physical robot.
 ---
 
 # Deploy a ROS application to your robot

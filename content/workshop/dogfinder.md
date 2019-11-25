@@ -2,6 +2,7 @@
 title: "Activity #2: Find Fido, Dog Finder Robot"
 chapter: true
 weight: 8
+description: In this activity you will explore other methods for building and deploying applications in the development environment, and see how an application can directly interact with AWS services in a ROS native manner (nodes and topics), and how any AWS service can be used through normal SDK calls (python boto3 in this instance).
 ---
 
 # Cloud service integration to do object detection

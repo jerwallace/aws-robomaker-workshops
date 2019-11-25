@@ -2,6 +2,7 @@
 title: "Activity #1: Open Source Rover"
 chapter: true
 weight: 5
+description: "In this activity you will setup a development environment and build, bundle, and simulate a Mars rover in an open world."
 ---
 
 # Simulate a Open Source Rover
