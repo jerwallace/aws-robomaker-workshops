@@ -1,5 +1,5 @@
 ---
-title: "Cloud Robotics: Build and Operate a Smart Robot with AWS"
+title: "Cloud Robotics: Build and Operate a Smart Robot with AWS RoboMaker"
 chapter: true
 weight: 2
 description: "In this workshop you become familiar with AWS RoboMaker, a service that enables you to easily develop, simulate and deploy intelligent robot applications that integrate with AWS services. This includes AWS machine learning services, monitoring services, and analytics services that enable a robot to stream data, navigate, communicate, comprehend, and learn. Today, you will also get hands on with a physical robot (WaveShare Nvidia Jetbot Kit) to learn how to manage and deploy robot applications to production robots using AWS RoboMaker.
