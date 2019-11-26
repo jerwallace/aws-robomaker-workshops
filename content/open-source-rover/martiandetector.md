@@ -2,6 +2,7 @@
 title: "Activity #2: Martian Detector"
 chapter: true
 weight: 10
+description: "In this activity you will learn how to integrate a robot application with AWS services.  You'll use a simulation environment to test your robot application and view the results on a dasboard."
 ---
 
 # Find Martians with AWS Robomaker and Amazon Rekognition

@@ -1,6 +1,21 @@
 {{ partial "header.html" . }}
 
-{{ .Content }}
+<h1>{{ .Title }}</h1>
+
+<p>
+{{ .Description | safeHTML }}
+</p>
+
+<p><strong>Here is our agenda for the day:</strong></p>
+
+{{ range .Pages }}
+	<p><strong><a href="{{.Permalink}}">{{.Title}}</a></strong></p>
+	<p>
+	{{.Description}}
+	</p>
+{{ end }}
+
+<p>{{ .Params.addendum | safeHTML }}</p>
 
 <footer class=" footline" >
 	{{with .Params.LastModifierDisplayName}}
