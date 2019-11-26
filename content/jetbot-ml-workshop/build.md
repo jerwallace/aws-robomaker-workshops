@@ -1,11 +1,41 @@
 ---
-title: "Activity #4: Deploying with RoboMaker"
+title: "Activity #2: Deploying ROS Applications"
 chapter: true
-weight: 4
-description: In this activity you will explore how to configure a robot and a fleet, and deploy a software bundle to your physical robot.
+weight: 3
+requiredTimeMins: 15
+description: In this activity you will explore other methods for building and deploying applications in the development environment including building for an ARM64 device using Docker.
 ---
 
-# Deploying with RoboMaker
+# Deploying ROS Applications 
+1. Open the RoboMaker IDE and navigate to the terminal
+
+1. Change to the **jetbot** directory and build & bundle the ROS application in a docker container
+    ```
+    # Make sure you are in the jetbot directory
+    $ cd ~/environment/jetbot
+    
+    # IMPORTANT: Make sure you are in the jetbot directory
+    # Build and bundle the robot application
+    $ docker run --rm -ti -v $(pwd):/environment/jetbot jetbot-ros
+
+    # You will be dropped into the shell of the docker container
+    # the prompt will be similar to the following root@83afb0b35322:/environment/jetbot# 
+
+    (docker)$ ./assets/scripts/compile_arm64.sh 
+
+    # Wait until shell script is completed 
+    #Type exit or Ctrl-D, to exit the container
+    (docker)$ exit
+    ```
+
+1. Back in the RoboMaker IDE and navigate to the terminal
+    ```
+    # Make sure you exited out of the container in previous step
+    # Copy the robot application to S3
+    $ aws s3 cp ./robot_ws/arm64_bundle/output.tar s3://<S3-BUCKET-NAME>/jetbot/aarch64/output.tar
+    ```
+
+### Deploying with RoboMaker
 When a robot application is deployed to a physical robot, AWS RoboMaker does the following:
 
 - AWS RoboMaker creates or updates a custom Lambda in your account. The Lambda contains the logic needed for deployment. This includes robot application bundle download, ROS launch, pre- and post-checks, and other logic.
@@ -164,7 +194,4 @@ An AWS RoboMake robot is also a Greengrass core. Core devices use certificates a
 Keep track of the progress of the deployment, when copying and extracting completes, the status will change to **Launching**.  
 
 **Congratulations, you can now control your robot with the virtual joystick!**
-
-
-
-
+    ```
