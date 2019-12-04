@@ -24,9 +24,8 @@ Finally, you have a **terminal** to run commands in the simulation job. First, l
 
     * Name: `workshop` or something descriptive
     * Instance type: `m4.large`
-    * Select `ROS Melodic` as the pre-installed ROS distribution.
     * Choose the VPC (default), and a subnet for your development environment 
-    * Click **Create**s
+    * Click **Create**
 
 3. This opens the environment's detail page, click *Open environment*, which will open a new browser tab with the Cloud9 IDE.
 
@@ -56,22 +55,28 @@ The first step is to open the AWS RoboMaker IDE and clone the AWS-enabled JetBot
     ``` 
     # change to the environment directory 
     $ cd ~/environment 
-    $ git clone https://github.com/codingphun/aws_robomaker_jetbot_reinvent_workshop.git jetbot
+    $ git clone https://github.com/jerwallace/aws-robomaker-jetbot-ros.git jetbot
     ``` 
-
- 1. In the terminal window, change to the `jetbot/assets` directory and run the install script.
-
+ 
+1. In the terminal window, change to the `jetbot/assets` directory  
     ``` 
     # Run install_dep.sh to install prerequisite 
     $ cd ~/environment/jetbot/assets/scripts 
-    $ chmod +x compile_arm64.sh install_deps.sh configure_docker.sh
-    $ sudo ./install_deps.sh <your CloudFormation name>
+    $ chmod +x compile_arm64.sh install_deps.sh  
+    $ sudo ./install_deps.sh 
     ``` 
 
     - **What is happening here?** This shell script (install_deps.sh) is going to setup a few key dependencies for us today. It will:
       - Generate a *set of x.509 certificates* to connect with **AWS IoT** over **MQTT**
       - Configure the *roboMakerSettings.json* file with the right **IAM permissions** and an **Amazon S3** bucket to store your ROS applications and logs.
       - Add a new custom ROS sources list to include some of the extra libraries we are using (such as the motor controller).
+      - Build a **docker image** for us to cross compile the ROS application for the physical robot in Activity 2. This image is based on the **NVidia Jetson Nano** filesystem and makes it easy to complile the ROS application for your **JetBot**.
+
+1. Wait for previous step to complete and in the same terminal window, run the following command to update ROS dependencies  
+    ``` 
+    #  Make sure previous step is complete first 
+    $ rosdep update 
+    ``` 
 
 ### Run in Simulation and Explore
 
@@ -85,7 +90,6 @@ The first step is to open the AWS RoboMaker IDE and clone the AWS-enabled JetBot
 
 1. Click **Run, Launch Simulation, JetBot Circle Simulation**. This will launch the application in simulation enviornment with the Jetbot rotating in circles.
 
-
 2. When simulation status displays (running), explore the enviornment in Gazebo by clicking on the Simulation menu, Applications, Gazebo. Use your mouse scroll wheel to zoom in and out of the enviornment. This simple application demonstrates that you have all the components configured and installed correctly. Now you can move on to the next simulation, teleop, which allows you to remote control the JetBot. 
 
 ![simulation gazebo](../../images/simulation-gazebo.png)
@@ -95,13 +99,13 @@ The first step is to open the AWS RoboMaker IDE and clone the AWS-enabled JetBot
 1. In RoboMaker IDE menu, click Run, Launch Simulation, JetBot Teleop Simulation - This will launch the application in simulation enviornment where you can drive the Jetbot with the teleop client app. When simulation status displays (running), explore the enviornment in Gazebo by clicking on the Simulation menu, Applications, Gazebo. Use your mouse scroll wheel to zoom in and out of the enviornment. Be sure to continue with the following steps to download the joy stick client application to remote control the JetBot.
 
 1. Locate the teleop.zip file in **jetbot/assets/teleop** folder 
-
-![teleop app](../../images/teleop-app.png)
+1. ![teleop app](../../images/teleop-app.png)
 
 1. Download the zip file in the file explorer and unzip it on the desktop
-1. Open the **robogui.html** file in a browser and make sure the connection status states `Connected`
+1. Open the robogui.html file in a browser and make sure the connection status states Connected
 1. Use your mouse to move the joy stick and drive the Jetbot in Gazebo 
 1. Stop the simulation from Simulation (Running) menu
+
 
 ### Clean-up Reminder
 

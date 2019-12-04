@@ -1,15 +1,28 @@
 ---
-title: "Activity #2: Deploying ROS Applications"
+title: "Activity #2: Deploying an ML-enabled ROS Application"
 chapter: true
 weight: 3
 requiredTimeMins: 15
-description: In this activity you will explore other methods for building and deploying applications in the development environment including building for an ARM64 device using Docker.
+description: In this activity you will explore other methods for building and deploying ML-enabled applications in the development environment including building for an ARM64 device using Docker. You will also package up 2 machine learning models and deploy them with your application.
 ---
 
 # Deploying ROS Applications 
-In the next activity, you will deploy the JetBot application code to a physical robot. As your workshop instructor mentioned, we will be working in groups for this activity. Get together with your group and pick up an NVidia JetBot. When a robot application is deployed to a physical robot, AWS RoboMaker does the following:
+In the next activity, you will deploy the JetBot application code to a physical robot along with two ML models. As your workshop instructor mentioned, we will be working in groups for this activity. Get together with your group and pick up an NVidia JetBot. 
 
-- AWS RoboMaker creates or updates a custom Lambda in your account. The Lambda contains the logic needed for deployment. This includes robot application bundle download, ROS launch, pre- and post-checks, and other logic.
+**About the Application**
+
+The application we will be building today highlights how you can use multiple machine learning models for inference at the edge with an [NVidia Jetson Nano](https://developer.nvidia.com/embedded/jetson-nano-developer-kit). Our demo application will navigate autonomously in a dinosaur world and discover dinosaurs using **two machine learning models**. Machine learning resources represent cloud-trained inference models that are deployed to an AWS IoT Greengrass core.
+
+- The **first** machine learning model has been trained to detect edges in the road and will enable the robot to autonomously navigate on a road tile. 
+- The **second** machine learning model has been trained with a small number of labeled dinosaur pictures to detect dinosaurs. 
+
+When a dinosaur is found, a message will be published over AWS IoT and displayed in a central dashboard. When an unknown dinosaur is detected, an image is captured and uploaded. This would enable you to label the unknown dinosaur photos and then train the ML model to detect new types of dinosaurs. Once a new ML model is ready, you could use the application you are building today to deploy the new version of the model to your robots.
+
+![App Architecture](../../images/dino-arch.png)
+
+When you use **AWS RoboMaker** to deploy a robot application, the following happens:
+
+- AWS RoboMaker creates or updates a custom Lambda in your account. The Lambda contains the logic needed for deployment. This includes robot application bundle download URL and permissions, ROS launch, pre- and post-checks, and other logic.
 - AWS RoboMaker begins deployment to the fleet using the parallelization specified in the deployment configuration.
 - AWS RoboMaker notifies AWS IoT Greengrass to run the custom Lambda on the target robot. The daemon running on the robot receives the command and runs the Lambda. If a Lambda is running when the command is received, it and all ROS process on the robot are terminated.
 - The Lambda downloads and uncompresses the robot application bundle from Amazon S3. If a pre-launch script was specified, it is run. Then the Lambda starts ROS using the launch file and package specified. If a post-launch script was specified, it is run after ROS is started. Finally, the status of the deployment is updated.
@@ -19,18 +32,6 @@ In the next activity, you will deploy the JetBot application code to a physical 
 The NVidia Jetson Nano Developer Kit has an **arm64** architecture. Therefore, to prepare the application to deploy and launch on our JetBot, we need to build and bundle the ROS Application for arm64. To do this, we will use a docker image we prepared to **cross compile** the application.
 
 1. Open the RoboMaker IDE and navigate to the terminal
-
-1. In the terminal window, change to the `jetbot/assets` directory and run the install script.
-
-    ``` 
-    # Run install_dep.sh to install prerequisite 
-    $ cd ~/environment/jetbot/assets/scripts 
-    $ sudo ./configure_docker.sh
-    ``` 
-
-    - **What is happening here?** This shell script (install_deps.sh) is going to setup a few key dependencies for us today. It will:
-      - Install **QEMU** emulator for cross compiling **arm64** applications.
-      - Build a **docker image** for us to cross compile the ROS application for the physical robot in Activity 2. This image is based on the **NVidia Jetson Nano** filesystem and makes it easy to complile the ROS application for your **JetBot**.
 
 1. **IMPORTANT**: Change to the **jetbot** directory and build & bundle the ROS application in a docker container.
     ```
@@ -73,6 +74,18 @@ The NVidia Jetson Nano Developer Kit has an **arm64** architecture. Therefore, t
     ```
 
 Congratulations! Now, you should have an arm64 bundle (output.tar) of your ROS application ready to deploy.  Next, we will configure our Robot Application and Robot in AWS RoboMaker.
+
+### Stage the two ML models in S3
+
+For today's workshop, we have already trained two ML models for you to use. However, if you are interested, you can checkout the python notebooks [here](https://github.com/waveshare/jetbot/tree/master/notebooks). We will deploy these two models with our **Dinosaur Detection and Road Following** application. 
+
+    ```
+    # Make sure you exited out of the container in previous step
+    # Copy the robot application to S3
+    $ aws s3 cp s3://dinobot-models/models.zip s3://<S3-BUCKET-NAME>/models.zip
+    ```
+
+Great! Now, we will be able to reference these models with our AWS RoboMaker Deployment.
 
 ### Create a Robot Application
 
@@ -147,6 +160,120 @@ An AWS RoboMake robot is also a Greengrass core. Core devices use certificates a
     $ sudo /greengrass/ggc/core/greengrassd start
     ```
 
+### Configure our GreenGrass Lambda Function.
+
+In this section, we will create a simple lambda function application that will copy the ML models to a directory where our ROS application can access them. 
+Machine learning resources represent cloud-trained inference models that are deployed to an AWS IoT Greengrass core. To deploy machine learning resources, you will first define a Lambda functions to transfer the model to a location accessible by the ROS application and then add a resources to a Greengrass AWS group.
+
+1. Open the AWS Lambda console
+
+1. Press the **Create Function** button and add the following information:
+
+    * **Function Name**: *choose a function name*
+    * **Runtime**: Python 2.7
+    Expand the choose or create an execution role
+    * Select **Use an existing role** and select the role which is displayed
+
+    ![Create a lambda function view](../../images/lambda_create.png)
+
+1. Choose **Create Function**
+
+1. Open the AWS RoboMaker Cloud9 development environment in another tab and navigate to the [`assets/greengrassModelSync/mlModelSync.py`](https://github.com/jerwallace/aws-robomaker-jetbot-ros/tree/master/assets/greengrassModelSync/mlModelSync.py)
+
+1. Copy the contents of this file and navigate back to the Lambda Function page
+
+1. Paste the contents of the file into the **Function Code** block.
+
+    ![Add lambda function to function code block](../../images/lambda_add_code.png)
+
+1. Click **Save**.
+
+1. Under **Actions**, choose **Publish new version** and enter version **1**
+
+    ![Publish the lambda function](../../images/lambda_publish_version.png)
+
+### Configure Greengrass to Sync ML Models
+
+#### Add a Lambda function to a Greengrass group
+
+1. Open the AWS Console and navigate to **IoT Core**
+
+    ![alt Add a lambda function to the Greengrass group](../../images/greengrass_group.png)
+
+1. From the menu bar on the left side, select **Greengrass** > **Groups**, and click on the group corresponding to your Robot.
+
+1. In the Greengrass Group view, select **Lambdas** from the menu
+
+    ![Add a lambda function to the Greengrass group](../../images/gg_group_add_lambda.png)
+
+1. Click **Add Lambda** and add an existing lambda function.  Select the Lambda function created in the last step
+
+1. Once the Lambda function is added, select the **Edit Configuration** in the upper right corner of the lambda function
+
+1. Under **Lambda Lifecycle**, choose **Make this function long-lived and keep it running indefinitely** and **Update**
+
+#### Add a ML Resource to a Greengrass group
+
+1. From the menu bar on the left side, select **Greengrass** > **Groups**, and click on the group corresponding to your Robot.
+
+1. In the Greengrass Group view, select **Resources** from the menu
+
+1. Under **Resources**, choose **Machine Learning** > **Add a machine learning resource**
+
+    ![Add an ML resource to a Greengrass group](../../images/greengrass_add_ml_resource.png)
+
+1. Use the following values to create the resource:
+    * **Resource Name**: *select a resource name*
+    * **Model Source**: Choose *Upload a model in S3*
+      * Locate the Model in S3 in your <S3-BUCKET-NAME>
+    * **Local Path**: */trained_models*
+    * **Lambda function affiliations**: *select your ml model detect* function with **Read and write access**
+
+    ![Add an ML resource to a Greengrass group](../../images/greengrass_add_ml_resource_detail.png)
+
+1. Choose **Save** 
+
+#### Add a Local Resource to a Greengrass group
+You can configure Lambda functions to securely access local resources on the host Greengrass core device. Local resources refer to buses and peripherals that are physically present on the host, or file system volumes on the host OS. For more information, including requirements and constraints, see Access Local Resources with Lambda Functions and Connectors.
+
+1. From the menu bar on the left side, select **Greengrass** > **Groups**, and click on the group corresponding to your Robot.
+
+1. In the Greengrass Group view, select **Resources** from the menu
+
+    ![Add a local resource to a Greengrass group](../../images/greengrass_local_resource.png)
+
+1. Under **Resources**, choose **Local** > **Add local resource**
+
+    - **Resource name**: *select a resource name*
+    - **Resource type**: *Volume*
+    - **Source path**: `/home/ggc_user`
+    - **Destination path**: `/home/ggc_user`
+       - *The destination path is the absolute path of the resource in the Lambda namespace. This location is inside the container that the function runs in.*
+    - Under Group Owner file access permission
+       - Select Automatically add OS group permissions of the Linux group that owns the resource.
+
+    ![Add a local resource to a Greengrass group](../../images/greengrass_local_resource_detail.png)
+
+1. Click **Save**
+
+#### Allowing Greengrass to access S3
+Greengrass must be granted access to the S3 service.  This access is configured by adding a IAM Policy for the Greengrass service role.
+
+1. From the AWS Management Console, navigate to the Identity and Access Management(IAM) service
+
+1. Select **Roles** from the menu bar on the left side and search for **Greengrass_ServiceRole**.
+
+    ![Add AmazonS3FullAccess policy](../../images/iam_role_summary.png)
+
+1. On the **Summary** view, click **Attach Policies** and search for **AmazonS3FullAccess**.
+
+    ![Add AmazonS3FullAccess policy](../../images/iam_role_policy_add.png)
+
+1. Click the check-box next to the name and select **Attach policy**.
+
+Now the ML models will be synced with the robot application code, you'll deploy a ROS application to make use of the models. The ROS application built and bundled 
+in the last module contained the necessary code to make use of this model.  You'll create a new deployment for your robot specifying a different launch file.
+
 ### Create a Fleet
 
 1. Return to the RoboMaker Console: https://console.aws.amazon.com/robomaker/
@@ -185,13 +312,18 @@ An AWS RoboMake robot is also a Greengrass core. Core devices use certificates a
 
 1. Under **Deployment Launch Config**, specify the Package name: `jetbot_app`
 
-1. Specify the Launch file: `teleop.launch`
+1. Specify the Launch file: `dino.launch`
   
 1. Environment variables, type in an environment Name and Value. Environment variable names must start with A-Z or underscore and consist of A-Z, 0-9 and underscore. Names beginning with “AWS” are reserved.
 
     - Add the following environment variables:
         - **Key** = `IOT_ENDPOINT`(key must be in all caps exactly) **Value** = `<your IoT endpointAddress>` (this is the IOT_ENDPOINT you captured from earlier step in roboMakerSettings.json file)
-        - **Key** = `ROBOT_NAME`(key must be in all caps exactly) **Value** = `joystick1`(do not change the value)
+        - **Key** = `ROBOT_NAME`(key must be in all caps exactly) **Value** = `A Unique Name` (Select a unique robot name)
+        - **Key** = `STEERING_GAIN`(key must be in all caps exactly) **Value** = `0.11`
+        - **Key** = `SPEED_GAIN`(key must be in all caps exactly) **Value** = `0.05` 
+        - **Key** = `DGAIN`(key must be in all caps exactly) **Value** = `0.10` 
+        - **Key** = `STEERING_BIAS`(key must be in all caps exactly) **Value** = `0.9`
+        - **Key** = `ML_MODEL_PATH`(key must be in all caps exactly) **Value** = `/home/ggc_user` (keep this the same)
                       
 1. Specify a Robot deployment timeout. Deployment to an individual robot will stop if it does not complete before the amount of time specified.
 
@@ -201,11 +333,7 @@ An AWS RoboMake robot is also a Greengrass core. Core devices use certificates a
 
 1. Keep track of the progress of the deployment, when copying and extracting completes, the status will change to **Launching**.  
 
-### Drive your JetBot!
-
-1. Open the **robogui.html** file in a browser and make sure the connection status states: *Connected*.
-
-1. Use your mouse to move the joy stick and drive the Jetbot in real world!
+1. Bring your robot over to one of the road tracks. 
 
 Congratulations!!! You have completed the workshop! 
 

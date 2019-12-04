@@ -1,5 +1,5 @@
 ---
-title: "AWS RoboMaker Workshop"
+title: "TurtleBot Workshop with AWS RoboMaker"
 chapter: true
 weight: 2
 description: "In this workshop you become familiar with AWS RoboMaker, a service that enables you to easily develop, simulate and deploy intelligent robot applications that integrate with AWS services. This includes AWS machine learning services, monitoring services, and analytics services that enable a robot to stream data, navigate, communicate, comprehend, and learn. Today, you will also get hands on with a physical robot (Robotis TurtleBot 3 Burger) to learn how to manage and deploy robot applications to production robots using AWS RoboMaker.
