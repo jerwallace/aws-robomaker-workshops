@@ -56,7 +56,7 @@ The first step is to open the AWS RoboMaker IDE and clone the AWS-enabled JetBot
     ``` 
     # change to the environment directory 
     $ cd ~/environment 
-    $ git clone https://github.com/jerwallace/simple-dino-app.git jetbot
+    $ git clone https://github.com/jerwallace/simple-road-following-app.git jetbot
     ``` 
 
  1. In the terminal window, change to the `jetbot/assets` directory and run the install script.

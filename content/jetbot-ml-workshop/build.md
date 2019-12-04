@@ -150,7 +150,7 @@ An AWS RoboMake robot is also a Greengrass core. Core devices use certificates a
     ```
     # Switch to the root user (password is "jetbot")
     $ sudo su
-    $ wget https://raw.githubusercontent.com/jerwallace/simple-dino-app/master/assets/scripts/jetbot_bringup.sh
+    $ wget https://raw.githubusercontent.com/jerwallace/simple-road-following-app/master/assets/scripts/jetbot_bringup.sh
     $ chmod +x jetbot_bringup.sh
     $ ./jetbot_bringup.sh
     
