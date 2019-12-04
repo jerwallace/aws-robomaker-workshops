@@ -39,12 +39,14 @@ The NVidia Jetson Nano Developer Kit has an **arm64** architecture. Therefore, t
     $ cd ~/environment/jetbot
     ```
 
-1. Next, start a docker container with the following command. This will enable you to run commands inside the docker container once running. *Note: if you see a permission denied error in container shell, it is safe to ignore and continue.*
+1. Next, start a docker container with the following command. This will enable you to run commands inside the docker container once running. **Note: if you see a permission denied error in container shell, it is safe to ignore and continue.**
 
     ```
     # IMPORTANT: Make sure you are in the jetbot directory
     # Build and bundle the robot application
-    $ docker run --rm -ti -v $(pwd):/environment/jetbot jetbot-ros
+    
+    docker run --rm -ti -v $(pwd):/environment/jetbot jetbot-ros
+    
     ```
 
 1. To cross compile the application for arm64, run the script `compile_arm64.sh`. 
@@ -148,6 +150,9 @@ An AWS RoboMake robot is also a Greengrass core. Core devices use certificates a
     ```
     # Switch to the root user (password is "jetbot")
     $ sudo su
+    $ wget https://raw.githubusercontent.com/jerwallace/simple-dino-app/master/assets/scripts/jetbot_bringup.sh
+    $ chmod +x jetbot_bringup.sh
+    $ ./jetbot_bringup.sh
     
     # Add the ggc_user to the video group so it has access to CUDA drivers
     $ usermod -a -G video ggc_user
@@ -181,7 +186,7 @@ Machine learning resources represent cloud-trained inference models that are dep
 
 1. Choose **Create Function**
 
-1. Open the AWS RoboMaker Cloud9 development environment in another tab and navigate to the [`assets/greengrassModelSync/mlModelSync.py`](https://github.com/jerwallace/aws-robomaker-jetbot-ros/tree/master/assets/greengrassModelSync/mlModelSync.py)
+1. Open the AWS RoboMaker Cloud9 development environment in another tab and navigate to the [`assets/greengrassModelSync/mlModelSync.py`](https://github.com/jerwallace/assets/greengrassModelSync/mlModelSync.py)
 
 1. Copy the contents of this file and navigate back to the Lambda Function page
 
@@ -318,18 +323,7 @@ in the last module contained the necessary code to make use of this model.  You'
 
 1. Under **Deployment Launch Config**, specify the Package name: `jetbot_app`
 
-1. Specify the Launch file: `dino.launch`
-  
-1. Environment variables, type in an environment Name and Value. Environment variable names must start with A-Z or underscore and consist of A-Z, 0-9 and underscore. Names beginning with “AWS” are reserved.
-
-    - Add the following environment variables:
-        - **Key** = `IOT_ENDPOINT`(key must be in all caps exactly) **Value** = `<your IoT endpointAddress>` (this is the IOT_ENDPOINT you captured from earlier step in roboMakerSettings.json file)
-        - **Key** = `ROBOT_NAME`(key must be in all caps exactly) **Value** = `A Unique Name` (Select a unique robot name)
-        - **Key** = `STEERING_GAIN`(key must be in all caps exactly) **Value** = `0.11`
-        - **Key** = `SPEED_GAIN`(key must be in all caps exactly) **Value** = `0.05` 
-        - **Key** = `DGAIN`(key must be in all caps exactly) **Value** = `0.10` 
-        - **Key** = `STEERING_BIAS`(key must be in all caps exactly) **Value** = `0.9`
-        - **Key** = `ML_MODEL_PATH`(key must be in all caps exactly) **Value** = `/home/ggc_user` (keep this the same)
+1. Specify the Launch file: `run.launch`
                       
 1. Specify a Robot deployment timeout. Deployment to an individual robot will stop if it does not complete before the amount of time specified.
 
