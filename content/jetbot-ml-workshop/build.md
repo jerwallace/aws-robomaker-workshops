@@ -332,7 +332,9 @@ in the last module contained the necessary code to make use of this model.  You'
 
 1. Click Create to create the deployment job.
 
-1. Keep track of the progress of the deployment, when copying and extracting completes, the status will change to **Launching**.  
+1. Keep track of the progress of the deployment, when copying and extracting completes, the status will change to **Launching**.
+
+** Please be patient -- launching may take a few minutes while it's loading the inference models into memory **
 
 1. Bring your robot over to one of the road tracks. 
 
