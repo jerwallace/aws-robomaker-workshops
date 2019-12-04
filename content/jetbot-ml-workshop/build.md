@@ -165,7 +165,7 @@ An AWS RoboMake robot is also a Greengrass core. Core devices use certificates a
     $ wget -O root.ca.pem https://www.amazontrust.com/repository/AmazonRootCA1.pem
     
     # start greengrass core
-    $ /greengrass/ggc/core/greengrassd start
+    $ /greengrass/ggc/core/greengrassd restart
     ```
 
 ### Configure our GreenGrass Lambda Function.
