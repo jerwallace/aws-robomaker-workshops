@@ -330,8 +330,6 @@ in the last module contained the necessary code to make use of this model.  You'
                       
 1. Specify a Robot deployment timeout. Deployment to an individual robot will stop if it does not complete before the amount of time specified.
 
-![JetBot Deployment](../../images/jetbot-deployment.png)
-
 1. Click Create to create the deployment job.
 
 1. Keep track of the progress of the deployment, when copying and extracting completes, the status will change to **Launching**.  
