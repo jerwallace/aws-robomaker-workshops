@@ -148,6 +148,9 @@ An AWS RoboMake robot is also a Greengrass core. Core devices use certificates a
     ```
     # Switch to the root user (password is "jetbot")
     $ sudo su
+    
+    # Add the ggc_user to the video group so it has access to CUDA drivers
+    $ usermod -a -G video ggc_user
 
     # Unzip the jetbot security credentials to greengrass certificate store
     $ unzip /home/jetbot/<greengrass-certs>.zip -d /greengrass
