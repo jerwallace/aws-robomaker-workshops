@@ -43,6 +43,14 @@ Finally, you have a **terminal** to run commands in the simulation job. First, l
     - (3) The lower section is an adjustable pane for creating or monitoring command line operations. ROS developers work in this area to build, test, and interact with local code.
     - (4) This is the main editor pane.
 
+---
+
+# STOP
+
+New Cloud9 instances take some time to provision and update themselves.  If you proceed at this point you may have issues running the scripts to install dependencies. 
+
+---
+
 ### Clone the Robot Application and Install Dependencies
 
 The first step is to open the AWS RoboMaker IDE and clone the AWS-enabled JetBot ROS application. 
@@ -79,20 +87,21 @@ The first step is to open the AWS RoboMaker IDE and clone the AWS-enabled JetBot
 
     - **Why are we doing this?** There are a couple of build tools that developers use with ROS. The one that we will use with AWS RoboMaker is called [colcon](https://colcon.readthedocs.io/en/released/). However, in addition to your application files, you will also need to bundle your application with the necessary dependencies. This includes any libraries you are using in your ROS application as well as the system dependencies. The tool [colcon bundle](https://github.com/colcon/colcon-bundle) collects all of these dependencies as well as your built application and packages them up in an easy-to-deploy **.tar** file. A **workflow** is simply a set of shell commands (ex: `colcon build` and `colcon bundle`) that the IDE will run when you use the dropdown menus. A preconfigured workflow is included with the sample application in the *roboMakerSettings.json* file.
 
-1. Make sure the Colcon Bundle tab displays "Process exited with code: 0". This indicates the build and bundle process has completed.
+2. Make sure the Colcon Bundle tab displays "Process exited with code: 0". This indicates the build and bundle process has completed.
 
 ![Simulation menu](../../images/simulation-menu.png)
 
-1. Click **Run, Launch Simulation, JetBot Circle Simulation**. This will launch the application in simulation enviornment with the Jetbot rotating in circles.
+3. Click **Run, Launch Simulation, JetBot Circle Simulation**. This will launch the application in simulation enviornment with the Jetbot rotating in circles.
 
+4. The status next to Simulation should change to (Pending) indicating that the simulation has started, and then will finally go to (Running) when it has completed.  If this has not updated after a few minutes, please try refreshing your browser or going to the Robomaker Console > Simulation Jobs to see the up-to-date status.
 
-2. When simulation status displays (running), explore the enviornment in Gazebo by clicking on the Simulation menu, Applications, Gazebo. Use your mouse scroll wheel to zoom in and out of the enviornment. This simple application demonstrates that you have all the components configured and installed correctly. Now you can move on to the next simulation, teleop, which allows you to remote control the JetBot. 
+5. When simulation status displays (running), explore the enviornment in Gazebo by clicking on the Simulation menu, Applications, Gazebo. Use your mouse scroll wheel to zoom in and out of the enviornment. This simple application demonstrates that you have all the components configured and installed correctly. Now you can move on to the next simulation, teleop, which allows you to remote control the JetBot. 
 
 ![simulation gazebo](../../images/simulation-gazebo.png)
 
-1. Stop the simulation from Simulation (Running) menu
+6. Stop the simulation from Simulation (Running) menu
 
-1. In RoboMaker IDE menu, click Run, Launch Simulation, JetBot Teleop Simulation - This will launch the application in simulation enviornment where you can drive the Jetbot with the teleop client app. When simulation status displays (running), explore the enviornment in Gazebo by clicking on the Simulation menu, Applications, Gazebo. Use your mouse scroll wheel to zoom in and out of the enviornment. Be sure to continue with the following steps to download the joy stick client application to remote control the JetBot.
+7. In RoboMaker IDE menu, click Run, Launch Simulation, JetBot Teleop Simulation - This will launch the application in simulation enviornment where you can drive the Jetbot with the teleop client app. When simulation status displays (running), explore the enviornment in Gazebo by clicking on the Simulation menu, Applications, Gazebo. Use your mouse scroll wheel to zoom in and out of the enviornment. Be sure to continue with the following steps to download the joy stick client application to remote control the JetBot.
 
 ### Optional Exercise: 
 
