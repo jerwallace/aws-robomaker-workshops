@@ -61,10 +61,8 @@ The NVidia Jetson Nano Developer Kit has an **arm64** architecture. Therefore, t
     ```
 
     - **What is happening here?** The compile_arm64.sh script simply runs a ros dependency (rosdep) update and install to collect and build any dependencies. Next, it runs the build commands `colcon` and `colcon bundle`. If you want, open it up and check it out.
-
-1. Open *roboMakerSettings.json* file located in the root folder under RoboMaker IDE folder pane. Look for **s3Bucket** and write down the name of the bucket. It will look similar to *mod-47118164636e49dc-s3bucket-1t252d6l3fmil*. You will need this for next step to upload the compiled and bundled ARM64 ROS application. Also find and write down the value in IOT_ENDPOINT, you will need it when deploying the application to the JetBot.
-
-![S3 and IoT Endpoint](../../images/s3-iot-endpoint.png)
+    
+ 1.  Get your S3 bucket name from the CloudFormation template in the CloudFormation console (from the previous section) by going [here](https://console.aws.amazon.com/cloudformation/).  It will have the format of "mod-*********-s3Bucket-********".
 
 1. Back in the RoboMaker IDE and navigate to the terminal. *Note: Make sure you exited out of the container in previous step.*
     ```
@@ -139,9 +137,11 @@ An AWS RoboMake robot is also a Greengrass core. Core devices use certificates a
 1. Locate the IP address of robot on the OLED
 ![waveshare oled](../../images/waveshare-oled.png)
 
-1. Open the local Jypter server by typing this into your web browswer: `https://<IP_ADDRESS>:8888`.
+** PLEASE ENSURE ANY VPN YOU USE IS DEACTIVATED.  THE FOLLOWING STEPS WILL NOT WORK IF YOU'RE CONNECTED TO A VPN **
 
-1. In this browser, you will be able to easily acccess the filesystem on the **JetBot**. Select **Upload** to upload your downloaded keys to the JetBot. 
+1. Open the local Jupyter server by typing this into your web browser: `http://<IP_ADDRESS>:8888`.
+
+1. In this browser, you will be able to easily access the filesystem on the **JetBot**. Select **Upload** to upload your downloaded keys to the JetBot. 
 
 1. Next, open a **terminal** and copy the keys to your greengrass folder. The password for su is "**jetbot**".
 
@@ -157,7 +157,7 @@ An AWS RoboMake robot is also a Greengrass core. Core devices use certificates a
     $ wget -O root.ca.pem https://www.amazontrust.com/repository/AmazonRootCA1.pem
     
     # start greengrass core
-    $ sudo /greengrass/ggc/core/greengrassd start
+    $ /greengrass/ggc/core/greengrassd start
     ```
 
 ### Configure our GreenGrass Lambda Function.
@@ -210,7 +210,9 @@ Machine learning resources represent cloud-trained inference models that are dep
 
 1. Once the Lambda function is added, select the **Edit Configuration** in the upper right corner of the lambda function
 
-1. Under **Lambda Lifecycle**, choose **Make this function long-lived and keep it running indefinitely** and **Update**
+1. Under **Lambda Lifecycle**, choose **Make this function long-lived and keep it running indefinitely**
+
+1. Leave all other settings as default values and click and **Update**
 
 #### Add a ML Resource to a Greengrass group
 
@@ -227,6 +229,7 @@ Machine learning resources represent cloud-trained inference models that are dep
     * **Model Source**: Choose *Upload a model in S3*
       * Locate the Model in S3 in your <S3-BUCKET-NAME>
     * **Local Path**: */trained_models*
+    * **Identify resource owner and set access permissions**: *No OS group*
     * **Lambda function affiliations**: *select your ml model detect* function with **Read and write access**
 
     ![Add an ML resource to a Greengrass group](../../images/greengrass_add_ml_resource_detail.png)
@@ -246,11 +249,11 @@ You can configure Lambda functions to securely access local resources on the hos
 
     - **Resource name**: *select a resource name*
     - **Resource type**: *Volume*
-    - **Source path**: `/home/ggc_user`
-    - **Destination path**: `/home/ggc_user`
-       - *The destination path is the absolute path of the resource in the Lambda namespace. This location is inside the container that the function runs in.*
-    - Under Group Owner file access permission
-       - Select Automatically add OS group permissions of the Linux group that owns the resource.
+    - **Source path**: `/tmp`
+    - **Destination path**: `/tmp`
+       - *The destination path is the absolute path of the resource in the Lambda namespace.*
+    - **Group Owner file access permission**: *Automatically add OS group permissions of the Linux group that owns the resource*
+    - **Choose permissions for this Lambda function**: *Read and write acccess*
 
     ![Add a local resource to a Greengrass group](../../images/greengrass_local_resource_detail.png)
 
