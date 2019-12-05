@@ -9,14 +9,18 @@ description: In this activity you will explore other methods for building and de
 # Deploying ROS Applications 
 In the next activity, you will deploy the JetBot application code to a physical robot along with two ML models. As your workshop instructor mentioned, we will be working in groups for this activity. Get together with your group and pick up an NVidia JetBot. 
 
+For this activity, you will need to connect to our provisioned WiFi. Here it is:
+    ```
+    SSID: Condensate
+    PW: !Dev1ces+Are+Com1ng!
+    ```
+    
 **About the Application**
 
-The application we will be building today highlights how you can use multiple machine learning models for inference at the edge with an [NVidia Jetson Nano](https://developer.nvidia.com/embedded/jetson-nano-developer-kit). Our demo application will navigate autonomously in a dinosaur world and discover dinosaurs using **two machine learning models**. Machine learning resources represent cloud-trained inference models that are deployed to an AWS IoT Greengrass core.
+The application we will be building today highlights how you can deploy machine learning models for inference at the edge with an [NVidia Jetson Nano](https://developer.nvidia.com/embedded/jetson-nano-developer-kit). Our demo application will autonomously navigate in a LEGO world. Machine learning resources represent cloud-trained inference models that are deployed to an AWS IoT Greengrass core.
 
 - The **first** machine learning model has been trained to detect edges in the road and will enable the robot to autonomously navigate on a road tile. 
 - The **second** machine learning model has been trained with a small number of labeled dinosaur pictures to detect dinosaurs. 
-
-When a dinosaur is found, a message will be published over AWS IoT and displayed in a central dashboard. When an unknown dinosaur is detected, an image is captured and uploaded. This would enable you to label the unknown dinosaur photos and then train the ML model to detect new types of dinosaurs. Once a new ML model is ready, you could use the application you are building today to deploy the new version of the model to your robots.
 
 ![App Architecture](../../images/dino-arch.png)
 
@@ -121,9 +125,6 @@ An AWS RoboMake robot is also a Greengrass core. Core devices use certificates a
     ```
     # Switch to the root user (password is "jetbot")
     $ sudo su
-    $ wget https://raw.githubusercontent.com/jerwallace/simple-road-following-app/master/assets/scripts/jetbot_bringup.sh
-    $ chmod +x jetbot_bringup.sh
-    $ ./jetbot_bringup.sh
     
     # Add the ggc_user to the video group so it has access to CUDA drivers
     $ usermod -a -G video ggc_user
