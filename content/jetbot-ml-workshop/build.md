@@ -35,7 +35,7 @@ Therefore, in this next step, we will copy the application bundle to an S3 bucke
     
  1.  Get your S3 bucket name from the CloudFormation template in the CloudFormation console (from the previous section) by going [here](https://console.aws.amazon.com/cloudformation/).  It will have the format of "mod-*********-s3Bucket-********".
 
-1. Navigate to the terminal in the RoboMaker IDE. *Note: Make sure you exited out of the container in previous step.*
+1. Navigate to the terminal in the RoboMaker IDE.
     ```
     # Make sure you exited out of the container in previous step
     # Copy the robot application to S3
