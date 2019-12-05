@@ -84,7 +84,9 @@ The first step is to open the AWS RoboMaker IDE and clone the AWS-enabled JetBot
 ### Run in Simulation and Explore
 
 1. In RoboMaker IDE menu, click **Run, Workflow, select JetBot Simulation - Build and Bundle** *(this process takes about 10 minutes)*. As the name suggests, it will compile/build the ROS application and bundle it into a tar file for simulation. 
-
+   
+    - **IMPORTANT NOTE: If you experience the error: "Unable to acquire the dpkg frontend lock", that is because when Cloud9 first loads, it runs an update command. This will take a few minutes. Not to worry, simply try again in a few minutes and the JetBot Simulation - Build and Bundle will run successfully.**
+ 
     - **Why are we doing this?** There are a couple of build tools that developers use with ROS. The one that we will use with AWS RoboMaker is called [colcon](https://colcon.readthedocs.io/en/released/). However, in addition to your application files, you will also need to bundle your application with the necessary dependencies. This includes any libraries you are using in your ROS application as well as the system dependencies. The tool [colcon bundle](https://github.com/colcon/colcon-bundle) collects all of these dependencies as well as your built application and packages them up in an easy-to-deploy **.tar** file. A **workflow** is simply a set of shell commands (ex: `colcon build` and `colcon bundle`) that the IDE will run when you use the dropdown menus. A preconfigured workflow is included with the sample application in the *roboMakerSettings.json* file.
 
 2. Make sure the Colcon Bundle tab displays "Process exited with code: 0". This indicates the build and bundle process has completed.
@@ -103,7 +105,7 @@ The first step is to open the AWS RoboMaker IDE and clone the AWS-enabled JetBot
 
 7. In RoboMaker IDE menu, click Run, Launch Simulation, JetBot Teleop Simulation - This will launch the application in simulation enviornment where you can drive the Jetbot with the teleop client app. When simulation status displays (running), explore the enviornment in Gazebo by clicking on the Simulation menu, Applications, Gazebo. Use your mouse scroll wheel to zoom in and out of the enviornment. Be sure to continue with the following steps to download the joy stick client application to remote control the JetBot.
 
-### Optional Exercise: 
+### Optional Fun Exercise: Run Teleop in Simulation
 
 1. Locate the teleop.zip file in **jetbot/assets/teleop** folder 
 
