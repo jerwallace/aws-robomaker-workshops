@@ -27,57 +27,28 @@ When you use **AWS RoboMaker** to deploy a robot application, the following happ
 - AWS RoboMaker notifies AWS IoT Greengrass to run the custom Lambda on the target robot. The daemon running on the robot receives the command and runs the Lambda. If a Lambda is running when the command is received, it and all ROS process on the robot are terminated.
 - The Lambda downloads and uncompresses the robot application bundle from Amazon S3. If a pre-launch script was specified, it is run. Then the Lambda starts ROS using the launch file and package specified. If a post-launch script was specified, it is run after ROS is started. Finally, the status of the deployment is updated.
 
-### Prepare Your ROS Application for Deployment
+### Collect Your JetBot Application for Deployment. 
 
-The NVidia Jetson Nano Developer Kit has an **arm64** architecture. Therefore, to prepare the application to deploy and launch on our JetBot, we need to build and bundle the ROS Application for arm64. To do this, we will use a docker image we prepared to **cross compile** the application.
+The NVidia Jetson Nano Developer Kit has an **arm64** architecture. Therefore, to prepare the application to deploy and launch on our JetBot, you would need to build and bundle the ROS Application for arm64. Also, since we are using PyTorch and other local dependencies to run inference at the edge, you would need to bundle these dependencies with your application. We have included a docker file to build and bundle our simple road following application. However, since this is a long process - we have already done this for you. 
 
-1. Open the RoboMaker IDE and navigate to the terminal
-
-1. **IMPORTANT**: Change to the **jetbot** directory and build & bundle the ROS application in a docker container.
-    ```
-    # Make sure you are in the jetbot directory
-    $ cd ~/environment/jetbot
-    ```
-
-1. Next, start a docker container with the following command. This will enable you to run commands inside the docker container once running. **Note: if you see a permission denied error in container shell, it is safe to ignore and continue.**
-
-    ```
-    # IMPORTANT: Make sure you are in the jetbot directory
-    # Build and bundle the robot application
-    
-    docker run --rm -ti -v $(pwd):/environment/jetbot jetbot-ros
-    
-    ```
-
-1. To cross compile the application for arm64, run the script `compile_arm64.sh`. 
-
-    ```
-    # You will be dropped into the shell of the docker container
-    # If you see a permission denied error, it is safe to ignore and continue
-
-    (docker)$ ./assets/scripts/compile_arm64.sh 
-
-    # Wait until shell script is completed 
-    #Type exit or Ctrl-D, to exit the container
-    (docker)$ exit
-    ```
-
-    - **What is happening here?** The compile_arm64.sh script simply runs a ros dependency (rosdep) update and install to collect and build any dependencies. Next, it runs the build commands `colcon` and `colcon bundle`. If you want, open it up and check it out.
+Therefore, in this next step, we will copy the application bundle to an S3 bucket in your account.
     
  1.  Get your S3 bucket name from the CloudFormation template in the CloudFormation console (from the previous section) by going [here](https://console.aws.amazon.com/cloudformation/).  It will have the format of "mod-*********-s3Bucket-********".
 
-1. Back in the RoboMaker IDE and navigate to the terminal. *Note: Make sure you exited out of the container in previous step.*
+1. Navigate to the terminal in the RoboMaker IDE. *Note: Make sure you exited out of the container in previous step.*
     ```
     # Make sure you exited out of the container in previous step
     # Copy the robot application to S3
-    $ aws s3 cp ./robot_ws/arm64_bundle/output.tar s3://<S3-BUCKET-NAME>/jetbot/aarch64/output.tar
+    $ aws s3 cp s3://jetbot-workshop-us-east-1-rmw-assets/jetbot/robot_ws/output.tar s3://<S3-BUCKET-NAME>/jetbot/aarch64/output.tar
     ```
 
 Congratulations! Now, you should have an arm64 bundle (output.tar) of your ROS application ready to deploy.  Next, we will configure our Robot Application and Robot in AWS RoboMaker.
 
 ### Stage the two ML models in S3
 
-For today's workshop, we have already trained two ML models for you to use. However, if you are interested, you can checkout the python notebooks [here](https://github.com/waveshare/jetbot/tree/master/notebooks). We will deploy these two models with our **Dinosaur Detection and Road Following** application. 
+**Note: Wait to move on to this step until the latest models have been created. Your workshop instructor will let you know!**
+
+For today's workshop, we have been activly training a new road following ML model for you to use. However, if you are interested, you can checkout the python notebooks [here](https://github.com/waveshare/jetbot/tree/master/notebooks). We will deploy this model with our **Road Following** application. 
 
     ```
     # Make sure you exited out of the container in previous step
