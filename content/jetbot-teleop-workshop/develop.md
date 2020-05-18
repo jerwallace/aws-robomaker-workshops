@@ -10,7 +10,7 @@ In the first activity, you will get familiar with ROS and learn how to build and
 
 AWS RoboMaker makes it easy to run your ROS application in a cloud-based simulation. When you run an AWS RoboMaker simulation job, you have access to 4 core tools to interact with your running application:
 
-- **Gazebo** lets you build 3D worlds with robots, terrain, and other objects. It also has has a physics engine for modeling illumination, gravity, and other forces. Robotics developers use Gazebo to evaluate and test robots in different scenarios, often times more quickly than using physical robots and scenarios. Gazebo also makes it easier to test other aspects of your robot like error handling, battery life, navigation, and machine learning algorithms.
+- **Gazebo** lets you build 3D worlds with robots, terrain, and other objects. It also has a physics engine for modeling illumination, gravity, and other forces. Robotics developers use Gazebo to evaluate and test robots in different scenarios, often times more quickly than using physical robots and scenarios. Gazebo also makes it easier to test other aspects of your robot like error handling, battery life, navigation, and machine learning algorithms.
 - **rviz** is a 3d visualization tool for ROS applications. It provides a view of your robot model, capture sensor information from robot sensors, and replay captured data. It can display data from camera, lasers, from 3D and 2D devices including pictures and point clouds.
 - **rqt** hosts a number of different plugins for visualizing ROS information. Multiple plugins can be displayed on a custom dashboard, providing a unique view of your robot. rqt includes many useful plugins and provides a framework to write custom plugins.
 
