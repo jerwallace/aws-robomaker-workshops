@@ -57,7 +57,7 @@ The first step is to open the AWS RoboMaker IDE and clone the AWS-enabled JetBot
 
 1. Open the AWS CloudFormation console at https://console.aws.amazon.com/cloudformation/
 
-1. In CloudFormation console and write down the CloudFormation name that looks similar to mod-xxxxxxx36e49dc. You will need this to run an automation script later to set up RoboMaker IDE enviornment. 
+1. In CloudFormation console and write down the CloudFormation name that looks similar to mod-xxxxxxx36e49dc. You will need this to run an automation script later to set up RoboMaker IDE environment. 
 ![cloudformation name](../../images/cloudformation-name.png)
 
 1. Open the RoboMaker IDE and navigate to the terminal and clone this Git repo to the development machine: 
@@ -93,17 +93,17 @@ The first step is to open the AWS RoboMaker IDE and clone the AWS-enabled JetBot
 
 ![Simulation menu](../../images/simulation-menu.png)
 
-3. Click **Run, Launch Simulation, JetBot Circle Simulation**. This will launch the application in simulation enviornment with the Jetbot rotating in circles.
+3. Click **Run, Launch Simulation, JetBot Circle Simulation**. This will launch the application in simulation environment with the Jetbot rotating in circles.
 
 4. The status next to Simulation should change to (Pending) indicating that the simulation has started, and then will finally go to (Running) when it has completed.  If this has not updated after a few minutes, please try refreshing your browser or going to the Robomaker Console > Simulation Jobs to see the up-to-date status.
 
-5. When simulation status displays (running), explore the enviornment in Gazebo by clicking on the Simulation menu, Applications, Gazebo. Use your mouse scroll wheel to zoom in and out of the enviornment. This simple application demonstrates that you have all the components configured and installed correctly. Now you can move on to the next simulation, teleop, which allows you to remote control the JetBot. 
+5. When simulation status displays (running), explore the environment in Gazebo by clicking on the Simulation menu, Applications, Gazebo. Use your mouse scroll wheel to zoom in and out of the environment. This simple application demonstrates that you have all the components configured and installed correctly. Now you can move on to the next simulation, teleop, which allows you to remote control the JetBot. 
 
 ![simulation gazebo](../../images/simulation-gazebo.png)
 
 6. Stop the simulation from Simulation (Running) menu
 
-7. In RoboMaker IDE menu, click Run, Launch Simulation, JetBot Teleop Simulation - This will launch the application in simulation enviornment where you can drive the Jetbot with the teleop client app. When simulation status displays (running), explore the enviornment in Gazebo by clicking on the Simulation menu, Applications, Gazebo. Use your mouse scroll wheel to zoom in and out of the enviornment. Be sure to continue with the following steps to download the joy stick client application to remote control the JetBot.
+7. In RoboMaker IDE menu, click Run, Launch Simulation, JetBot Teleop Simulation - This will launch the application in simulation environment where you can drive the Jetbot with the teleop client app. When simulation status displays (running), explore the environment in Gazebo by clicking on the Simulation menu, Applications, Gazebo. Use your mouse scroll wheel to zoom in and out of the environment. Be sure to continue with the following steps to download the joy stick client application to remote control the JetBot.
 
 ### Optional Fun Exercise: Run Teleop in Simulation
 
