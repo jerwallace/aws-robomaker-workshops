@@ -7,7 +7,7 @@ On a mac:
 
 `brew install hugo`
 
-On Linux:
+On Linux (Ubuntu or other distributions):
   - Download from the releases page: https://github.com/gohugoio/hugo/releases/tag/v0.46
   - Extract and save the executable to `/usr/local/bin`
 
