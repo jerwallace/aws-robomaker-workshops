@@ -7,7 +7,7 @@ description: "In this activity you will learn how to integrate a robot applicati
 
 # Find Martians with AWS Robomaker and Amazon Rekognition
 
-![alien](../../images/mars-rover/alien.jpg)
+![alien](../../images/open-source-rover/alien.jpg)
 
 Our objective: Find Martians!
 
@@ -23,7 +23,7 @@ When complete, you will have learned:
 
 The ROS application we're using for this exercise is comprised of several nodes and topics.  An abbreviated node graph for our application looks like this:
 
-   ![ros-nodes](../../images/mars-rover/ros-nodes.jpg)
+   ![ros-nodes](../../images/open-source-rover/ros-nodes.jpg)
 
    For this activity, we'll review what's happening in the nodes and topic within the dotted rectangle:
    
@@ -32,11 +32,11 @@ The ROS application we're using for this exercise is comprised of several nodes 
      
 Review the system architecture.  This is what we'll be building in this activity:
  
-   ![app-architecture](../../images/mars-rover/app-architecture.jpg) 
+   ![app-architecture](../../images/open-source-rover/app-architecture.jpg) 
 
 When complete, you'll navigate your rover in the simulated world, similar to the previous exercise.  The data generated from the rover will populate a dashboard similar to this:
 
-   ![dashboard](../../images/mars-rover/dashboard.jpg) 
+   ![dashboard](../../images/open-source-rover/dashboard.jpg) 
 
 
    
@@ -57,7 +57,7 @@ When complete, you'll navigate your rover in the simulated world, similar to the
     
     ROS nodes are commonly written in Python or C++.  While there is support for other programming languages, these two languages are the most common.  The nodes in our application are written in Python.  Open the *object-detector* node.  It will be located in your IDE at *project_root->aws-robomaker-sample-application-open-source-rover->robot_ws->src->martian_detector->nodes->object_detector*.
 
-    ![object-detector-ide](../../images/mars-rover/object_detector.png) 
+    ![object-detector-ide](../../images/open-source-rover/object_detector.png) 
 
     Let's review a few sections of this node.  First, let's take a look at where this node advertises to the ROS master that it's a publisher to the *detected_objects* topic.  Review the constructor for the `ObjectDetector` class:
     
@@ -181,7 +181,7 @@ When complete, you'll navigate your rover in the simulated world, similar to the
          
 4. Ok, let's prepare to create a new simulation where we can search for aliens with the Mars rover.  Before you launch the simulation, you'll need to configure the nodes for your environment.  In ROS, a launch file is an XML document that contains information about the nodes that will run on your robot.  Let's open the launch file that we'll use in our simulation.  Open the file called `martian_detector.launch`, which can be found in your project at *project-root->aws-robomaker-sample-application-open-source-rover->robot_ws->src->martian_detector->launch->martian_detector.launch*:
   
-    ![launch-ide](../../images/mars-rover/launch.png)
+    ![launch-ide](../../images/open-source-rover/launch.png)
 
     We need to update the parameters for the *notifier* node.  In the XML, look for the following section and update the parameters as directed below:
     
@@ -210,19 +210,19 @@ When complete, you'll navigate your rover in the simulated world, similar to the
 
 9.  To see the view from the rover's camera, we need to use the Visualization feature of *rqt* and choose the topic on which images are being published on our robot.  In rqt, enable the visualization plugin by choose from the menu:  *Plugins->Visualization->Image View*. 
   
-    ![rqt-image-view](../../images/mars-rover/rqt-image-view.jpg)  
+    ![rqt-image-view](../../images/open-source-rover/rqt-image-view.jpg)  
   
 10.  To view the images, we need to choose the topic name where the images are published.  In the Image View window, choose the topic from drop-down list:  */camera/image_raw/compressed*.  You'll see a gray square, and not the Martian landscape.  Why is this?  It's because the default position of our camera is pointing directly up, into the sky.  We'll fix that shortly.  
   
-      ![rqt-gray](../../images/mars-rover/closeup.png)
+      ![rqt-gray](../../images/open-source-rover/closeup.png)
       
 11. Before we adjust the camera angle, it's best if you arrange your application windows so you can see all three applications concurrently.  Also adjust the view in Gazebo so you have a relatively close-up view of the rover.  Arrange them similar to this:
 
-      ![rover-3-window-view](../../images/mars-rover/rover-3-window.png)
+      ![rover-3-window-view](../../images/open-source-rover/rover-3-window.png)
       
 12. We need to use two Terminal connections to our robot, so let's open a new tab on the terminal window.  This will open a second connection to the robot.  Our first terminal window will be used to move the rover, similar to the earlier exercise.  The second terminal will be used to send commands to the rover to take a picture for analysis.  To open the second terminal, use the terminal's File menu:  *File->Open Tab*.
 
-      ![terminal-new-tab](../../images/mars-rover/terminal-new-tab.jpg)   
+      ![terminal-new-tab](../../images/open-source-rover/terminal-new-tab.jpg)   
       
 13. To move the rover in the simulation, use the teleop_twist_keyboard control, similar to the previous exercise.  To start the keyboard control, run the following command in one of the Terminal tabs:
     
@@ -234,7 +234,7 @@ When complete, you'll navigate your rover in the simulated world, similar to the
 
 14.  Now have some fun!  Move the robot around the world and look for objects in the environment. To detect a Martian, you will likely have to pretty close to the object.  Move the rover so that the alien takes up a significant portion of the frame, similar to:
     
-    ![alien-rqt](../../images/mars-rover/closeup.png)
+    ![alien-rqt](../../images/open-source-rover/closeup.png)
 
     Did you discover a Martian?  If so, you will receive a text message for each time you discover an alien (note, if you discover the same alien multiple times, you will receive multiple text messages).
     
@@ -247,7 +247,7 @@ When complete, you'll navigate your rover in the simulated world, similar to the
     ```
 16.  You should now be able to move the rover around the Martian world, searching for objects.  As you find them, your dashboard will be updated in real-time.  
 
-      ![sim-with-dash](../../images/mars-rover/sim-w-dash.jpg)
+      ![sim-with-dash](../../images/open-source-rover/sim-w-dash.jpg)
 
 ## Activity wrap-up
 

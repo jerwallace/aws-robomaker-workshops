@@ -25,15 +25,15 @@ For this workshop, we've created temporary AWS accounts for all attendees.  You 
 
 On the *Who are you?* form, enter the code you were provided (ensure the case is correct) and click **Proceed**.
 
-![Event Engine Login](../../images/mars-rover/event-engine-login.jpg)
+![Event Engine Login](../../images/open-source-rover/event-engine-login.jpg)
 
 Then click on the **AWS Console** button, and then the **Open Console** button on the pop-up.
 
-![Event Engine Open Console](../../images/mars-rover/event-engine-open-console.jpg)
+![Event Engine Open Console](../../images/open-source-rover/event-engine-open-console.jpg)
 
 The default is US West (Oregon) region for this workshop, however, feel free to select a different region.
 
-![Region selection](../../images/mars-rover/region-selection.jpg)
+![Region selection](../../images/open-source-rover/region-selection.jpg)
 
 ### Launch CloudFormation Stack 
 AWS CloudFormation provides a common language to describe and provision infrastructure resources in your cloud environment. CloudFormation allows you to use a simple text file to model and provision the resources needed for the workshop.  For this workshop, we've pre-created a template that simplifies some of the setup.  The infrastructure it creates is needed to run the activities.  It will create an S3 bucket and networking resources.
