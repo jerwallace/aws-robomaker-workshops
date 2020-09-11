@@ -64,7 +64,7 @@ When complete, you'll navigate your rover in the simulated world, similar to the
     ```python
         def __init__(self):
             self.pub = rospy.Publisher('/detected_objects', String, queue_size=1)
-            self.rekog = boto3.client('rekognition', AWS_REGION)
+            self.rekog = boto3.client('rekognition')
     ```
     
     The first line of the constructor tells the ROS master that this node will publish to the *detected_objects* topic, and the data type it will send is `String`.  The second line is the initialization of the Amazon Rekognition client that will be used elsewhere in the node.    
@@ -187,7 +187,6 @@ When complete, you'll navigate your rover in the simulated world, similar to the
     
     ```xml
     	<node name="notifier" pkg="martian_detector" type="notifier" >
-    	    <param name="aws_region" value="$(arg aws_region)" />
     	    <param name="s3_bucket_name" value="<your-bucket-name>" />
     	    <param name="phone_number" value="<your-phone-number>" type="str" />
     	    <param name="search_object" value="Alien" />

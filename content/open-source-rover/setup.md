@@ -31,7 +31,7 @@ Then click on the **AWS Console** button, and then the **Open Console** button o
 
 ![Event Engine Open Console](../../images/mars-rover/event-engine-open-console.jpg)
 
-We will use the US West (Oregon) region for this workshop.  In the region menu item, select *US West (Oregon)*.
+The default is US West (Oregon) region for this workshop, however, feel free to select a different region.
 
 ![Region selection](../../images/mars-rover/region-selection.jpg)
 
@@ -40,7 +40,7 @@ AWS CloudFormation provides a common language to describe and provision infrastr
 
 Once you have successfully signed into the AWS console, click the button below to launch a CloudFormation stack to create the required resources:
 
-[![Launch Stack](../../images/launch-stack.svg)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?templateURL=https://s3.amazonaws.com/assets.robomakerworkshops.com/cfn/bootstrap.rover.no-roles.cfn.yaml&region=us-west-2)
+[![Launch Stack](../../images/launch-stack.svg)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?templateURL=https://s3.amazonaws.com/assets.robomakerworkshops.com/cfn/bootstrap.rover.no-roles.cfn.yaml)
 
 1. On the *Create stack* page, accept the defaults and click **Next**.
 2. On the *Specify stack details* page, set *Stack name* to a value that will help you identify this stack, such as "reMARS-workshop".
@@ -80,7 +80,7 @@ AWS CloudFormation provides a common language to describe and provision infrastr
 
 Once you have successfully signed into the AWS console, click the button below to launch a CloudFormation stack to create the required resources:
 
-[![Launch Stack](../../images/launch-stack.svg)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?templateURL=https://s3.amazonaws.com/assets.robomakerworkshops.com/cfn/bootstrap.rover.cfn.yaml&region=us-west-2)
+[![Launch Stack](../../images/launch-stack.svg)](https://console.aws.amazon.com/cloudformation/home#/stacks/new?templateURL=https://s3.amazonaws.com/assets.robomakerworkshops.com/cfn/bootstrap.rover.cfn.yaml)
 
 1. On the *Create stack* page, accept the defaults and click **Next**.
 2. On the *Specify stack details* page, set *Stack name* to a value that will help you identify this stack, such as "reMARS-robot-workshop-resources".

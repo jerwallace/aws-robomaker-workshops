@@ -21,7 +21,7 @@ When complete, you will have learned:
 
 ## Activity tasks
 
-1. Navigate to the [AWS RoboMaker console](https://us-west-2.console.aws.amazon.com/robomaker/home?region=us-west-2#welcome).  Ensure that the region is set to *US West (Oregon)*.
+1. Navigate to the [AWS RoboMaker console](https://console.aws.amazon.com/robomaker/home?#welcome).
 
 2. Create a development environment where we can develop our ROS application.  Click the hamburger menu on the upper-left of the page to expand the RoboMaker menu.  Then create a new development environment by navigating to *Development->Development environments* and choose **Create environment**.
  

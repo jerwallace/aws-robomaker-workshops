@@ -301,9 +301,25 @@ in the last module contained the necessary code to make use of this model.  You'
 
 1. Click Create to create the deployment job.
 
-1. Keep track of the progress of the deployment, when copying and extracting completes, the status will change to **Launching**.
+1. Keep track of the progress of the deployment, when copying and extracting completes, the status will eventually change to **In Sync**.
 
-** Please be patient -- launching may take a few minutes while it's loading the inference models into memory **
+1. In the final step Jupyter server by typing this into your web browser: `http://<IP_ADDRESS>:8888`.
+
+1. To finish the launch of your application, open a **terminal window**
+
+    ```
+    # Switch to the root user (password is "jetbot")
+    $ sudo su
+    
+    $ wget https://raw.githubusercontent.com/jerwallace/simple-road-following-app/master/assets/scripts/prep_launch_local.sh
+    $ chmod +x prep_launch_local.sh
+    $ ./prep_launch_local.sh
+    
+    # start greengrass core
+    $ roslaunch jetbot_app run.launch
+    ```
+
+    **Note: It will take a few minutes for the app to start.**
 
 1. Bring your robot over to one of the road tracks. 
 
