@@ -72,6 +72,7 @@ The first step is to open the AWS RoboMaker IDE and clone the AWS-enabled JetBot
       - Generate a *set of x.509 certificates* to connect with **AWS IoT** over **MQTT**
       - Configure the *roboMakerSettings.json* file with the right **IAM permissions** and an **Amazon S3** bucket to store your ROS applications and logs.
       - Add a new custom ROS sources list to include some of the extra libraries we are using (such as the motor controller).
+      - there seems to be a bug in the setup script there the iamRole property is not set in the script above. Simple open roboMakerSettings.json in your editor, find the iamRole property under 'simulation' and set it to the full arn for the 'robomaker-simulation-role' from your iam console. You will have to do this twice, once for each simulation in the config. If your iamRole property is filled in, you can ignore this.
 
 ### Run in Simulation and Explore
 
